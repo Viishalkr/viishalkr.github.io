@@ -1,172 +1,227 @@
-/* ============================
-    GLOBAL RESET
-============================ */
+/* ------------------------------
+   Reset + base
+   ------------------------------ */
+:root {
+    --bg: #0e2a2a;
+    --accent: #d94444;
+    --white: #fff;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box
 }
 
 html,
 body {
-    width: 100%;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-    background: #0e2a2a;
-    color: #fff;
-    overflow-x: hidden;
+    height: 100%
 }
 
-
-/* ============================
-    HERO SECTION (Figma design)
-============================ */
-
-.hero {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
+body {
+    margin: 0;
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: var(--white);
 }
 
-/* Overlay that hides the left text inside your image */
-.hero::before {
-    content: "";
-    position: absolute;
+/* ------------------------------
+   Header
+   ------------------------------ */
+.site-header {
+    position: fixed;
+    top: 0;
     left: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(57, 11, 11, 1) 0%, rgba(216, 56, 56, 0.85) 50%);
-    z-index: 2;
-    pointer-events: none;
-}
-
-/* Main hero photograph (right side) */
-.hero-img {
-    position: absolute;
-    top: 0;
     right: 0;
-    width: 60%;
-    /* Only right part shows */
-    height: 100%;
-    object-fit: cover;
-    object-position: right center;
-    z-index: 1;
-    filter: saturate(0.95) contrast(0.95);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    z-index: 30;
+    pointer-events: auto;
+    background: transparent;
 }
 
-/* Faint background word "Portfolio" */
-.bg-title {
-    position: absolute;
-    top: 4%;
-    right: 6%;
-    font-family: 'Cormorant', serif;
-    color: rgba(255, 255, 255, 0.06);
-    font-weight: 300;
-    pointer-events: none;
-    z-index: 3;
-    font-size: clamp(48px, 14vw, 220px);
-    line-height: 0.9;
-    letter-spacing: 2px;
+.brand {
+    font-weight: 600
 }
 
-/* ============================
-    LEFT CONTENT COLUMN
-============================ */
+.site-nav a {
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: none;
+    margin-left: 1.25rem;
+    font-size: 0.95rem;
+}
 
-.hero-content {
+/* ------------------------------
+   Hero layout
+   ------------------------------ */
+.hero {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    align-items: stretch;
+    overflow: hidden;
     position: relative;
-    z-index: 4;
-    width: 45%;
-    padding: 10vh 6vw 6vh 6vw;
+}
+
+/* left column (text) */
+.hero-left {
+    flex: 0 0 45%;
+    padding: clamp(3rem, 6vw, 6rem);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    color: #fff;
+    justify-content: center;
+    gap: 1.25rem;
+    z-index: 20;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.15) 100%);
 }
 
-.intro {
+/* small intro text */
+.intro-small {
     margin: 0;
-    font-size: clamp(16px, 1.6vw, 20px);
+    font-size: clamp(0.9rem, 2.1vw, 1.25rem);
     letter-spacing: 0.6px;
+    color: rgba(255, 255, 255, 0.95);
 }
 
-.intro strong {
-    font-weight: 700;
+.intro-small strong {
+    font-weight: 700
 }
 
-/* Small roles row */
+/* role pills */
 .roles {
-    margin-top: 18px;
     display: flex;
-    gap: clamp(14px, 3.5vw, 36px);
-    font-size: clamp(12px, 1.2vw, 18px);
-    letter-spacing: 6px;
+    gap: 1.6rem;
+    margin-top: 0.25rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    opacity: 0.95;
+    font-size: 0.9rem
 }
 
-/* Main big title: DESIGNER */
+/* big designer text (left) */
 .title-designer {
-    margin-top: 18px;
-    font-family: 'Cormorant', serif;
+    margin: 0;
+    font-family: "Playfair Display", serif;
     font-weight: 400;
-    font-size: clamp(56px, 18vw, 160px);
+    letter-spacing: 4px;
+    color: var(--white);
+    font-size: clamp(48px, 11vw, 160px);
     line-height: 0.9;
-    letter-spacing: 2px;
-    color: white;
+    transform: translateY(8%);
 }
 
+/* right column (image + big Portfolio) */
+.hero-right {
+    flex: 1 1 55%;
+    position: relative;
+    background-image: url('images/hero-bg.png');
+    background-size: cover;
+    background-position: center right;
+    display: block;
+    min-width: 0;
+}
 
-/* ============================
-    RESPONSIVE BEHAVIOR
-============================ */
+/* overlay vertical band in middle (subtle) */
+.hero-right::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 28%;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.0) 100%);
+    pointer-events: none;
+}
 
-@media (max-width: 900px) {
-    .hero::before {
-        width: 48%;
-        background: linear-gradient(90deg, rgba(57, 11, 11, 1) 0%, rgba(216, 56, 56, 0.9) 48%);
+/* Portfolio big title in right column */
+.title-portfolio {
+    position: absolute;
+    right: 6%;
+    top: 6%;
+    margin: 0;
+    font-family: "Playfair Display", serif;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.95);
+    text-transform: none;
+    /* size responsive using vw and clamp */
+    font-size: clamp(80px, 18vw, 360px);
+    line-height: 0.85;
+    transform: translateX(6%);
+    pointer-events: none;
+    mix-blend-mode: normal;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* make sure hero content doesn't repeat or overflow */
+.hero * {
+    box-sizing: border-box
+}
+
+/* ------------------------------
+   Responsive tweaks
+   ------------------------------ */
+@media (max-width: 1000px) {
+    .hero-left {
+        flex-basis: 48%
     }
 
-    .hero-img {
-        width: 55%;
-        right: -5%;
+    .hero-right::before {
+        width: 32%
     }
 
-    .hero-content {
-        width: 60%;
-    }
-
-    .bg-title {
-        right: 6%;
-        font-size: clamp(36px, 16vw, 120px);
+    .title-portfolio {
+        right: 3%;
+        font-size: clamp(64px, 20vw, 240px);
     }
 }
 
-@media (max-width: 480px) {
-
-    /* Mobile: hide the background image */
-    .hero-img {
-        display: none;
+@media (max-width: 700px) {
+    .hero {
+        flex-direction: column;
     }
 
-    .hero::before {
-        display: none;
-    }
-
-    .bg-title {
-        display: none;
-    }
-
-    .hero-content {
+    .hero-left {
+        flex: 0 0 auto;
         width: 100%;
-        padding: 14vw 6vw;
+        padding: 3rem 2rem;
+    }
+
+    .hero-right {
+        height: 60vh;
+        background-position: center center;
     }
 
     .title-designer {
-        font-size: clamp(32px, 12vw, 60px);
+        font-size: clamp(36px, 10vw, 72px);
+        margin-top: 1rem
     }
+
+    .title-portfolio {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 48px;
+        opacity: 0.9
+    }
+
+    .roles {
+        gap: 1rem
+    }
+
+    .site-nav {
+        display: none
+    }
+}
+
+/* small rest sections style */
+.page-section {
+    padding: 4rem 6rem;
+    background: transparent;
+    color: var(--white)
+}
+
+.page-section h3 {
+    margin: 0 0 1rem 0
 }
