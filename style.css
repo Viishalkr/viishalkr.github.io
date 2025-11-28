@@ -1,227 +1,182 @@
-/* ------------------------------
-   Reset + base
-   ------------------------------ */
-:root {
-    --bg: #0e2a2a;
-    --accent: #d94444;
-    --white: #fff;
-}
-
+/* Reset & globals */
 * {
-    box-sizing: border-box
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html,
 body {
-    height: 100%
+    height: 100%;
 }
 
 body {
-    margin: 0;
     font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: var(--bg);
-    color: var(--white);
+    background: #0e2a2a;
+    /* fallback */
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ------------------------------
-   Header
-   ------------------------------ */
+/* Utility container */
+.container {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+}
+
+/* Header */
 .site-header {
     position: fixed;
-    top: 0;
     left: 0;
     right: 0;
+    top: 0;
+    z-index: 50;
+    background: rgba(8, 30, 30, 0.0);
+}
+
+.header-inner {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    z-index: 30;
-    pointer-events: auto;
-    background: transparent;
+    justify-content: space-between;
+    padding: 22px 0;
 }
 
 .brand {
-    font-weight: 600
+    font-weight: 700;
+    font-family: "Poppins";
+    letter-spacing: 0.5px;
 }
 
 .site-nav a {
-    color: rgba(255, 255, 255, 0.95);
+    color: #fff;
     text-decoration: none;
-    margin-left: 1.25rem;
+    margin-left: 22px;
     font-size: 0.95rem;
+    opacity: 0.95;
 }
 
-/* ------------------------------
-   Hero layout
-   ------------------------------ */
+/* HERO split layout */
 .hero {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 80px);
+    align-items: center;
+    padding-top: 80px;
+    /* allow space for fixed header */
     overflow: hidden;
-    position: relative;
 }
 
-/* left column (text) */
+/* Left column (content) */
 .hero-left {
-    flex: 0 0 45%;
-    padding: clamp(3rem, 6vw, 6rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1.25rem;
-    z-index: 20;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.15) 100%);
+    padding: 60px 6%;
+    max-width: 900px;
 }
 
-/* small intro text */
-.intro-small {
-    margin: 0;
-    font-size: clamp(0.9rem, 2.1vw, 1.25rem);
-    letter-spacing: 0.6px;
-    color: rgba(255, 255, 255, 0.95);
+.small-intro {
+    font-size: 1.15rem;
+    margin-bottom: 18px;
+    color: #f7f7f7;
+    opacity: 0.95;
 }
 
-.intro-small strong {
-    font-weight: 700
+.small-intro strong {
+    font-weight: 700;
+    letter-spacing: .6px;
 }
 
-/* role pills */
 .roles {
     display: flex;
-    gap: 1.6rem;
-    margin-top: 0.25rem;
-    color: rgba(255, 255, 255, 0.85);
-    font-weight: 600;
-    letter-spacing: 4px;
+    gap: 26px;
+    margin-bottom: 36px;
+    font-size: 0.95rem;
+    letter-spacing: 7px;
     text-transform: uppercase;
-    font-size: 0.9rem
+    color: rgba(255, 255, 255, 0.9);
 }
 
-/* big designer text (left) */
+/* Designer title - large and responsive */
 .title-designer {
-    margin: 0;
     font-family: "Playfair Display", serif;
-    font-weight: 400;
-    letter-spacing: 4px;
-    color: var(--white);
-    font-size: clamp(48px, 11vw, 160px);
+    font-weight: 700;
+    color: #fff;
     line-height: 0.9;
-    transform: translateY(8%);
+    margin-top: 10px;
+
+    /* responsive scaling to fill left column */
+    font-size: clamp(90px, 18vw, 260px);
+    letter-spacing: 3px;
+    margin-bottom: 0;
+    transform-origin: left center;
 }
 
-/* right column (image + big Portfolio) */
+/* Right column uses background-image for perfect cover */
 .hero-right {
-    flex: 1 1 55%;
-    position: relative;
-    background-image: url('images/hero-bg.png');
+    min-height: 70vh;
+    background-image: url("images/hero-bg.png");
     background-size: cover;
-    background-position: center right;
-    display: block;
-    min-width: 0;
+    background-position: right center;
+    background-repeat: no-repeat;
+    position: relative;
+    /* subtle overlay to match red tone */
+    box-shadow: inset -200px 0 200px rgba(0, 0, 0, 0.45);
 }
 
-/* overlay vertical band in middle (subtle) */
-.hero-right::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 28%;
-    top: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.0) 100%);
-    pointer-events: none;
-}
-
-/* Portfolio big title in right column */
-.title-portfolio {
-    position: absolute;
-    right: 6%;
-    top: 6%;
-    margin: 0;
-    font-family: "Playfair Display", serif;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.95);
-    text-transform: none;
-    /* size responsive using vw and clamp */
-    font-size: clamp(80px, 18vw, 360px);
-    line-height: 0.85;
-    transform: translateX(6%);
-    pointer-events: none;
-    mix-blend-mode: normal;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-    z-index: 10;
-}
-
-/* make sure hero content doesn't repeat or overflow */
-.hero * {
-    box-sizing: border-box
-}
-
-/* ------------------------------
-   Responsive tweaks
-   ------------------------------ */
-@media (max-width: 1000px) {
-    .hero-left {
-        flex-basis: 48%
-    }
-
-    .hero-right::before {
-        width: 32%
-    }
-
-    .title-portfolio {
-        right: 3%;
-        font-size: clamp(64px, 20vw, 240px);
-    }
-}
-
-@media (max-width: 700px) {
+/* Make sure large heading doesn't overflow mobile */
+@media (max-width: 900px) {
     .hero {
-        flex-direction: column;
-    }
-
-    .hero-left {
-        flex: 0 0 auto;
-        width: 100%;
-        padding: 3rem 2rem;
+        grid-template-columns: 1fr;
+        padding-top: 72px;
     }
 
     .hero-right {
-        height: 60vh;
-        background-position: center center;
+        order: -1;
+        height: 45vh;
+        background-position: center;
+        box-shadow: none;
+    }
+
+    .hero-left {
+        padding: 40px 6%;
     }
 
     .title-designer {
-        font-size: clamp(36px, 10vw, 72px);
-        margin-top: 1rem
-    }
-
-    .title-portfolio {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 48px;
-        opacity: 0.9
+        font-size: clamp(48px, 14vw, 120px);
+        text-align: center;
     }
 
     .roles {
-        gap: 1rem
+        justify-content: center;
+    }
+
+    .small-intro {
+        text-align: center;
     }
 
     .site-nav {
-        display: none
+        display: none;
     }
+
+    /* keep header simple on small devices */
 }
 
-/* small rest sections style */
+/* Page sections */
 .page-section {
-    padding: 4rem 6rem;
+    padding: 80px 6%;
+    color: #e9e9e9;
     background: transparent;
-    color: var(--white)
 }
 
-.page-section h3 {
-    margin: 0 0 1rem 0
+.page-section h2 {
+    margin-bottom: 12px;
+    font-family: "Playfair Display", serif;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+/* Optional: tune image container for very large screens */
+@media (min-width: 1600px) {
+    .title-designer {
+        font-size: clamp(140px, 13vw, 320px);
+    }
 }
