@@ -1,4 +1,4 @@
-/* Reset & globals */
+/* ========== Reset & base ========== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -11,28 +11,27 @@ body {
 }
 
 body {
-    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     background: #0e2a2a;
-    /* fallback */
     color: #fff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Utility container */
+/* Container */
 .container {
-    width: min(1200px, 92%);
+    width: min(1300px, 92%);
     margin: 0 auto;
 }
 
 /* Header */
 .site-header {
     position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    top: 0;
-    z-index: 50;
-    background: rgba(8, 30, 30, 0.0);
+    z-index: 60;
+    background: linear-gradient(to bottom, rgba(8, 30, 30, 0.06), rgba(8, 30, 30, 0.0));
 }
 
 .header-inner {
@@ -44,47 +43,79 @@ body {
 
 .brand {
     font-weight: 700;
-    font-family: "Poppins";
-    letter-spacing: 0.5px;
+    font-size: 1.05rem;
+    letter-spacing: 0.4px;
 }
 
 .site-nav a {
     color: #fff;
     text-decoration: none;
-    margin-left: 22px;
+    margin-left: 24px;
     font-size: 0.95rem;
     opacity: 0.95;
 }
 
-/* HERO split layout */
+/* ========== HERO ========== */
 .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: calc(100vh - 80px);
-    align-items: center;
-    padding-top: 80px;
-    /* allow space for fixed header */
+    position: relative;
+    min-height: calc(100vh - 90px);
+    display: block;
     overflow: hidden;
+    padding-top: 80px;
+    /* room for fixed header */
 }
 
-/* Left column (content) */
+/* RIGHT: background image block (placed first so it is visually right) */
+.hero-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 55%;
+    background-image: url("images/hero-bg.png");
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    z-index: 10;
+    box-shadow: inset -140px 0 160px rgba(0, 0, 0, 0.45);
+}
+
+/* Overlay big "Portfolio" word (faint behind everything) */
+.hero-overlay {
+    position: absolute;
+    top: 8%;
+    left: 10%;
+    z-index: 20;
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    font-size: clamp(120px, 22vw, 360px);
+    color: rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+    transform: translateY(-6%);
+    letter-spacing: 2px;
+}
+
+/* LEFT content block */
 .hero-left {
-    padding: 60px 6%;
-    max-width: 900px;
+    position: relative;
+    z-index: 30;
+    max-width: 55%;
+    padding: 120px 5% 80px 6%;
 }
 
-.small-intro {
-    font-size: 1.15rem;
+/* intro / small */
+.intro.small {
+    font-size: 1.2rem;
     margin-bottom: 18px;
-    color: #f7f7f7;
     opacity: 0.95;
 }
 
-.small-intro strong {
+.intro.small strong {
     font-weight: 700;
     letter-spacing: .6px;
 }
 
+/* roles */
 .roles {
     display: flex;
     gap: 26px;
@@ -92,56 +123,72 @@ body {
     font-size: 0.95rem;
     letter-spacing: 7px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
 }
 
-/* Designer title - large and responsive */
+/* main title - Designer */
 .title-designer {
     font-family: "Playfair Display", serif;
     font-weight: 700;
+    margin: 0;
     color: #fff;
+    letter-spacing: 2px;
     line-height: 0.9;
-    margin-top: 10px;
 
-    /* responsive scaling to fill left column */
-    font-size: clamp(90px, 18vw, 260px);
-    letter-spacing: 3px;
-    margin-bottom: 0;
-    transform-origin: left center;
+    /* responsive big scale */
+    font-size: clamp(110px, 18vw, 320px);
+    margin-top: 0;
 }
 
-/* Right column uses background-image for perfect cover */
-.hero-right {
-    min-height: 70vh;
-    background-image: url("images/hero-bg.png");
-    background-size: cover;
-    background-position: right center;
-    background-repeat: no-repeat;
-    position: relative;
-    /* subtle overlay to match red tone */
-    box-shadow: inset -200px 0 200px rgba(0, 0, 0, 0.45);
+/* Page sections */
+.page-section {
+    padding: 80px 6%;
+    color: #ddd;
+    background: transparent;
 }
 
-/* Make sure large heading doesn't overflow mobile */
-@media (max-width: 900px) {
-    .hero {
-        grid-template-columns: 1fr;
-        padding-top: 72px;
-    }
+.page-section h2 {
+    font-family: "Playfair Display", serif;
+    margin-bottom: 12px;
+}
 
+/* ========== Responsive tweaks ========== */
+@media (max-width: 1100px) {
     .hero-right {
-        order: -1;
-        height: 45vh;
-        background-position: center;
-        box-shadow: none;
+        width: 60%;
     }
 
     .hero-left {
-        padding: 40px 6%;
+        max-width: 50%;
+        padding: 90px 4% 60px 5%;
+    }
+
+    .hero-overlay {
+        left: 6%;
+        font-size: clamp(90px, 18vw, 260px);
     }
 
     .title-designer {
-        font-size: clamp(48px, 14vw, 120px);
+        font-size: clamp(80px, 14vw, 220px);
+    }
+}
+
+@media (max-width: 900px) {
+    .hero-right {
+        position: relative;
+        width: 100%;
+        height: 48vh;
+        box-shadow: none;
+        background-position: center;
+    }
+
+    .hero-overlay {
+        display: none;
+    }
+
+    .hero-left {
+        max-width: 100%;
+        padding: 36px 6%;
         text-align: center;
     }
 
@@ -149,34 +196,26 @@ body {
         justify-content: center;
     }
 
-    .small-intro {
-        text-align: center;
+    .title-designer {
+        font-size: clamp(48px, 12vw, 120px);
     }
 
     .site-nav {
         display: none;
     }
 
-    /* keep header simple on small devices */
+    .site-header {
+        background: rgba(8, 30, 30, 0.02);
+    }
 }
 
-/* Page sections */
-.page-section {
-    padding: 80px 6%;
-    color: #e9e9e9;
-    background: transparent;
-}
+/* Extra large screens: keep thing proportional */
+@media (min-width: 1700px) {
+    .hero-left {
+        padding-left: 8%;
+    }
 
-.page-section h2 {
-    margin-bottom: 12px;
-    font-family: "Playfair Display", serif;
-    font-size: 1.8rem;
-    color: #fff;
-}
-
-/* Optional: tune image container for very large screens */
-@media (min-width: 1600px) {
     .title-designer {
-        font-size: clamp(140px, 13vw, 320px);
+        font-size: clamp(140px, 15vw, 380px);
     }
 }
