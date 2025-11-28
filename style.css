@@ -1,94 +1,172 @@
-/* GLOBAL */
-body {
+/* ============================
+    GLOBAL RESET
+============================ */
+* {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
-    font-family: 'Poppins', sans-serif;
-    background: #000;
-    color: white;
+    box-sizing: border-box;
 }
 
-/* HERO SECTION */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: #0e2a2a;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+
+/* ============================
+    HERO SECTION (Figma design)
+============================ */
+
 .hero {
     position: relative;
-    height: 100vh;
     width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
     overflow: hidden;
-    background: radial-gradient(circle at center, #d72c30, #5a0000);
 }
 
-/* Background Big Title */
-.bg-title {
+/* Overlay that hides the left text inside your image */
+.hero::before {
+    content: "";
     position: absolute;
-    top: 8%;
-    left: 5%;
-    font-size: 7rem;
-    font-family: 'Cormorant', serif;
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.1);
-    letter-spacing: 3px;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(57, 11, 11, 1) 0%, rgba(216, 56, 56, 0.85) 50%);
+    z-index: 2;
+    pointer-events: none;
 }
 
-/* Hero Image */
+/* Main hero photograph (right side) */
 .hero-img {
     position: absolute;
-    right: 0;
     top: 0;
+    right: 0;
+    width: 60%;
+    /* Only right part shows */
     height: 100%;
-    mix-blend-mode: screen;
-    opacity: 0.9;
+    object-fit: cover;
+    object-position: right center;
+    z-index: 1;
+    filter: saturate(0.95) contrast(0.95);
 }
 
-/* Content */
-.hero-content {
+/* Faint background word "Portfolio" */
+.bg-title {
     position: absolute;
-    bottom: 10%;
-    left: 5%;
+    top: 4%;
+    right: 6%;
+    font-family: 'Cormorant', serif;
+    color: rgba(255, 255, 255, 0.06);
+    font-weight: 300;
+    pointer-events: none;
+    z-index: 3;
+    font-size: clamp(48px, 14vw, 220px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+}
+
+/* ============================
+    LEFT CONTENT COLUMN
+============================ */
+
+.hero-content {
+    position: relative;
+    z-index: 4;
+    width: 45%;
+    padding: 10vh 6vw 6vh 6vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: #fff;
 }
 
 .intro {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
+    margin: 0;
+    font-size: clamp(16px, 1.6vw, 20px);
+    letter-spacing: 0.6px;
 }
 
-.intro span {
-    font-weight: 600;
+.intro strong {
+    font-weight: 700;
 }
 
-/* Roles List */
+/* Small roles row */
 .roles {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    opacity: 0.9;
+    margin-top: 18px;
+    display: flex;
+    gap: clamp(14px, 3.5vw, 36px);
+    font-size: clamp(12px, 1.2vw, 18px);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    opacity: 0.95;
 }
 
-.roles span {
-    margin-right: 15px;
-}
-
-/* DESIGNER Text */
+/* Main big title: DESIGNER */
 .title-designer {
-    margin-top: 20px;
-    font-size: 4.5rem;
-    font-weight: 600;
+    margin-top: 18px;
     font-family: 'Cormorant', serif;
-    letter-spacing: 4px;
+    font-weight: 400;
+    font-size: clamp(56px, 18vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 2px;
     color: white;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .bg-title {
-        font-size: 4rem;
-    }
 
-    .title-designer {
-        font-size: 3rem;
+/* ============================
+    RESPONSIVE BEHAVIOR
+============================ */
+
+@media (max-width: 900px) {
+    .hero::before {
+        width: 48%;
+        background: linear-gradient(90deg, rgba(57, 11, 11, 1) 0%, rgba(216, 56, 56, 0.9) 48%);
     }
 
     .hero-img {
+        width: 55%;
+        right: -5%;
+    }
+
+    .hero-content {
+        width: 60%;
+    }
+
+    .bg-title {
+        right: 6%;
+        font-size: clamp(36px, 16vw, 120px);
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* Mobile: hide the background image */
+    .hero-img {
+        display: none;
+    }
+
+    .hero::before {
+        display: none;
+    }
+
+    .bg-title {
+        display: none;
+    }
+
+    .hero-content {
         width: 100%;
-        object-fit: cover;
+        padding: 14vw 6vw;
+    }
+
+    .title-designer {
+        font-size: clamp(32px, 12vw, 60px);
     }
 }
