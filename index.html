@@ -1,41 +1,30 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vishal Kumar | Portfolio</title>
 
-    <!-- Google Fonts used in the Figma: Playfair Display (display title) + Poppins (UI text) -->
+    <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- Navigation (optional) -->
-    <header class="site-header">
-        <nav class="nav container">
-            <div class="brand">Vishal<span class="dot">.</span></div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <button class="menu-btn" aria-label="Open menu">☰</button>
-        </nav>
-    </header>
 
-    <!-- HERO -->
-    <section class="hero" id="home" aria-label="Hero">
-        <div class="hero-overlay" aria-hidden="true"></div>
+    <!-- HERO SECTION -->
+    <section class="hero">
 
-        <div class="hero-content container">
-            <h1 class="title-main">Portfolio</h1>
+        <img src="images/hero-bg.png" class="hero-img" alt="Vishal portrait">
 
-            <p class="intro">hii I'm <span class="name">VISHAL</span></p>
+        <h1 class="bg-title">Portfolio</h1>
+
+        <div class="hero-content">
+            <p class="intro">hi! I'm <span>VISHAL</span></p>
 
             <div class="roles">
                 <span>UI</span>
@@ -46,25 +35,8 @@
 
             <h2 class="title-designer">DESIGNER</h2>
         </div>
+
     </section>
-
-    <!-- Example sections below (keep for layout) -->
-    <main>
-        <section id="about" class="page-section container">
-            <h3>About</h3>
-            <p>Short about text — update as needed.</p>
-        </section>
-
-        <section id="projects" class="page-section container">
-            <h3>Projects</h3>
-            <p>Links to your work.</p>
-        </section>
-
-        <section id="contact" class="page-section container">
-            <h3>Contact</h3>
-            <p>Email: vishal@example.com</p>
-        </section>
-    </main>
 
     <script src="script.js"></script>
 </body>
