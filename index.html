@@ -1,162 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Vishal Kumar | Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Poppins:wght@300;500;700&display=swap"
+
+    <!-- Google Fonts used in the Figma: Playfair Display (display title) + Poppins (UI text) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-    <!-- Navbar -->
-    <header>
-        <nav>
-            <h1>Vishal Kumar</h1>
-            <ul>
+    <!-- Navigation (optional) -->
+    <header class="site-header">
+        <nav class="nav container">
+            <div class="brand">Vishal<span class="dot">.</span></div>
+            <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <button class="menu-btn" aria-label="Open menu">☰</button>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h2>Hello, I’m Vishal Kumar <span class="wave">👋</span></h2>
-        <p>Aspiring Developer | Videographer | Creative Thinker</p>
-        <a href="#projects" class="btn">See My Work</a>
-    </section>
+    <!-- HERO -->
+    <section class="hero" id="home" aria-label="Hero">
+        <div class="hero-overlay" aria-hidden="true"></div>
 
-    <!-- About -->
-    <section id="about">
-        <h2>About Me</h2>
-        <p>
-            I am a BSc Mathematics student at BIT Mesra with interests in coding,
-            design, and creativity. I love building projects, editing videos,
-            and exploring new technologies.
-        </p>
-    </section>
+        <div class="hero-content container">
+            <h1 class="title-main">Portfolio</h1>
 
-    <!-- Projects -->
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="project-grid">
-            <div class="project-card">🎬 Video Editing Projects</div>
-            <div class="project-card">💻 Coding Projects</div>
-            <div class="project-card">🎨 Poster Designs</div>
+            <p class="intro">hii I'm <span class="name">VISHAL</span></p>
+
+            <div class="roles">
+                <span>UI</span>
+                <span>UX</span>
+                <span>WEB</span>
+                <span>GRAPHIC</span>
+            </div>
+
+            <h2 class="title-designer">DESIGNER</h2>
         </div>
     </section>
 
-    <!-- Skills -->
-    <section id="skills" class="skills">
-        <h2>Skills</h2>
-        <div class="skill-grid">
-            <div class="skill">🎬 Premiere Pro</div>
-            <div class="skill">🖌 Photoshop</div>
-            <div class="skill">💻 Java / C++</div>
-            <div class="skill">🌐 HTML / CSS / JS</div>
-            <div class="skill">📸 Videography</div>
-            <div class="skill">🎭 Creative Direction</div>
-        </div>
-    </section>
+    <!-- Example sections below (keep for layout) -->
+    <main>
+        <section id="about" class="page-section container">
+            <h3>About</h3>
+            <p>Short about text — update as needed.</p>
+        </section>
 
-    <!-- Contact -->
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:vishal@example.com">vishal@example.com</a></p>
-        <p>LinkedIn: <a href="#" target="_blank">linkedin.com/in/vishal</a></p>
-    </section>
+        <section id="projects" class="page-section container">
+            <h3>Projects</h3>
+            <p>Links to your work.</p>
+        </section>
 
-    <footer>
-        <p>© 2025 Vishal Kumar. All Rights Reserved.</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-
-</html>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishal Kumar | Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Poppins:wght@300;500;700&display=swap"
-        rel="stylesheet">
-</head>
-
-<body>
-
-    <!-- Navbar -->
-    <header>
-        <nav>
-            <h1>Vishal Kumar</h1>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h2>Hello, I’m Vishal Kumar <span class="wave">👋</span></h2>
-        <p>Aspiring Developer | Videographer | Creative Thinker</p>
-        <a href="#projects" class="btn">See My Work</a>
-    </section>
-
-    <!-- About -->
-    <section id="about">
-        <h2>About Me</h2>
-        <p>
-            I am a BSc Mathematics student at BIT Mesra with interests in coding,
-            design, and creativity. I love building projects, editing videos,
-            and exploring new technologies.
-        </p>
-    </section>
-
-    <!-- Projects -->
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="project-grid">
-            <div class="project-card">🎬 Video Editing Projects</div>
-            <div class="project-card">💻 Coding Projects</div>
-            <div class="project-card">🎨 Poster Designs</div>
-        </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills" class="skills">
-        <h2>Skills</h2>
-        <div class="skill-grid">
-            <div class="skill">🎬 Premiere Pro</div>
-            <div class="skill">🖌 Photoshop</div>
-            <div class="skill">💻 Java / C++</div>
-            <div class="skill">🌐 HTML / CSS / JS</div>
-            <div class="skill">📸 Videography</div>
-            <div class="skill">🎭 Creative Direction</div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:vishal@example.com">vishal@example.com</a></p>
-        <p>LinkedIn: <a href="#" target="_blank">linkedin.com/in/vishal</a></p>
-    </section>
-
-    <footer>
-        <p>© 2025 Vishal Kumar. All Rights Reserved.</p>
-    </footer>
+        <section id="contact" class="page-section container">
+            <h3>Contact</h3>
+            <p>Email: vishal@example.com</p>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>

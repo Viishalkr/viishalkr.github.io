@@ -1,80 +1,38 @@
+// Small interactions:
+// 1) Toggle mobile nav (if you use it)
+// 2) Tiny wave animation placeholder (keeps earlier idea of 'wave' animation)
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Mobile nav toggle
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            // simple accessible toggle
+            menuBtn.setAttribute('aria-expanded', navLinks.style.display === 'flex');
+        });
+    }
 
-(() => {
-    'use strict';
+    // Example: simple subtle pulse on the "name" to attract attention
+    const nameSpan = document.querySelector('.intro .name');
+    if (nameSpan) {
+        let grow = true;
+        setInterval(() => {
+            nameSpan.style.transform = grow ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)';
+            nameSpan.style.transition = 'transform 420ms ease';
+            grow = !grow;
+        }, 1500);
+    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-
-        // 1) Wave animation (safe, single interval)
-        (function setupWaveAnimation() {
-            const waveEl = document.querySelector('.wave');
-            if (!waveEl) return;
-            if (!waveEl.dataset.waveInterval) {
-                const id = setInterval(() => {
-                    waveEl.classList.toggle('wave-animate');
-                }, 1000);
-                waveEl.dataset.waveInterval = String(id);
-            }
-        })();
-
-        // 2) Smooth scrolling for internal anchors
-        (function enableSmoothScroll() {
-            document.addEventListener('click', (ev) => {
-                const a = ev.target.closest('a[href^="#"]');
-                if (!a) return;
-                const href = a.getAttribute('href');
-                if (!href || href === '#') return;
-                const target = document.querySelector(href);
-                if (!target) return;
-                ev.preventDefault();
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function (e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                history.replaceState(null, '', href);
-            });
-        })();
-
-        // 3) Header class toggle on scroll
-        (function headerOnScroll() {
-            const header = document.querySelector('header');
-            if (!header) return;
-            const THRESH = 50;
-            const onScroll = () => {
-                header.classList.toggle('is-scrolled', window.scrollY > THRESH);
-            };
-            onScroll();
-            window.addEventListener('scroll', onScroll, { passive: true });
-        })();
-
-        // 4) Reveal-on-scroll (use .reveal and CSS .reveal.revealed)
-        (function revealOnScroll() {
-            const items = document.querySelectorAll('.reveal');
-            if (!items.length || !window.IntersectionObserver) return;
-            const io = new IntersectionObserver((entries, obs) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.add('revealed');
-                        obs.unobserve(e.target);
-                    }
-                });
-            }, { threshold: 0.15 });
-            items.forEach(el => io.observe(el));
-        })();
-
-        // 5) Optional: mobile nav toggle (requires .nav-toggle and .nav-menu)
-        (function mobileNavToggle() {
-            const toggle = document.querySelector('.nav-toggle');
-            const menu = document.querySelector('.nav-menu');
-            if (!toggle || !menu) return;
-            toggle.addEventListener('click', () => {
-                menu.classList.toggle('open');
-                toggle.classList.toggle('open');
-            });
-            menu.addEventListener('click', (ev) => {
-                const a = ev.target.closest('a[href^="#"]');
-                if (!a) return;
-                menu.classList.remove('open');
-                toggle.classList.remove('open');
-            });
-        })();
-
-    }); // DOMContentLoaded
-})();
+            }
+        });
+    });
+});
