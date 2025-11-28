@@ -1,67 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Vishal Kumar — Portfolio</title>
-
-    <!-- Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap"
-        rel="stylesheet">
-
-    <!-- Styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishal - Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <header class="site-header" role="banner">
-        <div class="container header-inner">
-            <div class="brand">Vishal.</div>
-            <nav class="site-nav" role="navigation" aria-label="Primary">
-                <a href="#about">About</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Contact</a>
-            </nav>
-        </div>
+
+    <header class="main-header">
+        <h1 class="header-overlay-text">Portfolio</h1>
     </header>
 
-    <section class="hero" id="home" aria-label="Hero section">
-        <!-- RIGHT: background image container -->
-        <div class="hero-right" aria-hidden="true"></div>
-
-        <!-- OVERLAY large faint "Portfolio" word -->
-        <div class="hero-overlay">Portfolio</div>
-
-        <!-- LEFT: content -->
-        <div class="hero-left container">
-            <p class="intro small">hii I'm <strong>VISHAL</strong></p>
-
-            <div class="roles">
-                <span>UI</span><span>UX</span><span>WEB</span><span>GRAPHIC</span>
+    <section class="hero-section">
+        <div class="hero-content">
+            <p class="greeting">hii i'm **VISHAL**</p>
+            <div class="designer-roles">
+                <span class="role">UI</span>
+                <span class="separator"></span>
+                <span class="role">UX</span>
+                <span class="separator"></span>
+                <span class="role">WEB</span>
+                <span class="separator"></span>
+                <span class="role">GRAPHIC</span>
             </div>
+            <h2 class="designer-title">DESIGNER</h2>
+        </div>
 
-            <h1 class="title-designer">DESIGNER</h1>
+        <div class="hero-background">
+            <img id="heroImage" src="hero-bg.jpg" alt="Vishal holding a camera - Portfolio Background">
+            <div class="overlay"></div>
         </div>
     </section>
-
-    <main>
-        <section id="about" class="page-section container">
-            <h2>About</h2>
-            <p>Short about text — update as needed.</p>
-        </section>
-
-        <section id="projects" class="page-section container">
-            <h2>Projects</h2>
-            <p>Links to your work.</p>
-        </section>
-
-        <section id="contact" class="page-section container">
-            <h2>Contact</h2>
-            <p>Email: kumarvishal1627@gmail.com</p>
-        </section>
-    </main>
 
     <script src="script.js"></script>
 </body>
