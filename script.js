@@ -1,3 +1,5 @@
+// Minimal script file (keeps page ready for future interactions)
+// Currently no dynamic behavior required; placeholder only.
 document.addEventListener('DOMContentLoaded', function () {
-    // no JS needed
+    // placeholder for future toggles/animations
 });
