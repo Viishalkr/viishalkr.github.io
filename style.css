@@ -1,193 +1,100 @@
-/* RESET */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-    width: 100%;
-    font-family: 'Manrope', sans-serif;
-    background: #0e0e0e;
-    color: #ffffff;
-    overflow-x: hidden;
+  background: black;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* NAV */
-.nav {
-    position: fixed;
-    top: 30px;
-    right: 60px;
-    z-index: 100;
+/* DESKTOP NAVBAR */
+.navbar {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  display: flex;
+  gap: 20px;
+  z-index: 100;
 }
 
-.nav nav {
-    display: flex;
-    gap: 40px;
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 2px;
+  opacity: 0.7;
 }
 
-.nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 14px;
-    letter-spacing: 2px;
+.navbar a:hover {
+  opacity: 1;
 }
 
 /* HERO */
 .hero {
-    min-height: 100vh;
-    background:
-        linear-gradient(to bottom,
-            rgba(120, 0, 0, 0.95),
-            rgba(80, 0, 0, 0.95)),
-        url("images/hero-bg.png");
-    background-size: cover;
-    background-position: center right;
-    display: flex;
-    align-items: center;
-    padding-left: 120px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.hero-content {
-    max-width: 900px;
+.hero h1 {
+  font-size: 64px;
+  letter-spacing: 4px;
 }
 
-.intro {
-    font-size: 32px;
-    margin-bottom: 20px;
+.hero p {
+  margin-top: 10px;
+  font-size: 16px;
+  letter-spacing: 4px;
+  opacity: 0.8;
 }
 
-.intro span {
-    font-weight: 600;
+/* PAGES */
+.page {
+  min-height: 100vh;
+  padding: 120px 10%;
 }
 
-.roles {
-    display: flex;
-    gap: 32px;
-    font-size: 14px;
-    letter-spacing: 6px;
-    margin-bottom: 30px;
+.page h1 {
+  font-size: 48px;
+  letter-spacing: 4px;
+  margin-bottom: 30px;
 }
 
-.title-designer {
-    font-family: 'Kalnia', serif;
-    font-size: 200px;
-    font-weight: 400;
-    line-height: 1;
+.page p {
+  font-size: 18px;
+  opacity: 0.85;
 }
 
-/* SECTION BASE */
-section {
-    padding: 140px 120px;
+.work-item {
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
-/* SECTION TITLES */
-.section-title {
-    font-family: 'Kalnia', serif;
-    font-size: 120px;
-    opacity: 0.12;
-    margin-bottom: 40px;
+/* MOBILE MENU */
+.mobile-header,
+.mobile-menu {
+  display: none;
 }
 
-/* ABOUT – MATCH HERO BACKGROUND */
-.about {
-    background: linear-gradient(to bottom,
-            rgba(80, 0, 0, 0.95),
-            rgba(20, 0, 0, 0.98));
-}
-
-.about-text {
-    max-width: 700px;
-    font-size: 18px;
-    line-height: 1.8;
-}
-
-/* PROJECTS – CONTINUE DARK RED */
-.projects {
-    background: linear-gradient(to bottom,
-            rgba(20, 0, 0, 0.98),
-            #0e0e0e);
-}
-
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-}
-
-.project-card {
-    height: 280px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    letter-spacing: 2px;
-}
-
-/* CONTACT */
-.contact {
-    background: #0e0e0e;
-}
-
-.contact-text {
-    font-size: 20px;
-    letter-spacing: 1px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-    .title-designer {
-        font-size: 150px;
-    }
-
-    .section-title {
-        font-size: 90px;
-    }
-
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .hero {
-        padding-left: 30px;
-    }
-
-    section {
-        padding: 100px 30px;
-    }
-
-    .title-designer {
-        font-size: 80px;
-    }
-
-    .section-title {
-        font-size: 60px;
-    }
-}/* =========================
-   MOBILE OPTIMIZATION
-   ========================= */
-
+/* MOBILE VIEW */
 @media (max-width: 768px) {
 
-  body {
-    overflow-x: hidden;
-  }
-
-  /* HERO TEXT */
-  .hero,
-  .landing,
-  .center-text {
-    text-align: center;
-    padding: 0 20px;
+  .navbar {
+    display: none;
   }
 
   .hero h1 {
     font-size: 42px;
-    line-height: 1.2;
   }
 
   .hero p {
@@ -195,34 +102,54 @@ section {
     letter-spacing: 2px;
   }
 
-  /* NAVBAR */
-  .navbar {
-    top: 20px;
-    right: 20px;
-    gap: 12px;
-  }
-
-  .navbar a {
-    font-size: 12px;
-    letter-spacing: 1px;
-  }
-
-  /* PAGE SECTIONS */
   .page {
-    padding: 100px 20px;
+    padding: 140px 20px;
   }
 
-  .page h1 {
-    font-size: 32px;
+  .mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0 20px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 999;
   }
 
-  /* WORK LIST */
-  .work-item {
-    font-size: 16px;
+  .mobile-header .logo {
+    font-size: 14px;
+    letter-spacing: 3px;
   }
 
-  /* SERVICES */
-  .services li {
-    font-size: 16px;
+  .menu-toggle {
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+    background: black;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    z-index: 998;
+  }
+
+  .mobile-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    letter-spacing: 3px;
   }
 }
