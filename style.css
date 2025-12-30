@@ -96,7 +96,8 @@ body {
 /* DESIGNER text */
 .title-designer {
     font-size: clamp(90px, 12vw, 180px);
-    font-weight: 400;
+    font-size: clamp(110px, 15vw, 220px);
+    font-weight: 700;
     letter-spacing: 6px;
     line-height: 1;
 }
