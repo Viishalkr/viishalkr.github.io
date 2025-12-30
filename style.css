@@ -1,4 +1,6 @@
-/* RESET */
+/* =======================
+   RESET
+======================= */
 * {
     margin: 0;
     padding: 0;
@@ -9,107 +11,163 @@ html,
 body {
     width: 100%;
     height: 100%;
-    font-family: "Raleway", sans-serif;
+    scroll-behavior: smooth;
     overflow-x: hidden;
+    font-family: "Raleway", sans-serif;
+    background: #000;
+    color: #fff;
 }
 
-/* NAVBAR */
+/* =======================
+   NAVBAR
+======================= */
 .nav {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 20px 60px;
+    padding: 24px 64px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-end;
     z-index: 100;
 }
 
-.nav .logo {
+.nav a {
     color: #fff;
-    font-size: 18px;
-}
-
-.nav nav a {
-    color: #fff;
-    margin-left: 30px;
     text-decoration: none;
+    margin-left: 32px;
     font-size: 14px;
+    letter-spacing: 1px;
 }
 
-/* HERO */
+/* =======================
+   HERO SECTION
+======================= */
 .hero {
     width: 100%;
-    height: 100vh;
-    background: url("images/hero-bg.png") center center / cover no-repeat;
+    min-height: 1024px;
+    background: url("images/hero-bg.png") center / cover no-repeat;
     position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 120px;
 }
 
+/* Dark red overlay */
 .hero::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right,
-            rgba(120, 0, 0, 0.9),
-            rgba(180, 0, 0, 0.6),
-            rgba(0, 0, 0, 0.9));
+    background: linear-gradient(90deg,
+            rgba(150, 0, 0, 0.95) 0%,
+            rgba(150, 0, 0, 0.9) 45%,
+            rgba(0, 0, 0, 0.9) 100%);
+    z-index: 1;
 }
 
+/* =======================
+   HERO CONTENT
+======================= */
 .hero-content {
-    position: absolute;
+    position: relative;
     z-index: 2;
-    left: 8%;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
+    max-width: 900px;
 }
 
-/* TEXT */
+/* Intro text */
 .intro {
-    font-size: 22px;
+    font-size: 16px;
+    letter-spacing: 2px;
     margin-bottom: 14px;
 }
 
+.intro span {
+    font-weight: 700;
+}
+
+/* Roles row */
 .roles {
+    display: flex;
+    gap: 28px;
     font-size: 14px;
-    letter-spacing: 6px;
-    margin-bottom: 24px;
-}
-
-.designer {
-    font-size: clamp(80px, 12vw, 180px);
-    line-height: 1;
-    font-weight: 400;
-}
-
-/* SECTIONS */
-.page {
-    min-height: 100vh;
-    padding: 140px 8%;
-    background: #0e1f1f;
-    color: #fff;
-}
-
-.page h2 {
-    font-size: 48px;
+    letter-spacing: 4px;
     margin-bottom: 20px;
 }
 
-/* MOBILE */
+/* DESIGNER text */
+.title-designer {
+    font-size: clamp(90px, 12vw, 180px);
+    font-weight: 400;
+    letter-spacing: 6px;
+    line-height: 1;
+}
+
+/* =======================
+   PORTFOLIO TEXT (BACKGROUND)
+======================= */
+.bg-title {
+    position: absolute;
+    top: 140px;
+    left: 0;
+    font-family: "Kalnia", serif;
+    font-size: 320px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.08);
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* =======================
+   EXTRA SECTIONS (SCROLL ENABLE)
+======================= */
+section {
+    min-height: 100vh;
+    padding: 120px;
+    background: #000;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 1024px) {
+    .hero {
+        padding-left: 60px;
+    }
+
+    .title-designer {
+        font-size: 90px;
+    }
+}
+
 @media (max-width: 768px) {
-    .nav {
-        padding: 20px;
+    .hero {
+        padding: 120px 24px;
     }
 
-    .nav nav a {
-        margin-left: 15px;
+    .roles {
+        flex-wrap: wrap;
+        gap: 14px;
     }
 
-    .hero-content {
-        left: 6%;
+    .title-designer {
+        font-size: 64px;
     }
 
-    .designer {
-        font-size: clamp(56px, 14vw, 96px);
+    .bg-title {
+        font-size: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-designer {
+        font-size: 48px;
+    }
+
+    .intro {
+        font-size: 14px;
+    }
+
+    .roles {
+        font-size: 12px;
     }
 }
