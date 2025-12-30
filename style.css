@@ -71,3 +71,59 @@ body {
     color: #ffffff;
     line-height: 1;
 }
+
+/* ================= NAVIGATION ================= */
+.site-nav {
+    position: fixed;
+    top: 32px;
+    right: 48px;
+    z-index: 99;
+    display: flex;
+    gap: 32px;
+}
+
+.site-nav a {
+    text-decoration: none;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #ffffff;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+}
+
+.site-nav a:hover {
+    opacity: 1;
+}
+
+/* ================= GENERIC PAGE LAYOUT ================= */
+.page {
+    width: 1440px;
+    min-height: 1024px;
+    margin: 0 auto;
+    padding: 160px 64px 64px;
+    background: #071e1b;
+    color: #ffffff;
+}
+
+.page-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 96px;
+    font-weight: 300;
+    margin-bottom: 32px;
+}
+
+.page-text {
+    max-width: 720px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+/* Responsive safety */
+@media (max-width: 1500px) {
+    .page {
+        width: 100%;
+    }
+}
