@@ -8,17 +8,18 @@
 html,
 body {
     width: 100%;
-    height: 100%;
     font-family: 'Manrope', sans-serif;
+    background: #0e0e0e;
+    color: #fff;
     overflow-x: hidden;
 }
 
 /* NAV */
 .nav {
-    position: absolute;
+    position: fixed;
     top: 30px;
     right: 60px;
-    z-index: 10;
+    z-index: 100;
 }
 
 .nav nav {
@@ -27,8 +28,8 @@ body {
 }
 
 .nav a {
+    color: #fff;
     text-decoration: none;
-    color: #ffffff;
     font-size: 14px;
     letter-spacing: 2px;
 }
@@ -36,7 +37,6 @@ body {
 /* HERO */
 .hero {
     min-height: 100vh;
-    width: 100%;
     background:
         linear-gradient(to right, rgba(120, 0, 0, 0.85), rgba(120, 0, 0, 0.85)),
         url("images/hero-bg.png");
@@ -47,16 +47,12 @@ body {
     padding-left: 120px;
 }
 
-/* HERO CONTENT */
 .hero-content {
-    color: #ffffff;
     max-width: 900px;
 }
 
-/* INTRO */
 .intro {
     font-size: 32px;
-    letter-spacing: 1px;
     margin-bottom: 20px;
 }
 
@@ -64,7 +60,6 @@ body {
     font-weight: 600;
 }
 
-/* ROLES */
 .roles {
     display: flex;
     gap: 32px;
@@ -73,35 +68,67 @@ body {
     margin-bottom: 30px;
 }
 
-/* DESIGNER TITLE */
 .title-designer {
     font-family: 'Kalnia', serif;
     font-size: 200px;
     font-weight: 400;
-    letter-spacing: 6px;
     line-height: 1;
 }
 
-/* EXTRA SECTIONS FOR SCROLL */
-.section {
-    height: 100vh;
-    background: #0f0f0f;
+/* SECTION COMMON */
+section {
+    padding: 140px 120px;
+}
+
+.section-title {
+    font-family: 'Kalnia', serif;
+    font-size: 120px;
+    opacity: 0.15;
+    margin-bottom: 40px;
+}
+
+/* ABOUT */
+.about-text {
+    max-width: 700px;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+/* PROJECTS */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.project-card {
+    height: 280px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+/* CONTACT */
+.contact-text {
+    font-size: 20px;
+    letter-spacing: 1px;
 }
 
 /* RESPONSIVE */
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
     .title-designer {
-        font-size: 160px;
-    }
-}
-
-@media (max-width: 900px) {
-    .hero {
-        padding-left: 60px;
+        font-size: 150px;
     }
 
-    .title-designer {
-        font-size: 120px;
+    .section-title {
+        font-size: 90px;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -110,16 +137,15 @@ body {
         padding-left: 30px;
     }
 
-    .intro {
-        font-size: 20px;
-    }
-
-    .roles {
-        font-size: 12px;
-        gap: 16px;
+    section {
+        padding: 100px 30px;
     }
 
     .title-designer {
         font-size: 80px;
+    }
+
+    .section-title {
+        font-size: 60px;
     }
 }
