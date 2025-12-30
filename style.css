@@ -1,75 +1,90 @@
-/* RESET */
+/* ================= RESET ================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* FULL PAGE */
+/* ================= GLOBAL ================= */
+html {
+    scroll-behavior: smooth;
+}
+
 html,
 body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
+    min-height: 100%;
+    overflow-x: hidden;
+    /* allow vertical scroll */
+    overflow-y: auto;
+    font-family: 'Manrope', sans-serif;
+    background: #071e1b;
+    color: #ffffff;
 }
 
-/* HERO FRAME — EXACT FIGMA SIZE */
+/* ================= HERO (HOME PAGE) ================= */
+/* Uses exported Figma image exactly */
 .hero {
     position: relative;
     width: 1440px;
     height: 1024px;
+    margin: 0 auto;
 
     background-image: url("images/hero-bg.png");
     background-size: cover;
-    background-position: center;
+    background-position: right center;
     background-repeat: no-repeat;
+    overflow: hidden;
+}
 
-    margin: 0 auto;
+/* overlay for readability */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to left,
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.15),
+            rgba(0, 0, 0, 0.05));
+    pointer-events: none;
+}
+
+/* hero foreground text */
+.hero-content {
+    position: absolute;
+    left: 44px;
+    bottom: 96px;
+    max-width: 720px;
+    z-index: 2;
 }
 
 /* hii I'm VISHAL */
 .intro {
-    position: absolute;
-    left: 44px;
-    /* Figma X */
-    top: 746px;
-    /* Figma Y */
-
-    font-family: 'Manrope', sans-serif;
     font-size: 32px;
-    color: #ffffff;
-    letter-spacing: 5%;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
 }
 
 .intro span {
     font-weight: 600;
 }
 
-/* UI UX WEB GRAPHIC */
+/* roles row */
 .roles {
-    position: absolute;
-    left: 44px;
-    top: 790px;
-
-    font-family: 'Manrope', sans-serif;
+    display: flex;
+    gap: 28px;
     font-size: 29px;
-    letter-spacing: 18%;
-    color: #ffffff;
+    letter-spacing: 6px;
+    margin-bottom: 24px;
 }
 
-/* DESIGNER TEXT */
-.designer {
-    position: absolute;
-    left: 17px;
-    top: 897px;
-
+/* DESIGNER text */
+.title-designer {
     font-family: 'Raleway', sans-serif;
     font-size: 194px;
-    font-weight: 400;
-
-    color: #ffffff;
+    font-weight: 300;
     line-height: 1;
+    letter-spacing: 2px;
 }
 
 /* ================= NAVIGATION ================= */
@@ -84,7 +99,6 @@ body {
 
 .site-nav a {
     text-decoration: none;
-    font-family: 'Manrope', sans-serif;
     font-size: 14px;
     letter-spacing: 2px;
     color: #ffffff;
@@ -96,14 +110,12 @@ body {
     opacity: 1;
 }
 
-/* ================= GENERIC PAGE LAYOUT ================= */
+/* ================= INNER PAGES ================= */
 .page {
     width: 1440px;
-    min-height: 1024px;
     margin: 0 auto;
-    padding: 160px 64px 64px;
-    background: #071e1b;
-    color: #ffffff;
+    padding: 160px 64px 120px;
+    min-height: 1024px;
 }
 
 .page-title {
@@ -115,15 +127,55 @@ body {
 
 .page-text {
     max-width: 720px;
-    font-family: 'Manrope', sans-serif;
     font-size: 20px;
     line-height: 1.6;
     opacity: 0.9;
 }
 
-/* Responsive safety */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 1500px) {
+
+    .hero,
     .page {
         width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        background-position: center;
+    }
+
+    .hero-content {
+        left: 24px;
+        bottom: 48px;
+    }
+
+    .intro {
+        font-size: 20px;
+    }
+
+    .roles {
+        font-size: 14px;
+        gap: 14px;
+    }
+
+    .title-designer {
+        font-size: 96px;
+    }
+
+    .site-nav {
+        right: 24px;
+        gap: 18px;
+    }
+
+    .page {
+        padding: 120px 24px;
+    }
+
+    .page-title {
+        font-size: 56px;
     }
 }
