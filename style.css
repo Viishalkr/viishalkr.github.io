@@ -167,4 +167,62 @@ section {
     .section-title {
         font-size: 60px;
     }
+}/* =========================
+   MOBILE OPTIMIZATION
+   ========================= */
+
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* HERO TEXT */
+  .hero,
+  .landing,
+  .center-text {
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    top: 20px;
+    right: 20px;
+    gap: 12px;
+  }
+
+  .navbar a {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* PAGE SECTIONS */
+  .page {
+    padding: 100px 20px;
+  }
+
+  .page h1 {
+    font-size: 32px;
+  }
+
+  /* WORK LIST */
+  .work-item {
+    font-size: 16px;
+  }
+
+  /* SERVICES */
+  .services li {
+    font-size: 16px;
+  }
 }
