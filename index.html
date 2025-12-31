@@ -16,6 +16,7 @@
         <nav>
             <a href="#home">Home</a>
             <a href="#about">About</a>
+            <a href="#skills">Skills</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
         </nav>
@@ -24,7 +25,9 @@
     <!-- HERO -->
     <section class="hero" id="home">
         <div class="hero-content reveal">
-            <h1>HI, I’M <span>VISHAL</span></h1>
+            <h1>
+                HI, I’M <span id="typed-text"></span><span class="cursor">|</span>
+            </h1>
             <p>UI · UX · WEB · GRAPHIC DESIGNER</p>
         </div>
     </section>
@@ -34,17 +37,57 @@
         <h2>ABOUT ME</h2>
         <p>
             I’m Vishal, a creative designer focused on UI/UX, web design, and graphic design.
-            I enjoy creating clean visuals and meaningful digital experiences.
+            I enjoy crafting clean visuals and meaningful digital experiences.
         </p>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section skills reveal" id="skills">
+        <h2>SKILLS</h2>
+
+        <div class="skill">
+            <span>UI / UX Design</span>
+            <div class="bar">
+                <div class="progress" data-progress="90"></div>
+            </div>
+        </div>
+
+        <div class="skill">
+            <span>Web Design</span>
+            <div class="bar">
+                <div class="progress" data-progress="85"></div>
+            </div>
+        </div>
+
+        <div class="skill">
+            <span>Graphic Design</span>
+            <div class="bar">
+                <div class="progress" data-progress="80"></div>
+            </div>
+        </div>
+
+        <div class="skill">
+            <span>Video Editing</span>
+            <div class="bar">
+                <div class="progress" data-progress="88"></div>
+            </div>
+        </div>
     </section>
 
     <!-- PROJECTS -->
     <section class="section projects reveal" id="projects">
         <h2>PROJECTS</h2>
+
         <div class="project-grid">
-            <div class="project-card">Video Editing</div>
-            <div class="project-card">Poster Design</div>
-            <div class="project-card">Website Design</div>
+            <div class="project-card" data-img="assets/projects/project1.jpg">
+                Video Editing
+            </div>
+            <div class="project-card" data-img="assets/projects/project2.jpg">
+                Poster Design
+            </div>
+            <div class="project-card" data-img="assets/projects/project3.jpg">
+                Website Design
+            </div>
         </div>
     </section>
 
@@ -54,6 +97,12 @@
         <p>Email: yourmail@gmail.com</p>
         <p>Instagram · LinkedIn · GitHub</p>
     </section>
+
+    <!-- PROJECT MODAL -->
+    <div class="modal" id="projectModal">
+        <span class="close">&times;</span>
+        <img class="modal-img" id="modalImg">
+    </div>
 
     <script src="script.js"></script>
 </body>
