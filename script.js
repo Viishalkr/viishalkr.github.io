@@ -1,4 +1,16 @@
-function toggleMenu() {
-  const menu = document.getElementById("mobileMenu");
-  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-}// no JS needed for static hero
+const reveals = document.querySelectorAll(".reveal");
+
+function revealOnScroll() {
+    reveals.forEach((reveal) => {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveal.getBoundingClientRect().top;
+        const revealPoint = 100;
+
+        if (revealTop < windowHeight - revealPoint) {
+            reveal.classList.add("active");
+        }
+    });
+}
+
+window.addEventListener("scroll", revealOnScroll);
+revealOnScroll();

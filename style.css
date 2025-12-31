@@ -66,13 +66,17 @@ body {
     letter-spacing: 2px;
 }
 
+.hero-content span {
+    color: #fff;
+}
+
 .hero-content p {
     margin-top: 10px;
     font-size: 14px;
     letter-spacing: 3px;
 }
 
-/* COMMON SECTION */
+/* SECTIONS */
 .section {
     min-height: 100vh;
     padding: 120px 15%;
@@ -112,4 +116,55 @@ body {
 
 .project-card {
     width: 220px;
-    heigh
+    height: 140px;
+    border: 1px solid #ff4d4d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 2px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(255, 77, 77, 0.3);
+    background: #ff4d4d;
+    color: #000;
+}
+
+/* CONTACT */
+.contact {
+    background: #0d0d0d;
+}
+
+.contact p {
+    margin-top: 10px;
+    letter-spacing: 2px;
+}
+
+/* SCROLL ANIMATION */
+.reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.8s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+    }
+
+    .section {
+        padding: 100px 10%;
+    }
+}
