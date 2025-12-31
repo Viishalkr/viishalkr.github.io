@@ -10,8 +10,9 @@ html,
 body {
     width: 100%;
     height: 100%;
-    overflow-x: hidden;
     scroll-behavior: smooth;
+    background: #000;
+    color: #fff;
 }
 
 /* NAVBAR */
@@ -21,7 +22,6 @@ body {
     width: 100%;
     height: 70px;
     background: #000;
-    color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,57 +46,70 @@ body {
     color: #ff4d4d;
 }
 
-/* HERO SECTION */
+/* HERO */
 .hero {
     height: 100vh;
-    width: 100%;
     background: linear-gradient(rgba(120, 0, 0, 0.9),
-            rgba(60, 0, 0, 0.9)),
-        url("assets/images/bg.jpg");
-    /* optional background image */
-    background-size: cover;
-    background-position: center;
+            rgba(60, 0, 0, 0.9));
     display: flex;
     align-items: center;
     justify-content: center;
     padding-top: 70px;
-    /* navbar height */
 }
 
 .hero-content {
     text-align: center;
-    color: #fff;
 }
 
 .hero-content h1 {
     font-size: 42px;
-    font-weight: bold;
     letter-spacing: 2px;
-}
-
-.hero-content h1 span {
-    color: #ffffff;
 }
 
 .hero-content p {
     margin-top: 10px;
     font-size: 14px;
     letter-spacing: 3px;
+}
+
+/* COMMON SECTION */
+.section {
+    min-height: 100vh;
+    padding: 120px 15%;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+}
+
+/* ABOUT */
+.about {
+    background: #0d0d0d;
+}
+
+.about p {
+    max-width: 700px;
+    margin: auto;
+    line-height: 1.8;
     opacity: 0.9;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 0 20px;
-    }
-
-    .hero-content h1 {
-        font-size: 28px;
-    }
-
-    .hero-content p {
-        font-size: 12px;
-        letter-spacing: 2px;
-    }
+/* PROJECTS */
+.projects {
+    background: #140000;
 }
+
+.project-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.project-card {
+    width: 220px;
+    heigh
