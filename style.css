@@ -8,7 +8,6 @@
 
 :root {
     --primary-red: #c40000;
-    /* The Figma Red */
     --text-white: #ffffff;
     --bg-black: #050505;
 }
@@ -36,10 +35,11 @@ body {
     font-size: 24px;
     font-weight: 900;
     letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 nav a {
-    color: #fff;
+    color: #ccc;
     text-decoration: none;
     margin-left: 30px;
     font-weight: 500;
@@ -47,45 +47,52 @@ nav a {
     transition: 0.3s;
 }
 
-nav a:hover {
-    color: var(--primary-red);
+nav a:hover,
+nav a.active {
+    color: var(--text-white);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-/* HERO SECTION - THE RED DESIGN */
+/* HERO SECTION - FIXED BACKGROUND */
 .hero {
     height: 100vh;
     width: 100%;
     position: relative;
     display: flex;
-    align-items: flex-end;
-    /* Puts text at bottom */
-    padding: 0 50px 80px 50px;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Pushes content to bottom */
+    padding: 0 50px 50px 50px;
 
-    /* THE MAGIC: Red Gradient Overlay + Your Image */
+    /* THE FIX: Linear Gradient Red Overlay + Image */
     background:
-        linear-gradient(to right, rgba(160, 0, 0, 0.9) 0%, rgba(100, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.1) 100%),
-        url('assets/images/hero-bg.png');
-    /* Ensure this file exists! */
+        linear-gradient(to right, rgba(100, 0, 0, 0.4), rgba(50, 0, 0, 0.1)),
+        radial-gradient(circle at 70% 50%, rgba(200, 0, 0, 0.3) 0%, rgba(0, 0, 0, 1) 90%),
+        url('assets/images/hero-bg.jpg');
+    /* Make sure this path is correct */
+
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
-/* Watermark Text "Portfolio" */
+/* Watermark "Portfolio" */
 .watermark {
     position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 15vw;
-    /* Massive text */
-    font-weight: 900;
+    top: 5%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    /* Serif font for elegance */
+    font-size: 18vw;
+    line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.3);
-    /* Outline effect */
-    opacity: 0.5;
-    z-index: 1;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    opacity: 0.6;
     pointer-events: none;
+    z-index: 1;
 }
 
 .hero-content {
@@ -97,53 +104,42 @@ nav a:hover {
 .greeting {
     font-size: 1.2rem;
     font-weight: 300;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    text-transform: lowercase;
 }
 
 .roles {
     font-size: 0.9rem;
     font-weight: 400;
     letter-spacing: 3px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     color: #ddd;
+    text-transform: uppercase;
 }
 
 .roles span {
     margin-right: 15px;
 }
 
-/* The Giant "DESIGNER" Text */
+/* Main "DESIGNER" Text */
 .main-title {
-    font-size: 12vw;
-    /* Responsive huge text */
+    font-size: 13vw;
     line-height: 0.9;
     font-weight: 900;
     text-transform: uppercase;
     color: #fff;
+    margin-left: -5px;
+    /* Alignment tweak */
 }
 
-/* Cursor Blink */
-.cursor {
-    display: inline-block;
-    width: 10px;
-    background-color: var(--primary-red);
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    50% {
-        opacity: 0;
-    }
-}
-
-/* GENERIC SECTIONS */
+/* SECTIONS Generic */
 .section {
     padding: 100px 50px;
-    min-height: 60vh;
+    min-height: 50vh;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -158,6 +154,7 @@ p {
     font-size: 1.1rem;
     line-height: 1.6;
     color: #ccc;
+    max-width: 700px;
 }
 
 /* SKILLS */
@@ -173,18 +170,19 @@ p {
 
 .progress-bar {
     width: 100%;
-    height: 10px;
+    height: 8px;
     background: #222;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 .fill {
     height: 100%;
     background: var(--primary-red);
-    border-radius: 5px;
+    border-radius: 4px;
+    transition: width 1s ease-in-out;
 }
 
-/* PROJECTS */
+/* PROJECTS PAGE GRID */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -196,11 +194,11 @@ p {
     background-color: #111;
     border: 1px solid #333;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: 0.3s;
-    position: relative;
     overflow: hidden;
 }
 
@@ -212,7 +210,67 @@ p {
 .card-content {
     font-size: 1.5rem;
     font-weight: bold;
-    z-index: 2;
+    color: #fff;
+}
+
+.card-sub {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* PAGES (About, Projects, Contact) specific overrides */
+.page-wrap {
+    padding-top: 150px;
+}
+
+.page-title {
+    font-size: 4rem;
+    color: var(--primary-red);
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+/* BUTTONS */
+.cta-button {
+    display: inline-block;
+    padding: 15px 40px;
+    border: 1px solid var(--primary-red);
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+.cta-button:hover {
+    background: var(--primary-red);
+}
+
+/* CONTACT PAGE */
+.contact-box a {
+    color: #fff;
+    font-size: 1.5rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--primary-red);
+}
+
+.socials-large {
+    margin-top: 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.socials-large a {
+    color: #888;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.socials-large a:hover {
+    color: var(--primary-red);
 }
 
 /* MODAL */
@@ -224,14 +282,14 @@ p {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.95);
 }
 
 .modal-content {
     margin: auto;
     display: block;
     width: 80%;
-    max-width: 700px;
+    max-width: 800px;
     margin-top: 5%;
 }
 
@@ -239,17 +297,16 @@ p {
     position: absolute;
     top: 30px;
     right: 40px;
-    color: #f1f1f1;
+    color: #fff;
     font-size: 40px;
-    font-weight: bold;
     cursor: pointer;
 }
 
-/* SCROLL REVEAL */
+/* ANIMATION CLASSES */
 .reveal {
     opacity: 0;
-    transform: translateY(50px);
-    transition: all 1s ease;
+    transform: translateY(30px);
+    transition: 1s all ease;
 }
 
 .reveal.active {
@@ -259,120 +316,26 @@ p {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .main-title {
-        font-size: 15vw;
-    }
-
-    .watermark {
-        font-size: 20vw;
-        top: 15%;
-    }
-
     .navbar {
         padding: 20px;
     }
 
     .hero {
-        padding: 20px;
+        padding: 0 20px 50px 20px;
+    }
+
+    .main-title {
+        font-size: 18vw;
+    }
+
+    .watermark {
+        font-size: 25vw;
+        top: 10%;
     }
 
     nav {
         display: none;
     }
 
-    /* Mobile menu implementation needed here normally */
-}
-
-/* --- SUB-PAGE STYLES --- */
-
-/* Page Titles */
-.page-title {
-    font-size: 4rem;
-    color: var(--primary-red);
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-    font-weight: 900;
-}
-
-/* Add padding to top so navbar doesn't cover text */
-.about-page,
-.projects-page,
-.contact-page {
-    padding-top: 150px;
-}
-
-/* About Text */
-.about-content p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    margin-bottom: 20px;
-    max-width: 800px;
-}
-
-.highlight {
-    color: var(--primary-red);
-    font-weight: bold;
-}
-
-/* Contact Specifics */
-.contact-intro {
-    font-size: 1.5rem;
-    margin-bottom: 40px;
-    color: #fff;
-}
-
-.email-link {
-    font-size: 2rem;
-    color: #fff;
-    text-decoration: none;
-    border-bottom: 2px solid var(--primary-red);
-    transition: 0.3s;
-}
-
-.email-link:hover {
-    color: var(--primary-red);
-}
-
-.socials-large {
-    margin-top: 50px;
-    display: flex;
-    gap: 40px;
-}
-
-.socials-large a {
-    font-size: 1.5rem;
-    color: #888;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.socials-large a:hover {
-    color: var(--primary-red);
-    transform: scale(1.1);
-}
-
-/* CTA Button */
-.cta-button {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 15px 40px;
-    border: 2px solid var(--primary-red);
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: 0.3s;
-}
-
-.cta-button:hover {
-    background: var(--primary-red);
-    color: #000;
-}
-
-/* Card Subtitle */
-.card-sub {
-    font-size: 0.9rem;
-    color: #888;
-    font-weight: normal;
-    margin-top: 5px;
+    /* Simplified mobile handling */
 }
