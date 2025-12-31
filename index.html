@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishal | Designer Portfolio</title>
-    <meta name="description" content="Portfolio of Vishal - UI/UX, Web, and Graphic Designer.">
+    <title>Vishal | Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <header class="navbar">
         <div class="logo">VISHAL</div>
-        <nav aria-label="Main navigation">
+        <nav>
             <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
@@ -23,12 +23,17 @@
     </header>
 
     <section class="hero" id="home">
+        <div class="watermark">Portfolio</div>
+
         <div class="hero-content reveal">
-            <p class="hero-greeting">hii I'm VISHAL</p>
-            <div class="hero-sub">
-                <span>UI</span> <span>UX</span> <span>WEB</span> <span>GRAPHIC</span>
+            <p class="greeting">hii I'm VISHAL</p>
+            <div class="roles">
+                <span>UI</span>
+                <span>UX</span>
+                <span>WEB</span>
+                <span>GRAPHIC</span>
             </div>
-            <h1 class="hero-title">
+            <h1 class="main-title">
                 <span id="typed-text"></span><span class="cursor">|</span>
             </h1>
         </div>
@@ -45,29 +50,29 @@
     <section class="section skills reveal" id="skills">
         <div class="container">
             <h2>SKILLS</h2>
-            <div class="skill-list">
-                <div class="skill">
+            <div class="skill-grid">
+                <div class="skill-item">
                     <span>UI / UX Design</span>
-                    <div class="bar">
-                        <div class="progress" style="width: 90%;"></div>
+                    <div class="progress-bar">
+                        <div class="fill" style="width: 90%"></div>
                     </div>
                 </div>
-                <div class="skill">
+                <div class="skill-item">
                     <span>Web Design</span>
-                    <div class="bar">
-                        <div class="progress" style="width: 85%;"></div>
+                    <div class="progress-bar">
+                        <div class="fill" style="width: 85%"></div>
                     </div>
                 </div>
-                <div class="skill">
+                <div class="skill-item">
                     <span>Graphic Design</span>
-                    <div class="bar">
-                        <div class="progress" style="width: 80%;"></div>
+                    <div class="progress-bar">
+                        <div class="fill" style="width: 80%"></div>
                     </div>
                 </div>
-                <div class="skill">
+                <div class="skill-item">
                     <span>Video Editing</span>
-                    <div class="bar">
-                        <div class="progress" style="width: 88%;"></div>
+                    <div class="progress-bar">
+                        <div class="fill" style="width: 88%"></div>
                     </div>
                 </div>
             </div>
@@ -78,9 +83,15 @@
         <div class="container">
             <h2>PROJECTS</h2>
             <div class="project-grid">
-                <div class="project-card" data-img="assets/projects/project1.jpg.png">Video Editing</div>
-                <div class="project-card" data-img="assets/projects/project2.jpg.png">Poster Design</div>
-                <div class="project-card" data-img="assets/projects/project3.jpg.png">Website Design</div>
+                <div class="project-card" data-img="assets/projects/project1.jpg.png">
+                    <div class="card-content">Video Editing</div>
+                </div>
+                <div class="project-card" data-img="assets/projects/project2.jpg.png">
+                    <div class="card-content">Poster Design</div>
+                </div>
+                <div class="project-card" data-img="assets/projects/project3.jpg.png">
+                    <div class="card-content">Website Design</div>
+                </div>
             </div>
         </div>
     </section>
@@ -89,7 +100,7 @@
         <div class="container">
             <h2>CONTACT</h2>
             <p>Email: <a href="mailto:kumarvishal1627@gmail.com">kumarvishal1627@gmail.com</a></p>
-            <div class="social-links">
+            <div class="socials">
                 <a href="https://linkedin.com/in/viishal1627" target="_blank">LinkedIn</a>
                 <a href="https://github.com/viishal1627" target="_blank">GitHub</a>
                 <a href="https://instagram.com/viishal1627" target="_blank">Instagram</a>
@@ -97,9 +108,9 @@
         </div>
     </section>
 
-    <div class="modal" id="projectModal">
+    <div id="projectModal" class="modal">
         <span class="close">&times;</span>
-        <img class="modal-img" id="modalImg" alt="Project Detail">
+        <img class="modal-content" id="modalImg">
     </div>
 
     <script src="script.js"></script>
