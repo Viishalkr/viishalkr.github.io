@@ -3,168 +3,100 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 html,
 body {
     width: 100%;
-    font-family: 'Manrope', sans-serif;
-    background: #0e0e0e;
-    color: #ffffff;
+    height: 100%;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
-/* NAV */
-.nav {
+/* NAVBAR */
+.navbar {
     position: fixed;
-    top: 30px;
-    right: 60px;
-    z-index: 100;
-}
-
-.nav nav {
+    top: 0;
+    width: 100%;
+    height: 70px;
+    background: #000;
+    color: #fff;
     display: flex;
-    gap: 40px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+    z-index: 1000;
 }
 
-.nav a {
-    color: #ffffff;
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.navbar nav a {
+    color: #fff;
     text-decoration: none;
+    margin-left: 25px;
     font-size: 14px;
-    letter-spacing: 2px;
-}
-
-/* HERO */
-.hero {
-    min-height: 100vh;
-    background:
-        linear-gradient(to bottom,
-            rgba(120, 0, 0, 0.95),
-            rgba(80, 0, 0, 0.95)),
-        url("images/hero-bg.png");
-    background-size: cover;
-    background-position: center right;
-    display: flex;
-    align-items: center;
-    padding-left: 120px;
-}
-
-.hero-content {
-    max-width: 900px;
-}
-
-.intro {
-    font-size: 32px;
-    margin-bottom: 20px;
-}
-
-.intro span {
-    font-weight: 600;
-}
-
-.roles {
-    display: flex;
-    gap: 32px;
-    font-size: 14px;
-    letter-spacing: 6px;
-    margin-bottom: 30px;
-}
-
-.title-designer {
-    font-family: 'Kalnia', serif;
-    font-size: 200px;
-    font-weight: 400;
-    line-height: 1;
-}
-
-/* SECTION BASE */
-section {
-    padding: 140px 120px;
-}
-
-/* SECTION TITLES */
-.section-title {
-    font-family: 'Kalnia', serif;
-    font-size: 120px;
-    opacity: 0.12;
-    margin-bottom: 40px;
-}
-
-/* ABOUT – MATCH HERO BACKGROUND */
-.about {
-    background: linear-gradient(to bottom,
-            rgba(80, 0, 0, 0.95),
-            rgba(20, 0, 0, 0.98));
-}
-
-.about-text {
-    max-width: 700px;
-    font-size: 18px;
-    line-height: 1.8;
-}
-
-/* PROJECTS – CONTINUE DARK RED */
-.projects {
-    background: linear-gradient(to bottom,
-            rgba(20, 0, 0, 0.98),
-            #0e0e0e);
-}
-
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-}
-
-.project-card {
-    height: 280px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    letter-spacing: 2px;
-}
-
-/* CONTACT */
-.contact {
-    background: #0e0e0e;
-}
-
-.contact-text {
-    font-size: 20px;
     letter-spacing: 1px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-    .title-designer {
-        font-size: 150px;
-    }
-
-    .section-title {
-        font-size: 90px;
-    }
-
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
+.navbar nav a:hover {
+    color: #ff4d4d;
 }
 
-@media (max-width: 600px) {
-    .hero {
-        padding-left: 30px;
+/* HERO SECTION */
+.hero {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(rgba(120, 0, 0, 0.9),
+            rgba(60, 0, 0, 0.9)),
+        url("assets/images/bg.jpg");
+    /* optional background image */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 70px;
+    /* navbar height */
+}
+
+.hero-content {
+    text-align: center;
+    color: #fff;
+}
+
+.hero-content h1 {
+    font-size: 42px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hero-content h1 span {
+    color: #ffffff;
+}
+
+.hero-content p {
+    margin-top: 10px;
+    font-size: 14px;
+    letter-spacing: 3px;
+    opacity: 0.9;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 20px;
     }
 
-    section {
-        padding: 100px 30px;
+    .hero-content h1 {
+        font-size: 28px;
     }
 
-    .title-designer {
-        font-size: 80px;
-    }
-
-    .section-title {
-        font-size: 60px;
+    .hero-content p {
+        font-size: 12px;
+        letter-spacing: 2px;
     }
 }
