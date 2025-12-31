@@ -1,4 +1,6 @@
 /* RESET & FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Playfair+Display:ital,wght@1,400&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +9,8 @@
 }
 
 :root {
-    --primary-red: #c40000;
+    --primary-red: #d00000;
+    /* Brighter Figma Red */
     --text-white: #ffffff;
     --bg-black: #050505;
 }
@@ -23,12 +26,11 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 20px 50px;
+    padding: 25px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .logo {
@@ -41,7 +43,7 @@ body {
 nav a {
     color: #ccc;
     text-decoration: none;
-    margin-left: 30px;
+    margin-left: 40px;
     font-weight: 500;
     font-size: 14px;
     transition: 0.3s;
@@ -53,7 +55,7 @@ nav a.active {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-/* HERO SECTION - FIXED BACKGROUND */
+/* HERO SECTION - THE FIGMA FIX */
 .hero {
     height: 100vh;
     width: 100%;
@@ -62,84 +64,91 @@ nav a.active {
     flex-direction: column;
     justify-content: flex-end;
     /* Pushes content to bottom */
-    padding: 0 50px 50px 50px;
+    padding: 0 5% 40px 5%;
+    /* Adjusted padding */
 
-    /* THE FIX: Linear Gradient Red Overlay + Image */
-    background:
-        linear-gradient(to right, rgba(100, 0, 0, 0.4), rgba(50, 0, 0, 0.1)),
-        radial-gradient(circle at 70% 50%, rgba(200, 0, 0, 0.3) 0%, rgba(0, 0, 0, 1) 90%),
+    /* BACKGROUND FIX:
+       1. Red Gradient on the Left (Strong) fading to Transparent on Right
+       2. The Image anchored to the right to show the face */
+    background-image:
+        linear-gradient(90deg,
+            rgba(160, 0, 0, 0.95) 0%,
+            rgba(140, 0, 0, 0.8) 40%,
+            rgba(100, 0, 0, 0.2) 70%,
+            rgba(0, 0, 0, 0.1) 100%),
         url('assets/images/hero-bg.jpg');
-    /* Make sure this path is correct */
 
     background-size: cover;
-    background-position: center;
+    background-position: center right;
+    /* Keeps your face visible on the right */
     background-repeat: no-repeat;
     overflow: hidden;
 }
 
-/* Watermark "Portfolio" */
+/* Watermark "Portfolio" - The Big Outline Text */
 .watermark {
     position: absolute;
-    top: 5%;
-    left: 0;
-    width: 100%;
-    text-align: center;
+    top: -5%;
+    /* Moved up like Figma */
+    left: 2%;
     font-family: 'Playfair Display', serif;
-    /* Serif font for elegance */
-    font-size: 18vw;
+    font-style: italic;
+    font-size: 25vw;
+    /* Massive size */
     line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-    opacity: 0.6;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+    opacity: 1;
     pointer-events: none;
     z-index: 1;
 }
 
+/* Content Container */
 .hero-content {
     position: relative;
     z-index: 2;
-    margin-bottom: 20px;
+    width: 100%;
 }
 
 .greeting {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 300;
     margin-bottom: 5px;
     text-transform: lowercase;
+    opacity: 0.9;
 }
 
 .roles {
-    font-size: 0.9rem;
-    font-weight: 400;
-    letter-spacing: 3px;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 4px;
     margin-bottom: 0px;
-    color: #ddd;
+    color: #eee;
     text-transform: uppercase;
+    display: flex;
+    gap: 20px;
 }
 
-.roles span {
-    margin-right: 15px;
-}
-
-/* Main "DESIGNER" Text */
+/* "DESIGNER" Text - Massive & Bold */
 .main-title {
-    font-size: 13vw;
-    line-height: 0.9;
+    font-size: 14vw;
+    line-height: 0.85;
     font-weight: 900;
     text-transform: uppercase;
     color: #fff;
-    margin-left: -5px;
-    /* Alignment tweak */
+    margin-left: -8px;
+    /* Optical alignment */
+    letter-spacing: -2px;
 }
 
 /* SECTIONS Generic */
 .section {
-    padding: 100px 50px;
+    padding: 100px 5%;
     min-height: 50vh;
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -151,75 +160,13 @@ h2 {
 }
 
 p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     line-height: 1.6;
     color: #ccc;
-    max-width: 700px;
+    max-width: 800px;
 }
 
-/* SKILLS */
-.skill-item {
-    margin-bottom: 25px;
-}
-
-.skill-item span {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 700;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: #222;
-    border-radius: 4px;
-}
-
-.fill {
-    height: 100%;
-    background: var(--primary-red);
-    border-radius: 4px;
-    transition: width 1s ease-in-out;
-}
-
-/* PROJECTS PAGE GRID */
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.project-card {
-    height: 250px;
-    background-color: #111;
-    border: 1px solid #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.3s;
-    overflow: hidden;
-}
-
-.project-card:hover {
-    border-color: var(--primary-red);
-    transform: translateY(-5px);
-}
-
-.card-content {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-}
-
-.card-sub {
-    font-size: 0.9rem;
-    color: #888;
-    margin-top: 5px;
-}
-
-/* PAGES (About, Projects, Contact) specific overrides */
+/* PAGES & UTILS */
 .page-wrap {
     padding-top: 150px;
 }
@@ -232,41 +179,107 @@ p {
     font-weight: 900;
 }
 
-/* BUTTONS */
+/* SKILLS */
+.skill-item {
+    margin-bottom: 30px;
+}
+
+.skill-item span {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #222;
+    border-radius: 3px;
+}
+
+.fill {
+    height: 100%;
+    background: var(--primary-red);
+    border-radius: 3px;
+    transition: width 1s ease-in-out;
+}
+
+/* PROJECTS GRID */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    height: 280px;
+    background-color: #0a0a0a;
+    border: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.project-card:hover {
+    border-color: var(--primary-red);
+    transform: translateY(-5px);
+    background-color: #111;
+}
+
+.card-content {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.card-sub {
+    font-size: 1rem;
+    color: #888;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* BUTTONS & LINKS */
 .cta-button {
     display: inline-block;
-    padding: 15px 40px;
+    padding: 15px 50px;
     border: 1px solid var(--primary-red);
     color: #fff;
     text-decoration: none;
     font-weight: bold;
     text-transform: uppercase;
     transition: 0.3s;
-    margin-top: 20px;
+    margin-top: 30px;
+    background: transparent;
 }
 
 .cta-button:hover {
     background: var(--primary-red);
 }
 
-/* CONTACT PAGE */
 .contact-box a {
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     text-decoration: none;
-    border-bottom: 1px solid var(--primary-red);
+    border-bottom: 2px solid var(--primary-red);
 }
 
 .socials-large {
-    margin-top: 40px;
+    margin-top: 50px;
     display: flex;
-    gap: 30px;
+    gap: 40px;
 }
 
 .socials-large a {
     color: #888;
     text-decoration: none;
     font-size: 1.2rem;
+    transition: 0.3s;
 }
 
 .socials-large a:hover {
@@ -288,24 +301,25 @@ p {
 .modal-content {
     margin: auto;
     display: block;
-    width: 80%;
-    max-width: 800px;
-    margin-top: 5%;
+    width: auto;
+    max-width: 90%;
+    max-height: 90vh;
+    margin-top: 3%;
 }
 
 .close {
     position: absolute;
-    top: 30px;
+    top: 20px;
     right: 40px;
     color: #fff;
-    font-size: 40px;
+    font-size: 50px;
     cursor: pointer;
 }
 
-/* ANIMATION CLASSES */
+/* ANIMATION */
 .reveal {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
     transition: 1s all ease;
 }
 
@@ -314,28 +328,32 @@ p {
     transform: translateY(0);
 }
 
-/* RESPONSIVE */
+/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
     .navbar {
         padding: 20px;
     }
 
     .hero {
-        padding: 0 20px 50px 20px;
+        padding: 0 20px 40px 20px;
+        background-position: center;
     }
 
+    /* Center bg on mobile */
     .main-title {
         font-size: 18vw;
     }
 
     .watermark {
-        font-size: 25vw;
-        top: 10%;
+        font-size: 30vw;
+        top: 5%;
     }
 
     nav {
         display: none;
     }
 
-    /* Simplified mobile handling */
+    .hero-content {
+        margin-bottom: 60px;
+    }
 }
