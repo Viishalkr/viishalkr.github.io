@@ -282,3 +282,97 @@ p {
 
     /* Mobile menu implementation needed here normally */
 }
+
+/* --- SUB-PAGE STYLES --- */
+
+/* Page Titles */
+.page-title {
+    font-size: 4rem;
+    color: var(--primary-red);
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+/* Add padding to top so navbar doesn't cover text */
+.about-page,
+.projects-page,
+.contact-page {
+    padding-top: 150px;
+}
+
+/* About Text */
+.about-content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    max-width: 800px;
+}
+
+.highlight {
+    color: var(--primary-red);
+    font-weight: bold;
+}
+
+/* Contact Specifics */
+.contact-intro {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    color: #fff;
+}
+
+.email-link {
+    font-size: 2rem;
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 2px solid var(--primary-red);
+    transition: 0.3s;
+}
+
+.email-link:hover {
+    color: var(--primary-red);
+}
+
+.socials-large {
+    margin-top: 50px;
+    display: flex;
+    gap: 40px;
+}
+
+.socials-large a {
+    font-size: 1.5rem;
+    color: #888;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.socials-large a:hover {
+    color: var(--primary-red);
+    transform: scale(1.1);
+}
+
+/* CTA Button */
+.cta-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 40px;
+    border: 2px solid var(--primary-red);
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.cta-button:hover {
+    background: var(--primary-red);
+    color: #000;
+}
+
+/* Card Subtitle */
+.card-sub {
+    font-size: 0.9rem;
+    color: #888;
+    font-weight: normal;
+    margin-top: 5px;
+}

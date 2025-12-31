@@ -1,40 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects | Vishal</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<nav class="navbar">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="projects.html">Projects</a>
-  <a href="contact.html">Contact</a>
-</nav>
+  <header class="navbar">
+    <div class="logo">VISHAL</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-<div class="mobile-header">
-  <div class="logo">VISHAL</div>
-  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-</div>
+  <section class="section projects-page">
+    <div class="container">
+      <h1 class="page-title">MY WORK</h1>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html" onclick="toggleMenu()">Home</a>
-  <a href="about.html" onclick="toggleMenu()">About</a>
-  <a href="projects.html" onclick="toggleMenu()">Projects</a>
-  <a href="contact.html" onclick="toggleMenu()">Contact</a>
-</div>
+      <div class="project-grid">
+        <div class="project-card" data-img="assets/projects/project1.jpg.png">
+          <div class="card-content">Dramanite Animation</div>
+          <div class="card-sub">Motion Graphics</div>
+        </div>
 
-<section class="page">
-  <h1>PROJECTS</h1>
+        <div class="project-card" data-img="assets/projects/project2.jpg.png">
+          <div class="card-content">UV Starter Pack</div>
+          <div class="card-sub">Brand & Merch Design</div>
+        </div>
 
-  <div class="work-item">Portfolio Website</div>
-  <div class="work-item">College Event Posters</div>
-  <div class="work-item">Aftermovie Video Edit</div>
-</section>
+        <div class="project-card" data-img="assets/projects/project3.jpg.png">
+          <div class="card-content">Portfolio Website</div>
+          <div class="card-sub">Web Development</div>
+        </div>
 
-<script src="script.js"></script>
+        <div class="project-card" data-img="assets/projects/project1.jpg.png">
+          <div class="card-content">Social Media Posters</div>
+          <div class="card-sub">Graphic Design</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="projectModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImg">
+  </div>
+
+  <script src="script.js"></script>
 </body>
+
 </html>
