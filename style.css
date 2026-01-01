@@ -35,12 +35,15 @@ body {
     /* Pushes links to the right */
     align-items: center;
     z-index: 1000;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+    /* Subtle shadow for readability */
 }
 
+/* Standard Links (About, Skills, Contact) */
 nav a {
     color: #bbb;
     text-decoration: none;
-    margin-left: 40px;
+    margin-left: 30px;
     font-weight: 500;
     font-size: 14px;
     text-transform: uppercase;
@@ -52,6 +55,34 @@ nav a:hover,
 nav a.active {
     color: var(--text-white);
     text-shadow: 0 0 10px rgba(212, 0, 0, 0.8);
+}
+
+/* --- SPECIAL BOXED BUTTONS (Home & Projects) --- */
+.nav-btn {
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    /* Thin border */
+    border-radius: 6px;
+    /* Rounded corners */
+    padding: 8px 24px;
+    /* Spacing inside the box */
+    transition: all 0.3s ease;
+    margin-left: 30px;
+    /* Spacing between items */
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    /* Glass effect fill */
+    border-color: #ffffff;
+    /* Solid white border */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    /* White glow */
+    color: #fff;
+    /* Pure white text */
+    text-shadow: none;
+    /* Remove red glow from standard links */
+    transform: translateY(-2px);
 }
 
 /* HERO SECTION (Home Page Only) */
@@ -380,6 +411,7 @@ h2 {
 @media (max-width: 768px) {
     .navbar {
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .main-title {
@@ -397,5 +429,15 @@ h2 {
 
     .hero {
         background-position: center;
+    }
+
+    nav a {
+        margin-left: 15px;
+        font-size: 12px;
+    }
+
+    .nav-btn {
+        padding: 5px 15px;
+        margin-left: 15px;
     }
 }
