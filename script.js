@@ -1,4 +1,3 @@
-// SCROLL REVEAL ANIMATION
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     const windowHeight = window.innerHeight;
@@ -14,7 +13,6 @@ function revealOnScroll() {
 
 window.addEventListener('scroll', revealOnScroll);
 
-// PROJECT MODAL LOGIC
 const modal = document.getElementById("projectModal");
 if (modal) {
     const modalImg = document.getElementById("modalImg");
@@ -32,19 +30,9 @@ if (modal) {
     });
 
     if (span) {
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
+        span.onclick = () => modal.style.display = "none";
     }
-
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+    window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
 }
 
-// INITIALIZE
-window.onload = () => {
-    revealOnScroll();
-};
+window.onload = () => { revealOnScroll(); };

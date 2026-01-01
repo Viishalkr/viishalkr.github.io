@@ -12,18 +12,16 @@
     --primary-red: #d00000;
     --text-white: #ffffff;
     --bg-black: #050505;
+    --card-bg: #0a0a0a;
 }
 
 body {
     background-color: var(--bg-black);
-    /* Global red/black gradient background */
-    background: radial-gradient(circle at 20% 20%, rgba(120, 0, 0, 0.4) 0%, rgba(0, 0, 0, 1) 70%);
-    background-attachment: fixed;
     color: var(--text-white);
     overflow-x: hidden;
 }
 
-/* NAVBAR */
+/* NAVBAR - BOXED TABS */
 .navbar {
     position: fixed;
     top: 0;
@@ -31,48 +29,35 @@ body {
     padding: 25px 50px;
     display: flex;
     justify-content: flex-end;
-    /* Align to right */
     align-items: center;
     z-index: 1000;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
 }
 
-/* NAVIGATION LINKS - BOXED STYLE FOR ALL */
 nav a {
     color: #ccc;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1px;
-
-    /* THE BOX STYLING */
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    /* Thin border */
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 6px;
-    /* Rounded corners */
     padding: 10px 25px;
-    /* Spacing inside box */
-    margin-left: 20px;
-    /* Spacing between boxes */
+    margin-left: 15px;
     transition: all 0.3s ease;
 }
 
-/* HOVER & ACTIVE STATE */
 nav a:hover,
 nav a.active {
-    background-color: rgba(255, 255, 255, 0.15);
-    /* Glass fill */
+    background-color: rgba(255, 255, 255, 0.1);
     border-color: #ffffff;
-    /* Solid white border */
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    /* Glow */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
     color: #fff;
     transform: translateY(-2px);
-    /* Slight lift */
 }
 
-/* HERO SECTION (Home Only) */
+/* --- HERO SECTION (SEAMLESS FIX) --- */
 .hero {
     height: 100vh;
     width: 100%;
@@ -80,14 +65,15 @@ nav a.active {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 0 5% 60px 5%;
+    padding: 0 5% 80px 5%;
 
+    /* Background Layering for Seamless Blend */
     background-image:
-        linear-gradient(90deg,
-            rgba(160, 0, 0, 0.95) 0%,
-            rgba(140, 0, 0, 0.8) 40%,
-            rgba(80, 0, 0, 0.2) 70%,
-            rgba(0, 0, 0, 0.1) 100%),
+        /* 1. Fade to Black at the bottom (The Seamless Fix) */
+        linear-gradient(to bottom, transparent 70%, var(--bg-black) 100%),
+        /* 2. Red Gradient Overlay */
+        linear-gradient(90deg, rgba(160, 0, 0, 0.95) 0%, rgba(80, 0, 0, 0.2) 70%, rgba(0, 0, 0, 0.1) 100%),
+        /* 3. The Image */
         url('assets/images/hero-bg.jpg');
 
     background-size: cover;
@@ -96,7 +82,6 @@ nav a.active {
     overflow: hidden;
 }
 
-/* Watermark "Portfolio" */
 .watermark {
     position: absolute;
     top: -5%;
@@ -122,7 +107,6 @@ nav a.active {
     font-size: 1.5rem;
     font-weight: 300;
     margin-bottom: 5px;
-    text-transform: lowercase;
     opacity: 0.9;
 }
 
@@ -130,11 +114,8 @@ nav a.active {
     font-size: 1rem;
     font-weight: 500;
     letter-spacing: 4px;
-    margin-bottom: 0px;
     color: #eee;
     text-transform: uppercase;
-    display: flex;
-    gap: 20px;
 }
 
 .main-title {
@@ -147,10 +128,11 @@ nav a.active {
     letter-spacing: -2px;
 }
 
-/* SECTIONS */
+/* SECTIONS SHARED */
 .section {
-    padding: 120px 5%;
-    min-height: 50vh;
+    padding: 100px 5%;
+    /* Keep background black to match hero fade */
+    background-color: var(--bg-black);
 }
 
 .container {
@@ -158,73 +140,69 @@ nav a.active {
     margin: 0 auto;
 }
 
-/* Page Headers */
-.page-header {
-    margin-bottom: 60px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 20px;
-}
-
-h1.page-title {
-    font-size: 5rem;
-    color: var(--text-white);
-    text-transform: uppercase;
-    font-weight: 900;
-    letter-spacing: -2px;
-}
-
 h2 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--primary-red);
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     text-transform: uppercase;
+    font-weight: 800;
 }
 
-/* TEXT CONTENT */
+/* ABOUT TEXT */
 .text-content p {
-    font-size: 1.2rem;
-    line-height: 1.8;
+    font-size: 1.3rem;
+    line-height: 1.7;
     color: #ccc;
     max-width: 900px;
     margin-bottom: 25px;
 }
 
-.highlight-text {
-    color: var(--primary-red);
-    font-weight: bold;
-}
-
-/* SKILLS */
+/* --- NEW SKILLS DESIGN (GRID CARDS) --- */
 .skill-grid {
-    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
 }
 
-.skill-item {
-    margin-bottom: 30px;
+.skill-card {
+    background: var(--card-bg);
+    border: 1px solid #222;
+    padding: 30px;
+    border-radius: 12px;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
 }
 
-.skill-item span {
-    display: block;
-    margin-bottom: 10px;
+.skill-card:hover {
+    border-color: var(--primary-red);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(208, 0, 0, 0.1);
+}
+
+.skill-name {
+    font-size: 1.5rem;
     font-weight: 700;
-    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 15px;
+    display: block;
 }
 
-.progress-bar {
+.skill-bar-bg {
     width: 100%;
     height: 6px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #222;
     border-radius: 3px;
 }
 
-.fill {
+.skill-bar-fill {
     height: 100%;
     background: var(--primary-red);
     border-radius: 3px;
-    transition: width 1s ease-in-out;
+    box-shadow: 0 0 10px var(--primary-red);
 }
 
-/* PROJECTS CARD */
+/* PROJECTS GRID */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -233,15 +211,14 @@ h2 {
 
 .project-card {
     height: 350px;
-    background-color: #0a0a0a;
+    background-color: var(--card-bg);
     border: 1px solid #222;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 30px;
     cursor: pointer;
     transition: 0.4s;
-    position: relative;
 }
 
 .project-card:hover {
@@ -262,96 +239,24 @@ h2 {
     color: var(--primary-red);
     margin-bottom: 10px;
     text-transform: uppercase;
-    letter-spacing: 2px;
     font-weight: bold;
 }
 
-.card-desc {
-    font-size: 0.9rem;
-    color: #888;
-    margin-top: 10px;
-    opacity: 0;
-    transition: 0.3s;
-}
-
-.project-card:hover .card-desc {
-    opacity: 1;
-}
-
-/* ABOUT DETAILS GRID */
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin-top: 50px;
-}
-
-.detail-item h3 {
-    color: var(--text-white);
+/* CONTACT */
+.contact-info a {
     font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.detail-item p {
-    color: #888;
-    font-size: 1rem;
-}
-
-/* BUTTONS */
-.cta-button {
-    display: inline-block;
-    padding: 18px 50px;
-    background: transparent;
-    border: 1px solid var(--primary-red);
     color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    transition: 0.3s;
-    margin-top: 30px;
-}
-
-.cta-button:hover {
-    background: var(--primary-red);
-}
-
-/* CONTACT PAGE */
-.contact-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 50px;
-}
-
-.contact-info,
-.contact-form {
-    flex: 1;
-    min-width: 300px;
-}
-
-.info-label {
-    color: var(--primary-red);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.info-value {
-    color: #fff;
-    font-size: 1.5rem;
     text-decoration: none;
     border-bottom: 1px solid #333;
     transition: 0.3s;
 }
 
-.info-value:hover {
+.contact-info a:hover {
+    color: var(--primary-red);
     border-color: var(--primary-red);
 }
 
-/* MODAL */
+/* MODAL & ANIMATION */
 .modal {
     display: none;
     position: fixed;
@@ -360,7 +265,7 @@ h2 {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.95);
 }
 
 .modal-content {
@@ -381,11 +286,10 @@ h2 {
     cursor: pointer;
 }
 
-/* ANIMATION */
 .reveal {
     opacity: 0;
     transform: translateY(40px);
-    transition: 0.8s all ease-out;
+    transition: 0.8s ease-out;
 }
 
 .reveal.active {
@@ -393,7 +297,6 @@ h2 {
     transform: translateY(0);
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     .navbar {
         justify-content: center;
@@ -404,24 +307,11 @@ h2 {
 
     nav a {
         margin-left: 0;
-        padding: 8px 15px;
+        padding: 8px 12px;
         font-size: 11px;
     }
 
     .main-title {
         font-size: 18vw;
-    }
-
-    .watermark {
-        font-size: 30vw;
-        top: 5%;
-    }
-
-    .page-title {
-        font-size: 3.5rem;
-    }
-
-    .hero {
-        background-position: center;
     }
 }

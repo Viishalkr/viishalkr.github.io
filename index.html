@@ -15,11 +15,11 @@
 
     <header class="navbar">
         <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="about.html">About</a>
-            <a href="index.html#skills">Skills</a>
-            <a href="projects.html">Projects</a>
-            <a href="contact.html">Contact</a>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
         </nav>
     </header>
 
@@ -40,7 +40,10 @@
             <div class="text-content">
                 <p>I’m Vishal, a creative designer focused on UI/UX, web design, and graphic design. I enjoy crafting
                     clean visuals and meaningful digital experiences.</p>
-                <a href="about.html" class="cta-button">Read More</a>
+                <br>
+                <p>My journey started with a curiosity for how things look, which quickly evolved into an obsession with
+                    how things work. From crafting the visual identity of a brand to coding responsive websites, I
+                    thrive at the intersection of creativity and technology.</p>
             </div>
         </div>
     </section>
@@ -49,33 +52,83 @@
         <div class="container">
             <h2>SKILLS</h2>
             <div class="skill-grid">
-                <div class="skill-item">
-                    <span>UI / UX Design</span>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 90%"></div>
+                <div class="skill-card">
+                    <span class="skill-name">UI / UX Design</span>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" style="width: 90%;"></div>
                     </div>
                 </div>
-                <div class="skill-item">
-                    <span>Web Design</span>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 85%"></div>
+                <div class="skill-card">
+                    <span class="skill-name">Web Design</span>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" style="width: 85%;"></div>
                     </div>
                 </div>
-                <div class="skill-item">
-                    <span>Graphic Design</span>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 80%"></div>
+                <div class="skill-card">
+                    <span class="skill-name">Graphic Design</span>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" style="width: 80%;"></div>
                     </div>
                 </div>
-                <div class="skill-item">
-                    <span>Video Editing</span>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 88%"></div>
+                <div class="skill-card">
+                    <span class="skill-name">Video Editing</span>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" style="width: 88%;"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <span class="skill-name">Motion Graphics</span>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" style="width: 75%;"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <section class="section projects reveal" id="projects">
+        <div class="container">
+            <h2>PROJECTS</h2>
+            <div class="project-grid">
+                <div class="project-card" data-img="assets/projects/project1.jpg.png">
+                    <div class="card-sub">Animation</div>
+                    <div class="card-content">Dramanite</div>
+                </div>
+                <div class="project-card" data-img="assets/projects/project2.jpg.png">
+                    <div class="card-sub">Branding</div>
+                    <div class="card-content">UV Starter Pack</div>
+                </div>
+                <div class="project-card" data-img="assets/projects/project3.jpg.png">
+                    <div class="card-sub">Web Development</div>
+                    <div class="card-content">Portfolio V1</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section contact reveal" id="contact">
+        <div class="container">
+            <h2>CONTACT</h2>
+            <div class="contact-info">
+                <p style="color: #888; margin-bottom: 20px;">Feel free to reach out for collaborations.</p>
+                <a href="mailto:kumarvishal1627@gmail.com">kumarvishal1627@gmail.com</a>
+
+                <div style="margin-top: 40px; display: flex; gap: 30px;">
+                    <a href="https://linkedin.com/in/viishal1627" target="_blank"
+                        style="font-size: 1rem; border: none;">LinkedIn</a>
+                    <a href="https://github.com/viishal1627" target="_blank"
+                        style="font-size: 1rem; border: none;">GitHub</a>
+                    <a href="https://instagram.com/viishal1627" target="_blank"
+                        style="font-size: 1rem; border: none;">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="projectModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
 
     <script src="script.js"></script>
 </body>
