@@ -1,8 +1,8 @@
-// Reveal on Scroll
+// SCROLL REVEAL ANIMATION
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     const windowHeight = window.innerHeight;
-    const elementVisible = 50;
+    const elementVisible = 100;
 
     reveals.forEach((reveal) => {
         const elementTop = reveal.getBoundingClientRect().top;
@@ -14,7 +14,7 @@ function revealOnScroll() {
 
 window.addEventListener('scroll', revealOnScroll);
 
-// Modal Logic
+// PROJECT MODAL LOGIC
 const modal = document.getElementById("projectModal");
 if (modal) {
     const modalImg = document.getElementById("modalImg");
@@ -32,14 +32,19 @@ if (modal) {
     });
 
     if (span) {
-        span.onclick = () => modal.style.display = "none";
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
     }
 
-    window.onclick = (event) => {
-        if (event.target == modal) modal.style.display = "none";
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 }
 
+// INITIALIZE
 window.onload = () => {
     revealOnScroll();
-}
+};
