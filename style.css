@@ -15,11 +15,10 @@
 }
 
 body {
-    /* Global Background: Deep Red/Black Gradient for inner pages */
     background-color: var(--bg-black);
+    /* Global red/black gradient background */
     background: radial-gradient(circle at 20% 20%, rgba(120, 0, 0, 0.4) 0%, rgba(0, 0, 0, 1) 70%);
     background-attachment: fixed;
-    /* Keeps the gradient fixed while scrolling */
     color: var(--text-white);
     overflow-x: hidden;
 }
@@ -32,60 +31,48 @@ body {
     padding: 25px 50px;
     display: flex;
     justify-content: flex-end;
-    /* Pushes links to the right */
+    /* Align to right */
     align-items: center;
     z-index: 1000;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
-    /* Subtle shadow for readability */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
 }
 
-/* Standard Links (About, Skills, Contact) */
+/* NAVIGATION LINKS - BOXED STYLE FOR ALL */
 nav a {
-    color: #bbb;
+    color: #ccc;
     text-decoration: none;
-    margin-left: 30px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: 0.3s;
-}
 
-nav a:hover,
-nav a.active {
-    color: var(--text-white);
-    text-shadow: 0 0 10px rgba(212, 0, 0, 0.8);
-}
-
-/* --- SPECIAL BOXED BUTTONS (Home & Projects) --- */
-.nav-btn {
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    /* THE BOX STYLING */
+    border: 1px solid rgba(255, 255, 255, 0.5);
     /* Thin border */
     border-radius: 6px;
     /* Rounded corners */
-    padding: 8px 24px;
-    /* Spacing inside the box */
+    padding: 10px 25px;
+    /* Spacing inside box */
+    margin-left: 20px;
+    /* Spacing between boxes */
     transition: all 0.3s ease;
-    margin-left: 30px;
-    /* Spacing between items */
 }
 
-.nav-btn:hover,
-.nav-btn.active {
+/* HOVER & ACTIVE STATE */
+nav a:hover,
+nav a.active {
     background-color: rgba(255, 255, 255, 0.15);
-    /* Glass effect fill */
+    /* Glass fill */
     border-color: #ffffff;
     /* Solid white border */
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    /* White glow */
+    /* Glow */
     color: #fff;
-    /* Pure white text */
-    text-shadow: none;
-    /* Remove red glow from standard links */
     transform: translateY(-2px);
+    /* Slight lift */
 }
 
-/* HERO SECTION (Home Page Only) */
+/* HERO SECTION (Home Only) */
 .hero {
     height: 100vh;
     width: 100%;
@@ -95,7 +82,6 @@ nav a.active {
     justify-content: flex-end;
     padding: 0 5% 60px 5%;
 
-    /* Home Background: Gradient + Image */
     background-image:
         linear-gradient(90deg,
             rgba(160, 0, 0, 0.95) 0%,
@@ -161,7 +147,7 @@ nav a.active {
     letter-spacing: -2px;
 }
 
-/* SECTIONS (Shared Styles) */
+/* SECTIONS */
 .section {
     padding: 120px 5%;
     min-height: 50vh;
@@ -172,7 +158,7 @@ nav a.active {
     margin: 0 auto;
 }
 
-/* Titles for Inner Pages */
+/* Page Headers */
 .page-header {
     margin-bottom: 60px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -412,6 +398,14 @@ h2 {
     .navbar {
         justify-content: center;
         flex-wrap: wrap;
+        gap: 10px;
+        padding: 20px;
+    }
+
+    nav a {
+        margin-left: 0;
+        padding: 8px 15px;
+        font-size: 11px;
     }
 
     .main-title {
@@ -429,15 +423,5 @@ h2 {
 
     .hero {
         background-position: center;
-    }
-
-    nav a {
-        margin-left: 15px;
-        font-size: 12px;
-    }
-
-    .nav-btn {
-        padding: 5px 15px;
-        margin-left: 15px;
     }
 }
