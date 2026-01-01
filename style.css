@@ -350,28 +350,128 @@ h2 {
 }
 
 /* RESPONSIVE */
+/* --- MOBILE RESPONSIVENESS REFINED --- */
 @media (max-width: 768px) {
+
+    /* 1. Navbar: Horizontal Scroll (Like an App) */
     .navbar {
-        justify-content: center;
-        flex-wrap: wrap;
+        padding: 15px 20px;
+        background: rgba(0, 0, 0, 0.95);
+        /* Darker background for readability */
+        justify-content: flex-start;
+        /* Align left for scrolling */
+        overflow-x: auto;
+        /* Allow horizontal scrolling */
+        white-space: nowrap;
+        /* Keep items in one line */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scroll on iOS */
+    }
+
+    /* Hide scrollbar for navbar but allow scrolling */
+    .navbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    nav {
+        display: flex;
+        width: 100%;
         gap: 10px;
-        padding: 20px;
     }
 
     nav a {
         margin-left: 0;
-        padding: 8px 12px;
         font-size: 11px;
+        padding: 8px 15px;
+        flex-shrink: 0;
+        /* Prevent shrinking */
+    }
+
+    /* 2. Hero Section */
+    .hero {
+        padding: 0 20px 60px 20px;
+        justify-content: center;
+        /* Center vertically on mobile */
     }
 
     .main-title {
         font-size: 18vw;
+        /* Slightly larger on mobile to fill width */
+        margin-left: 0;
+        text-align: center;
     }
 
+    .greeting {
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    .roles {
+        justify-content: center;
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Fix Watermark overlap */
     .watermark {
-        font-size: 18vw;
-        top: 12%;
+        font-size: 25vw;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        /* Center it */
+        opacity: 0.3;
+        /* Fade it out more on mobile */
+        width: 100%;
+        text-align: center;
     }
 
-    /* Adjust for mobile */
+    /* 3. General Sections */
+    .section {
+        padding: 60px 20px;
+        /* Reduce padding */
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        /* Smaller section titles */
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* 4. Grids: Single Column for Mobile */
+    .skill-grid,
+    .project-grid,
+    .education-grid {
+        grid-template-columns: 1fr;
+        /* Force 1 column */
+    }
+
+    /* Fix Project Cards causing horizontal scroll */
+    .project-card {
+        height: 300px;
+        width: 100%;
+        /* Ensure it fits */
+    }
+
+    /* 5. Contact & Text */
+    .text-content p {
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    .contact-info {
+        text-align: center;
+    }
+
+    .contact-info div {
+        justify-content: center;
+    }
+
+    /* Make buttons full width for easier tapping */
+    .cta-button {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
 }
