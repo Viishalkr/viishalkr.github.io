@@ -13,7 +13,6 @@
     --text-white: #ffffff;
     --bg-black: #050505;
     --card-bg: rgba(20, 20, 20, 0.6);
-    /* Semi-transparent for glass effect */
 }
 
 body {
@@ -21,18 +20,18 @@ body {
     color: var(--text-white);
     overflow-x: hidden;
 
-    /* --- THE SEAMLESS BACKGROUND FIX --- */
-    /* This applies the Red/Black gradient + Image to the WHOLE site */
+    /* HIDE DEFAULT CURSOR */
+    cursor: none;
+
+    /* SEAMLESS BACKGROUND */
     background-image:
         linear-gradient(to right,
             rgba(160, 0, 0, 0.9) 0%,
             rgba(0, 0, 0, 0.8) 50%,
             rgba(0, 0, 0, 0.95) 100%),
         url('assets/images/hero-bg.jpg');
-    /* Ensure this image exists */
 
     background-attachment: fixed;
-    /* Keeps background still while scrolling */
     background-size: cover;
     background-position: center;
 }
@@ -63,7 +62,8 @@ nav a {
     margin-left: 15px;
     transition: all 0.3s ease;
     background: rgba(0, 0, 0, 0.3);
-    /* Slight darkness for readability */
+    cursor: none;
+    /* Keep custom cursor visible */
 }
 
 nav a:hover,
@@ -75,7 +75,7 @@ nav a.active {
     transform: translateY(-2px);
 }
 
-/* --- HERO SECTION --- */
+/* HERO SECTION */
 .hero {
     height: 100vh;
     width: 100%;
@@ -86,16 +86,12 @@ nav a.active {
     padding: 0 5% 80px 5%;
 }
 
-/* FIXED WATERMARK (Smaller & Lower) */
 .watermark {
     position: absolute;
     top: 15%;
-    /* Moved down from top */
     left: 5%;
     font-family: 'Oswald', sans-serif;
-    /* Changed Font */
     font-size: 12vw;
-    /* Reduced size (was 25vw) */
     font-weight: 700;
     letter-spacing: 10px;
     text-transform: uppercase;
@@ -137,7 +133,7 @@ nav a.active {
     letter-spacing: -2px;
 }
 
-/* SECTIONS SHARED */
+/* SECTIONS */
 .section {
     padding: 100px 5%;
     min-height: auto;
@@ -155,10 +151,8 @@ h2 {
     text-transform: uppercase;
     font-weight: 800;
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-    /* Shadow for readability */
 }
 
-/* ABOUT TEXT */
 .text-content p {
     font-size: 1.3rem;
     line-height: 1.7;
@@ -168,7 +162,7 @@ h2 {
     text-shadow: 1px 1px 2px #000;
 }
 
-/* --- EDUCATION SECTION (NEW) --- */
+/* EDUCATION GRID */
 .education-grid {
     display: flex;
     flex-direction: column;
@@ -182,6 +176,7 @@ h2 {
     padding: 25px;
     border-radius: 0 10px 10px 0;
     transition: 0.3s;
+    cursor: none;
 }
 
 .edu-card:hover {
@@ -210,7 +205,7 @@ h2 {
     color: #bbb;
 }
 
-/* SKILLS GRID */
+/* SKILL GRID */
 .skill-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -224,6 +219,7 @@ h2 {
     border-radius: 12px;
     transition: 0.3s;
     backdrop-filter: blur(5px);
+    cursor: none;
 }
 
 .skill-card:hover {
@@ -253,7 +249,7 @@ h2 {
     box-shadow: 0 0 10px var(--primary-red);
 }
 
-/* PROJECTS GRID */
+/* PROJECT GRID */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -268,7 +264,8 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    cursor: pointer;
+    cursor: none;
+    /* Custom cursor */
     transition: 0.4s;
     backdrop-filter: blur(5px);
 }
@@ -301,6 +298,7 @@ h2 {
     text-decoration: none;
     border-bottom: 1px solid #333;
     transition: 0.3s;
+    cursor: none;
 }
 
 .contact-info a:hover {
@@ -308,7 +306,53 @@ h2 {
     border-color: var(--primary-red);
 }
 
-/* MODAL & ANIMATION */
+/* CUSTOM CURSOR CSS */
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--primary-red);
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9998;
+    pointer-events: none;
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+body:hover .cursor-outline.hovered {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(208, 0, 0, 0.1);
+    border-color: #fff;
+}
+
+/* ANIMATION */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -338,37 +382,34 @@ h2 {
     cursor: pointer;
 }
 
-.reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: 0.8s ease-out;
-}
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* RESPONSIVE */
-/* --- MOBILE RESPONSIVENESS REFINED --- */
+/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
 
-    /* 1. Navbar: Horizontal Scroll (Like an App) */
+    /* RESET CURSOR FOR TOUCH */
+    body {
+        cursor: auto;
+    }
+
+    .cursor-dot,
+    .cursor-outline {
+        display: none;
+    }
+
+    nav a,
+    .project-card,
+    .edu-card {
+        cursor: auto;
+    }
+
     .navbar {
         padding: 15px 20px;
         background: rgba(0, 0, 0, 0.95);
-        /* Darker background for readability */
         justify-content: flex-start;
-        /* Align left for scrolling */
         overflow-x: auto;
-        /* Allow horizontal scrolling */
         white-space: nowrap;
-        /* Keep items in one line */
         -webkit-overflow-scrolling: touch;
-        /* Smooth scroll on iOS */
     }
 
-    /* Hide scrollbar for navbar but allow scrolling */
     .navbar::-webkit-scrollbar {
         display: none;
     }
@@ -384,19 +425,15 @@ h2 {
         font-size: 11px;
         padding: 8px 15px;
         flex-shrink: 0;
-        /* Prevent shrinking */
     }
 
-    /* 2. Hero Section */
     .hero {
         padding: 0 20px 60px 20px;
         justify-content: center;
-        /* Center vertically on mobile */
     }
 
     .main-title {
         font-size: 18vw;
-        /* Slightly larger on mobile to fill width */
         margin-left: 0;
         text-align: center;
     }
@@ -413,48 +450,37 @@ h2 {
         gap: 10px;
     }
 
-    /* Fix Watermark overlap */
     .watermark {
         font-size: 25vw;
         top: 10%;
         left: 50%;
         transform: translateX(-50%);
-        /* Center it */
         opacity: 0.3;
-        /* Fade it out more on mobile */
         width: 100%;
         text-align: center;
     }
 
-    /* 3. General Sections */
     .section {
         padding: 60px 20px;
-        /* Reduce padding */
     }
 
     h2 {
         font-size: 2.5rem;
-        /* Smaller section titles */
         text-align: center;
         margin-bottom: 30px;
     }
 
-    /* 4. Grids: Single Column for Mobile */
     .skill-grid,
     .project-grid,
     .education-grid {
         grid-template-columns: 1fr;
-        /* Force 1 column */
     }
 
-    /* Fix Project Cards causing horizontal scroll */
     .project-card {
         height: 300px;
         width: 100%;
-        /* Ensure it fits */
     }
 
-    /* 5. Contact & Text */
     .text-content p {
         font-size: 1rem;
         text-align: left;
@@ -466,12 +492,5 @@ h2 {
 
     .contact-info div {
         justify-content: center;
-    }
-
-    /* Make buttons full width for easier tapping */
-    .cta-button {
-        display: block;
-        text-align: center;
-        width: 100%;
     }
 }
