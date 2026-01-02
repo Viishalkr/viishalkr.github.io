@@ -97,7 +97,7 @@ nav a.active {
     letter-spacing: 10px;
     text-transform: uppercase;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+    -webkit-text-stroke: 4px rgba(255, 255, 255, 0.1);
     opacity: 0.6;
     pointer-events: none;
     z-index: 1;
