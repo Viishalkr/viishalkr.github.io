@@ -908,3 +908,87 @@ body:hover .cursor-outline.hovered {
         text-align: center;
     }
 }
+
+/* --- NEW: 404 ERROR PAGE STYLES --- */
+body.error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background: #000;
+    overflow: hidden;
+}
+
+.error-container {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+}
+
+.glitch-404 {
+    font-size: 15rem;
+    font-family: 'Oswald', sans-serif;
+    color: var(--primary-red);
+    line-height: 1;
+    position: relative;
+    animation: rgb-shake 2s infinite;
+}
+
+.error-msg {
+    font-size: 2rem;
+    color: #fff;
+    background: var(--primary-red);
+    display: inline-block;
+    padding: 5px 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.error-desc {
+    color: #888;
+    margin-bottom: 40px;
+    font-family: 'Courier New', monospace;
+}
+
+.return-btn {
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid var(--primary-red);
+    padding: 15px 30px;
+    font-weight: bold;
+    transition: 0.3s;
+    background: rgba(208, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.return-btn:hover {
+    background: var(--primary-red);
+    box-shadow: 0 0 20px var(--primary-red);
+}
+
+/* --- NEW: MATRIX MODE (EASTER EGG) --- */
+body.matrix-mode {
+    --primary-red: #00ff00 !important;
+    /* Override Red with Hacker Green */
+}
+
+/* Force specific elements to turn green */
+body.matrix-mode .line {
+    stroke: #00ff00 !important;
+    filter: drop-shadow(0 0 5px #00ff00);
+}
+
+body.matrix-mode .cursor-outline {
+    border-color: #00ff00;
+}
+
+body.matrix-mode ::selection {
+    background: #00ff00;
+    color: #000;
+}
+
+body.matrix-mode .project-card:hover .card-content {
+    text-shadow: 2px 0 #fff, -2px 0 #00ff00;
+}

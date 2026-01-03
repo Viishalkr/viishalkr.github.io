@@ -164,3 +164,17 @@ if (modal) {
     if (span) span.onclick = () => modal.style.display = "none";
     window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
 }
+// --- MATRIX MODE EASTER EGG ---
+// Press 'M' to toggle between Cyberpunk Red and Matrix Green
+document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'm') {
+        document.body.classList.toggle('matrix-mode');
+
+        // Optional: Play a sound or log to console
+        if (document.body.classList.contains('matrix-mode')) {
+            console.log("SYSTEM HACKED: MATRIX MODE ENGAGED");
+        } else {
+            console.log("SYSTEM RESTORED");
+        }
+    }
+});
