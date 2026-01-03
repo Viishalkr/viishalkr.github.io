@@ -41,7 +41,6 @@
 
 html {
     scroll-behavior: auto !important;
-    /* We handle smooth scroll via JS for Glitch effect */
 }
 
 body {
@@ -49,7 +48,6 @@ body {
     color: var(--text-white);
     overflow-x: hidden;
     cursor: none;
-    /* Hide default cursor for custom one */
     background-image: linear-gradient(to right, rgba(50, 0, 0, 0.9) 0%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 100%);
     background-attachment: fixed;
 }
@@ -112,33 +110,6 @@ body.no-scroll {
     z-index: 9997;
     opacity: 0.03;
     background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-}
-
-/* Click Ripple */
-.ripple {
-    position: fixed;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    border: 2px solid var(--primary-red);
-    animation: ripple-anim 0.6s linear forwards;
-    z-index: 9999;
-}
-
-@keyframes ripple-anim {
-    0% {
-        width: 0;
-        height: 0;
-        opacity: 1;
-        border-width: 5px;
-    }
-
-    100% {
-        width: 500px;
-        height: 500px;
-        opacity: 0;
-        border-width: 0px;
-    }
 }
 
 /* Neon Flowing Lines */
@@ -666,7 +637,6 @@ nav a.active {
     }
 }
 
-/* Scroll Down Indicator */
 .scroll-indicator {
     position: absolute;
     bottom: 30px;
@@ -789,11 +759,97 @@ h2::after {
 }
 
 /* =========================================
-   7. CARDS (TACTICAL CORNERS)
+   7. HEX-TECH SKILL TREE (NEW)
+   ========================================= */
+.hex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hex-item {
+    width: 120px;
+    height: 130px;
+    position: relative;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: rgba(20, 20, 20, 0.8);
+    transition: 0.3s;
+    margin-bottom: -30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: none;
+}
+
+.hex-item::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: #050505;
+    z-index: 1;
+}
+
+.hex-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--primary-red);
+    z-index: 0;
+    opacity: 0.3;
+    transition: 0.3s;
+}
+
+.hex-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hex-icon {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #fff;
+    display: block;
+    margin-bottom: 5px;
+    font-family: 'Oswald', sans-serif;
+}
+
+.hex-label {
+    font-size: 0.7rem;
+    color: #888;
+    letter-spacing: 1px;
+    font-family: 'Fira Code', monospace;
+}
+
+.hex-item:hover {
+    transform: scale(1.1) translateY(-10px);
+    z-index: 10;
+}
+
+.hex-item:hover::after {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--primary-red);
+}
+
+.hex-item:hover .hex-icon {
+    color: var(--primary-red);
+    text-shadow: 0 0 10px var(--primary-red);
+}
+
+/* =========================================
+   8. CARDS (TACTICAL CORNERS)
    ========================================= */
 /* Focus Mode */
 .education-grid:hover .edu-card:not(:hover),
-.skill-grid:hover .skill-card:not(:hover),
 .project-grid:hover .project-card:not(:hover) {
     opacity: 0.3;
     filter: blur(2px) grayscale(100%);
@@ -844,10 +900,6 @@ h2::after {
 /* Specific Card Layouts */
 .edu-card {
     padding: 25px;
-}
-
-.skill-card {
-    padding: 30px;
 }
 
 .project-card {
@@ -922,18 +974,11 @@ h2::after {
     }
 }
 
-/* Grids */
 .education-grid {
     display: flex;
     flex-direction: column;
     gap: 30px;
     max-width: 800px;
-}
-
-.skill-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
 }
 
 .project-grid {
@@ -942,40 +987,16 @@ h2::after {
     gap: 40px;
 }
 
-/* Text & Bars */
 .edu-year {
     color: var(--primary-red);
     font-weight: bold;
 }
 
-.edu-degree,
-.skill-name {
+.edu-degree {
     font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
     margin-bottom: 15px;
-}
-
-.skill-bar-bg {
-    width: 100%;
-    height: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 2px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.skill-bar-fill {
-    height: 100%;
-    background-image: repeating-linear-gradient(-45deg, var(--primary-red) 0px, var(--primary-red) 4px, transparent 4px, transparent 8px);
-    background-color: transparent;
-    width: 0;
-    transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-    box-shadow: 0 0 10px var(--primary-red);
-}
-
-.reveal.active .skill-bar-fill {
-    width: var(--target-width);
 }
 
 .card-content {
@@ -998,7 +1019,7 @@ h2::after {
 }
 
 /* =========================================
-   8. ABOUT SECTION (HOLO CARD)
+   9. ABOUT SECTION (HOLO CARD)
    ========================================= */
 .about-grid {
     display: grid;
@@ -1103,7 +1124,7 @@ h2::after {
 }
 
 /* =========================================
-   9. CONTACT & FOOTER
+   10. CONTACT & FOOTER
    ========================================= */
 .contact-layout {
     display: flex;
@@ -1257,7 +1278,7 @@ h2::after {
 }
 
 /* =========================================
-   10. MODALS & EXTRAS
+   11. MODALS & SECURITY OVERLAY
    ========================================= */
 /* Terminal Boot Screen */
 #preloader {
@@ -1562,8 +1583,82 @@ body.glitching::after {
     }
 }
 
+/* Security Breach Overlay */
+#security-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(208, 0, 0, 0.2);
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+#security-screen.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.security-msg {
+    background: #000;
+    border: 2px solid var(--primary-red);
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 50px var(--primary-red);
+    transform: scale(0.8);
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#security-screen.active .security-msg {
+    transform: scale(1);
+}
+
+.alert-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    animation: blink 0.5s infinite;
+}
+
+.security-msg h1 {
+    color: var(--primary-red);
+    font-size: 2rem;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+}
+
+.security-msg p {
+    color: #fff;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+}
+
+.security-msg .small {
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 20px;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
 /* =========================================
-   11. STATES & MODES
+   12. STATES & MODES
    ========================================= */
 /* Low Power Mode (Eco Mode) */
 body.low-power .reactor-container,
@@ -1592,66 +1687,6 @@ body.low-power .cursor-dot {
 
 body.low-power {
     cursor: auto;
-}
-
-/* 404 Page */
-body.error-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    background: #000;
-    overflow: hidden;
-}
-
-.error-container {
-    position: relative;
-    z-index: 10;
-    padding: 20px;
-}
-
-.glitch-404 {
-    font-size: 15rem;
-    font-family: 'Oswald', sans-serif;
-    color: var(--primary-red);
-    line-height: 1;
-    position: relative;
-    animation: rgb-shake 2s infinite;
-}
-
-.error-msg {
-    font-size: 2rem;
-    color: #fff;
-    background: var(--primary-red);
-    display: inline-block;
-    padding: 5px 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-}
-
-.error-desc {
-    color: #888;
-    margin-bottom: 40px;
-    font-family: 'Courier New', monospace;
-}
-
-.return-btn {
-    color: #fff;
-    text-decoration: none;
-    border: 1px solid var(--primary-red);
-    padding: 15px 30px;
-    font-weight: bold;
-    transition: 0.3s;
-    background: rgba(208, 0, 0, 0.1);
-    display: inline-block;
-    cursor: none;
-}
-
-.return-btn:hover {
-    background: var(--primary-red);
-    box-shadow: 0 0 20px var(--primary-red);
 }
 
 /* Matrix Easter Egg Mode */
@@ -1687,12 +1722,19 @@ body.matrix-mode .reactor-core {
     background: #00ff00;
 }
 
+body.matrix-mode .hex-item:hover::after {
+    box-shadow: 0 0 20px #00ff00;
+}
+
+body.matrix-mode .hex-item:hover .hex-icon {
+    text-shadow: 0 0 10px #00ff00;
+}
+
 /* =========================================
-   12. MOBILE OPTIMIZATION (COMBAT MODE)
+   13. MOBILE OPTIMIZATION (COMBAT MODE)
    ========================================= */
 @media (max-width: 768px) {
 
-    /* Hide Desktop-only Elements */
     .cursor-dot,
     .cursor-outline,
     .side-hud,
@@ -1700,7 +1742,6 @@ body.matrix-mode .reactor-core {
         display: none !important;
     }
 
-    /* Navbar Scrollable */
     .navbar {
         padding: 15px 20px;
         justify-content: flex-start;
@@ -1713,7 +1754,6 @@ body.matrix-mode .reactor-core {
         gap: 10px;
     }
 
-    /* Reactor moves to background */
     .reactor-container {
         width: 250px;
         height: 250px;
@@ -1723,7 +1763,6 @@ body.matrix-mode .reactor-core {
         opacity: 0.2;
     }
 
-    /* Typography Fixes */
     .main-title {
         font-size: 18vw;
         text-align: center;
@@ -1733,8 +1772,6 @@ body.matrix-mode .reactor-core {
         font-size: 2rem;
     }
 
-    /* Stack Grids */
-    .skill-grid,
     .project-grid,
     .about-grid,
     .contact-buttons {
@@ -1743,7 +1780,26 @@ body.matrix-mode .reactor-core {
         width: 100%;
     }
 
-    /* Spacing */
+    .hex-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .hex-item {
+        margin-bottom: 0;
+        clip-path: none;
+        border-radius: 8px;
+        width: 100%;
+        height: 80px;
+        border: 1px solid var(--primary-red);
+    }
+
+    .hex-item::before,
+    .hex-item::after {
+        display: none;
+    }
+
     .angled-section {
         padding: 80px 0;
         margin: 20px 0;
@@ -1757,7 +1813,6 @@ body.matrix-mode .reactor-core {
         padding: 80px 20px;
     }
 
-    /* Mobile Modal */
     .modal-container {
         flex-direction: column;
         width: 95%;
@@ -1776,7 +1831,6 @@ body.matrix-mode .reactor-core {
         font-size: 1.5rem;
     }
 
-    /* Footer Stack */
     .cyber-footer {
         flex-direction: column;
         gap: 15px;
@@ -1788,7 +1842,6 @@ body.matrix-mode .reactor-core {
         width: 100%;
     }
 
-    /* Disable Tilt Effects */
     .project-card:hover,
     .holo-card:hover {
         transform: none !important;

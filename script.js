@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (savedMode === 'low') {
         togglePerformance();
     }
-    updateTelemetry(); // Start telemetry immediately
+    updateTelemetry();
 });
 
 /* =========================================
@@ -78,13 +78,11 @@ const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 let particlesArray;
 
-// Resize Logic
 if (canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
 
-// Mouse Interaction
 let mouse = { x: null, y: null, radius: 150 };
 window.addEventListener('mousemove', (event) => {
     mouse.x = event.x;
@@ -111,8 +109,6 @@ class Particle {
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
         this.x += this.directionX;
         this.y += this.directionY;
-
-        // Mouse repulsion
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -127,7 +123,7 @@ class Particle {
 }
 
 function initParticles() {
-    if (!canvas || window.innerWidth < 768) return; // Disable on mobile
+    if (!canvas || window.innerWidth < 768) return;
     particlesArray = [];
     let numberOfParticles = (canvas.height * canvas.width) / 9000;
     for (let i = 0; i < numberOfParticles; i++) {
@@ -147,7 +143,6 @@ function connectParticles() {
         for (let b = a; b < particlesArray.length; b++) {
             let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
                 ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                 opacityValue = 1 - (distance / 20000);
                 ctx.strokeStyle = 'rgba(208, 0, 0,' + opacityValue + ')';
@@ -158,7 +153,6 @@ function connectParticles() {
                 ctx.stroke();
             }
         }
-        // Connect to mouse
         let mouseDist = ((particlesArray[a].x - mouse.x) * (particlesArray[a].x - mouse.x)) +
             ((particlesArray[a].y - mouse.y) * (particlesArray[a].y - mouse.y));
         if (mouseDist < 20000) {
@@ -173,7 +167,6 @@ function connectParticles() {
 }
 
 function animateParticles() {
-    // Stop animation on mobile or low power
     if (!canvas || document.body.classList.contains('low-power') || window.innerWidth < 768) {
         requestAnimationFrame(animateParticles);
         return;
@@ -210,8 +203,6 @@ function updateTelemetry() {
         const timeString = now.toLocaleTimeString('en-US', { hour12: false });
         timeEl.innerText = timeString;
     }
-
-    // Fake Ping Fluctuation
     if (pingEl && Math.random() > 0.9) {
         const ping = Math.floor(Math.random() * 40) + 10;
         pingEl.innerText = `${ping}ms`;
@@ -222,34 +213,23 @@ setInterval(updateTelemetry, 1000);
 /* =========================================
    5. GLITCH NAVIGATION & SCROLL SPY
    ========================================= */
-// Glitch Transition
 const navLinks = document.querySelectorAll('nav a, .hud-point, .back-to-top');
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const targetId = link.getAttribute('href');
-        if (targetId === '#') return; // Ignore empty links
+        if (targetId === '#') return;
         const targetSection = document.querySelector(targetId);
-
         if (!targetSection) return;
 
-        // Trigger Glitch
         document.body.classList.add('glitching');
-
-        // Wait, then Jump
         setTimeout(() => {
-            window.scrollTo({
-                top: targetSection.offsetTop,
-                behavior: 'auto'
-            });
-            setTimeout(() => {
-                document.body.classList.remove('glitching');
-            }, 200);
+            window.scrollTo({ top: targetSection.offsetTop, behavior: 'auto' });
+            setTimeout(() => { document.body.classList.remove('glitching'); }, 200);
         }, 300);
     });
 });
 
-// Scroll Spy (Side HUD)
 const sections = document.querySelectorAll('section');
 const hudPoints = document.querySelectorAll('.hud-point');
 const observerOptions = { threshold: 0.3 };
@@ -266,9 +246,26 @@ const observer = new IntersectionObserver((entries) => {
 sections.forEach(section => observer.observe(section));
 
 /* =========================================
-   6. MODAL & INTERACTIONS
+   6. SECURITY BREACH PROTOCOL
    ========================================= */
-// Modal Logic
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const securityScreen = document.getElementById('security-screen');
+    const body = document.body;
+
+    if (securityScreen) {
+        securityScreen.classList.add('active');
+        body.classList.add('glitching');
+        setTimeout(() => {
+            securityScreen.classList.remove('active');
+            body.classList.remove('glitching');
+        }, 2000);
+    }
+});
+
+/* =========================================
+   7. MODAL & INTERACTIONS
+   ========================================= */
 const modal = document.getElementById("projectModal");
 if (modal) {
     const modalImg = document.getElementById("modalImg");
@@ -296,7 +293,6 @@ if (modal) {
     window.onclick = (event) => { if (event.target == modal) closeModal(); }
 }
 
-// Parallax (Desktop Only)
 document.addEventListener('mousemove', (e) => {
     if (document.body.classList.contains('low-power') || window.innerWidth < 768) return;
     const layers = document.querySelectorAll('.parallax-layer');
@@ -308,7 +304,6 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
-// Hacker Text Effect
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
 function hackText(element) {
     if (element.getAttribute('data-hacking') === 'true') return;
@@ -332,7 +327,6 @@ document.querySelectorAll("nav a, h2").forEach(element => {
     element.onmouseover = () => hackText(element);
 });
 
-// Cursor & Tilt (Desktop Only)
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 if (cursorDot && cursorOutline) {
@@ -344,7 +338,7 @@ if (cursorDot && cursorOutline) {
         cursorDot.style.top = `${posY}px`;
         cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
     });
-    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2, .cyber-btn, .return-btn, .holo-card');
+    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2, .cyber-btn, .return-btn, .holo-card, .hex-item');
     interactables.forEach(el => {
         el.addEventListener('mouseenter', () => cursorOutline.classList.add("hovered"));
         el.addEventListener('mouseleave', () => cursorOutline.classList.remove("hovered"));
@@ -371,20 +365,17 @@ cards.forEach(card => {
     });
 });
 
-// Set Project Backgrounds
 document.querySelectorAll('.project-card').forEach(card => {
     const imgPath = card.getAttribute('data-img');
     if (imgPath) card.style.backgroundImage = `url('${imgPath}')`;
 });
 
-// Matrix Mode Key Listener
 document.addEventListener('keydown', (e) => {
     if (e.key.toLowerCase() === 'm') {
         document.body.classList.toggle('matrix-mode');
     }
 });
 
-// Scroll Reveal
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
@@ -394,7 +385,6 @@ function revealOnScroll() {
             if (heading) setTimeout(() => hackText(heading), 200);
         }
     });
-    // Update scroll bar
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (scrollTop / scrollHeight) * 100;
