@@ -347,13 +347,33 @@ nav a.active {
     margin: 0 auto;
 }
 
+/* --- HOLLOW OUTLINED HEADINGS --- */
 h2 {
-    font-size: 3.5rem;
-    color: var(--primary-red);
+    font-size: 4rem;
+    /* Slightly larger for impact */
     margin-bottom: 50px;
     text-transform: uppercase;
-    font-weight: 800;
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    /* The Hollow Effect */
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
+    /* Thin white outline */
+    transition: all 0.4s ease;
+    cursor: default;
+    position: relative;
+}
+
+h2:hover {
+    color: var(--primary-red);
+    /* Fills with red */
+    -webkit-text-stroke: 0px;
+    text-shadow: 0 0 30px rgba(208, 0, 0, 0.8);
+    /* Strong Neon Glow */
+    letter-spacing: 5px;
+    /* Text expands physically */
+    transform: scale(1.05);
 }
 
 .text-content p {
