@@ -68,7 +68,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (savedMode === 'low') {
         togglePerformance();
     }
-    updateTelemetry();
 });
 
 /* =========================================
@@ -192,26 +191,7 @@ if (canvas) {
 }
 
 /* =========================================
-   4. LIVE TELEMETRY WIDGET
-   ========================================= */
-function updateTelemetry() {
-    const timeEl = document.getElementById('tele-time');
-    const pingEl = document.getElementById('tele-ping');
-
-    if (timeEl) {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-        timeEl.innerText = timeString;
-    }
-    if (pingEl && Math.random() > 0.9) {
-        const ping = Math.floor(Math.random() * 40) + 10;
-        pingEl.innerText = `${ping}ms`;
-    }
-}
-setInterval(updateTelemetry, 1000);
-
-/* =========================================
-   5. GLITCH NAVIGATION & SCROLL SPY
+   4. GLITCH NAVIGATION & SCROLL SPY
    ========================================= */
 const navLinks = document.querySelectorAll('nav a, .hud-point, .back-to-top');
 navLinks.forEach(link => {
@@ -246,7 +226,7 @@ const observer = new IntersectionObserver((entries) => {
 sections.forEach(section => observer.observe(section));
 
 /* =========================================
-   6. SECURITY BREACH PROTOCOL
+   5. SECURITY BREACH PROTOCOL
    ========================================= */
 document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
@@ -264,7 +244,7 @@ document.addEventListener('contextmenu', (e) => {
 });
 
 /* =========================================
-   7. MODAL & INTERACTIONS
+   6. MODAL & INTERACTIONS
    ========================================= */
 const modal = document.getElementById("projectModal");
 if (modal) {
@@ -304,17 +284,21 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
+/* --- SCRAMBLE TEXT LOGIC (HERO & GENERAL) --- */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
 function hackText(element) {
     if (element.getAttribute('data-hacking') === 'true') return;
     element.setAttribute('data-hacking', 'true');
+    // Store original text
     if (!element.dataset.value) element.dataset.value = element.innerText;
+
     let iterations = 0;
     const interval = setInterval(() => {
         element.innerText = element.innerText.split("").map((letter, index) => {
             if (index < iterations) return element.dataset.value[index];
             return letters[Math.floor(Math.random() * letters.length)];
         }).join("");
+
         if (iterations >= element.dataset.value.length) {
             clearInterval(interval);
             element.setAttribute('data-hacking', 'false');
@@ -322,11 +306,53 @@ function hackText(element) {
         iterations += 1 / 3;
     }, 30);
 }
-document.querySelectorAll("nav a, h2").forEach(element => {
-    element.dataset.value = element.innerText;
-    element.onmouseover = () => hackText(element);
+
+// Apply scramble to Headings on Scroll
+function revealOnScroll() {
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach((reveal) => {
+        if (reveal.getBoundingClientRect().top < window.innerHeight - 100) {
+            reveal.classList.add('active');
+            const heading = reveal.querySelector('h2');
+            if (heading) setTimeout(() => hackText(heading), 200);
+        }
+    });
+    // Scroll Bar
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (scrollTop / scrollHeight) * 100;
+    const pBar = document.getElementById("scroll-progress");
+    if (pBar) pBar.style.width = `${scrolled}%`;
+}
+window.addEventListener('scroll', revealOnScroll);
+window.onload = () => { revealOnScroll(); };
+
+// Cycle Hero Title Roles
+const heroTitle = document.getElementById('hero-title');
+if (heroTitle) {
+    const roles = ["DESIGNER", "DEVELOPER", "CREATOR", "ARCHITECT"];
+    let roleIndex = 0;
+    heroTitle.addEventListener('mouseover', () => {
+        roleIndex = (roleIndex + 1) % roles.length;
+        heroTitle.innerText = roles[roleIndex];
+        heroTitle.dataset.value = roles[roleIndex];
+        hackText(heroTitle);
+    });
+}
+
+// Magnetic Buttons
+const magnets = document.querySelectorAll('.magnet-btn');
+magnets.forEach((magnet) => {
+    magnet.addEventListener('mousemove', (e) => {
+        const rect = magnet.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+    magnet.addEventListener('mouseleave', () => { magnet.style.transform = 'translate(0, 0)'; });
 });
 
+/* --- CURSOR & CARDS --- */
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 if (cursorDot && cursorOutline) {
@@ -375,21 +401,3 @@ document.addEventListener('keydown', (e) => {
         document.body.classList.toggle('matrix-mode');
     }
 });
-
-function revealOnScroll() {
-    const reveals = document.querySelectorAll('.reveal');
-    reveals.forEach((reveal) => {
-        if (reveal.getBoundingClientRect().top < window.innerHeight - 100) {
-            reveal.classList.add('active');
-            const heading = reveal.querySelector('h2');
-            if (heading) setTimeout(() => hackText(heading), 200);
-        }
-    });
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (scrollTop / scrollHeight) * 100;
-    const pBar = document.getElementById("scroll-progress");
-    if (pBar) pBar.style.width = `${scrolled}%`;
-}
-window.addEventListener('scroll', revealOnScroll);
-window.onload = () => { revealOnScroll(); };

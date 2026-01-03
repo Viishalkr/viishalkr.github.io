@@ -108,32 +108,6 @@ body.no-scroll {
     background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
 }
 
-.ripple {
-    position: fixed;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    border: 2px solid var(--primary-red);
-    animation: ripple-anim 0.6s linear forwards;
-    z-index: 9999;
-}
-
-@keyframes ripple-anim {
-    0% {
-        width: 0;
-        height: 0;
-        opacity: 1;
-        border-width: 5px;
-    }
-
-    100% {
-        width: 500px;
-        height: 500px;
-        opacity: 0;
-        border-width: 0px;
-    }
-}
-
 /* =========================================
    3. CURSOR
    ========================================= */
@@ -281,78 +255,6 @@ nav a.active {
     transition: width 0.1s ease-out;
 }
 
-.telemetry {
-    position: fixed;
-    bottom: 20px;
-    left: 30px;
-    z-index: 1000;
-    font-family: 'Fira Code', monospace;
-    font-size: 10px;
-    color: #666;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    border-left: 2px solid var(--primary-red);
-    padding-left: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(2px);
-}
-
-.tele-row {
-    display: flex;
-    justify-content: space-between;
-    width: 120px;
-}
-
-.tele-label {
-    color: #888;
-}
-
-.tele-val {
-    color: var(--primary-red);
-    font-weight: bold;
-}
-
-.tele-graph {
-    display: flex;
-    gap: 2px;
-    height: 10px;
-    align-items: flex-end;
-    margin-top: 5px;
-    opacity: 0.7;
-}
-
-.tele-bar {
-    width: 4px;
-    background: var(--primary-red);
-    animation: graphAnim 1s infinite alternate;
-}
-
-.tele-bar:nth-child(1) {
-    height: 40%;
-    animation-delay: 0s;
-}
-
-.tele-bar:nth-child(2) {
-    height: 80%;
-    animation-delay: 0.2s;
-}
-
-.tele-bar:nth-child(3) {
-    height: 60%;
-    animation-delay: 0.5s;
-}
-
-@keyframes graphAnim {
-    0% {
-        height: 20%;
-    }
-
-    100% {
-        height: 100%;
-    }
-}
-
 /* =========================================
    5. HERO & SECTIONS
    ========================================= */
@@ -434,6 +336,7 @@ nav a.active {
     letter-spacing: -2px;
     position: relative;
     display: inline-block;
+    cursor: crosshair;
 }
 
 .main-title::before,
@@ -562,28 +465,34 @@ nav a.active {
     backdrop-filter: blur(5px);
 }
 
+/* --- METALLIC HEADERS (FIXED) --- */
 h2 {
     font-size: 3rem;
     margin-bottom: 60px;
     text-transform: uppercase;
     font-weight: 900;
-    color: #fff;
     position: relative;
     display: inline-block;
     letter-spacing: 2px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
+    background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 50%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* FIX 2: Standard Property Added */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 h2::before {
     content: '[ ';
-    color: var(--primary-red);
+    -webkit-text-fill-color: var(--primary-red);
     margin-right: 10px;
 }
 
 h2::after {
     content: ' ]';
-    color: var(--primary-red);
+    -webkit-text-fill-color: var(--primary-red);
     margin-left: 10px;
 }
 
@@ -708,6 +617,7 @@ h2::after {
     cursor: none;
 }
 
+/* FIX 3 & 1: Added Standard Mask Property and Semicolons */
 .project-card::before,
 .edu-card::before,
 .skill-card::before,
@@ -721,6 +631,7 @@ h2::after {
     padding: 1px;
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    /* Standard Property */
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
@@ -1555,6 +1466,15 @@ body.matrix-mode .hex-item:hover .hex-icon {
     nav {
         width: 100%;
         gap: 10px;
+    }
+
+    .reactor-container {
+        width: 250px;
+        height: 250px;
+        top: 30%;
+        right: 50%;
+        transform: translateX(50%);
+        opacity: 0.2;
     }
 
     .main-title {
