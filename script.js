@@ -43,24 +43,51 @@ magnets.forEach((magnet) => {
     });
 });
 
-// --- 4. HACKER TEXT SCRAMBLE ---
+// --- 4. HACKER TEXT SCRAMBLE (REUSABLE) ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
+
+function hackText(element) {
+    // Only hack if not already hacking (prevents loop)
+    if (element.getAttribute('data-hacking') === 'true') return;
+    element.setAttribute('data-hacking', 'true');
+
+    // Store original text if not stored
+    if (!element.dataset.value) element.dataset.value = element.innerText;
+
+    let iterations = 0;
+    const interval = setInterval(() => {
+        element.innerText = element.innerText.split("").map((letter, index) => {
+            if (index < iterations) return element.dataset.value[index];
+            return letters[Math.floor(Math.random() * letters.length)];
+        }).join("");
+
+        if (iterations >= element.dataset.value.length) {
+            clearInterval(interval);
+            element.setAttribute('data-hacking', 'false');
+        }
+        iterations += 1 / 3;
+    }, 30);
+}
+
+// Hover trigger
 document.querySelectorAll("nav a, h2").forEach(element => {
-    element.dataset.value = element.innerText;
-    element.onmouseover = event => {
-        let iterations = 0;
-        const interval = setInterval(() => {
-            event.target.innerText = event.target.innerText.split("").map((letter, index) => {
-                if (index < iterations) return event.target.dataset.value[index];
-                return letters[Math.floor(Math.random() * letters.length)];
-            }).join("");
-            if (iterations >= event.target.dataset.value.length) clearInterval(interval);
-            iterations += 1 / 3;
-        }, 30);
-    }
+    element.dataset.value = element.innerText; // Pre-store
+    element.onmouseover = () => hackText(element);
 });
 
-// --- 5. CUSTOM CURSOR ---
+// --- 5. CLICK SHOCKWAVE EFFECT ---
+window.addEventListener('click', (e) => {
+    const ripple = document.createElement('div');
+    ripple.classList.add('ripple');
+    ripple.style.left = `${e.clientX}px`;
+    ripple.style.top = `${e.clientY}px`;
+    document.body.appendChild(ripple);
+
+    // Remove after animation
+    setTimeout(() => { ripple.remove(); }, 600);
+});
+
+// --- 6. CUSTOM CURSOR ---
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 if (cursorDot && cursorOutline) {
@@ -78,7 +105,7 @@ if (cursorDot && cursorOutline) {
     });
 }
 
-// --- 6. 3D TILT EFFECT ---
+// --- 7. 3D TILT EFFECT ---
 const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -98,19 +125,26 @@ cards.forEach(card => {
     });
 });
 
-// --- 7. SET PROJECT IMAGES AS BACKGROUNDS ---
+// --- 8. SET IMAGES ---
 document.querySelectorAll('.project-card').forEach(card => {
     const imgPath = card.getAttribute('data-img');
-    if (imgPath) {
-        card.style.backgroundImage = `url('${imgPath}')`;
-    }
+    if (imgPath) card.style.backgroundImage = `url('${imgPath}')`;
 });
 
-// --- 8. SCROLL REVEAL & MODAL ---
+// --- 9. SCROLL REVEAL & AUTO-DECRYPTION ---
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
-        if (reveal.getBoundingClientRect().top < window.innerHeight - 100) reveal.classList.add('active');
+        if (reveal.getBoundingClientRect().top < window.innerHeight - 100) {
+            reveal.classList.add('active');
+
+            // Check if there is an h2 inside to hack
+            const heading = reveal.querySelector('h2');
+            if (heading) {
+                // Small delay so it happens as it slides up
+                setTimeout(() => hackText(heading), 200);
+            }
+        }
     });
 }
 window.addEventListener('scroll', revealOnScroll);
