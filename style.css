@@ -196,7 +196,7 @@ nav a.active {
     letter-spacing: 10px;
     text-transform: uppercase;
     color: transparent;
-    -webkit-text-stroke: 7px rgba(150, 4, 4, 0.1);
+    -webkit-text-stroke: 7px rgba(246, 244, 244, 0.548);
     opacity: 0.6;
     pointer-events: none;
     z-index: 1;
