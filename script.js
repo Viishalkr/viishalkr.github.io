@@ -244,35 +244,108 @@ document.addEventListener('contextmenu', (e) => {
 });
 
 /* =========================================
-   6. MODAL & INTERACTIONS
+   6. GALLERY SLIDER LOGIC
    ========================================= */
-const modal = document.getElementById("projectModal");
-if (modal) {
-    const modalImg = document.getElementById("modalImg");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalDesc = document.getElementById("modalDesc");
-    const modalTools = document.getElementById("modalTools");
-    const span = document.querySelector(".close");
+// DEFINE YOUR IMAGES HERE (Ensure files exist in /assets/work/)
+const galleryData = {
+    "PHOTOGRAPHY": [
+        "assets/work/photo.jpg",
+        "assets/work/photo2.jpg",
+        "assets/work/photo3.jpg"
+    ],
+    "GRAPHIC DESIGN": [
+        "assets/work/design.jpg",
+        "assets/work/design2.jpg",
+        "assets/work/design3.jpg"
+    ],
+    "VIDEO EDITING": [
+        "assets/work/video.jpg",
+        "assets/work/video2.jpg",
+        "assets/work/video3.jpg"
+    ]
+};
 
-    document.querySelectorAll(".project-card").forEach(card => {
-        card.addEventListener('click', () => {
-            const imgPath = card.getAttribute('data-img');
-            const title = card.getAttribute('data-title');
-            const desc = card.getAttribute('data-desc');
-            const tools = card.getAttribute('data-tools');
-            modalImg.src = imgPath;
-            modalTitle.innerText = title;
-            modalDesc.innerText = desc;
-            modalTools.innerText = tools;
-            modal.style.display = "block";
-            document.body.style.overflow = "hidden";
-        });
+// SLIDER VARIABLES
+let currentImages = [];
+let currentIndex = 0;
+
+const modal = document.getElementById("projectModal");
+const modalImg = document.getElementById("modalImg");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalTools = document.getElementById("modalTools");
+const slideCounter = document.getElementById("slideCounter");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const closeBtn = document.querySelector(".close");
+
+// OPEN MODAL FUNCTION
+document.querySelectorAll(".project-card").forEach(card => {
+    card.addEventListener('click', () => {
+        const title = card.getAttribute('data-title');
+        const desc = card.getAttribute('data-desc');
+        const tools = card.getAttribute('data-tools');
+
+        // Load Content
+        modalTitle.innerText = title;
+        modalDesc.innerText = desc;
+        modalTools.innerText = tools;
+
+        // Load Images
+        if (galleryData[title]) {
+            currentImages = galleryData[title];
+        } else {
+            // Fallback if title doesn't match keys
+            currentImages = [card.getAttribute('data-img')];
+        }
+
+        // Reset to first image
+        currentIndex = 0;
+        updateSlider();
+
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Stop background scroll
     });
-    const closeModal = () => { modal.style.display = "none"; document.body.style.overflow = "auto"; };
-    if (span) span.onclick = closeModal;
-    window.onclick = (event) => { if (event.target == modal) closeModal(); }
+});
+
+// SLIDER CONTROLS
+function updateSlider() {
+    // Fade out effect
+    modalImg.style.opacity = 0;
+
+    setTimeout(() => {
+        modalImg.src = currentImages[currentIndex];
+        slideCounter.innerText = `${currentIndex + 1} / ${currentImages.length}`;
+        modalImg.style.opacity = 1;
+    }, 200);
 }
 
+if (nextBtn) {
+    nextBtn.onclick = () => {
+        currentIndex = (currentIndex + 1) % currentImages.length; // Loop to start
+        updateSlider();
+    };
+}
+
+if (prevBtn) {
+    prevBtn.onclick = () => {
+        currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; // Loop to end
+        updateSlider();
+    };
+}
+
+// CLOSE MODAL
+const closeModal = () => {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+};
+
+if (closeBtn) closeBtn.onclick = closeModal;
+window.onclick = (event) => { if (event.target == modal) closeModal(); };
+
+/* =========================================
+   7. INTERACTIVE EFFECTS
+   ========================================= */
 document.addEventListener('mousemove', (e) => {
     if (document.body.classList.contains('low-power') || window.innerWidth < 768) return;
     const layers = document.querySelectorAll('.parallax-layer');
