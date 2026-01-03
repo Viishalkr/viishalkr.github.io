@@ -1595,3 +1595,132 @@ body.matrix-mode .hex-item:hover .hex-icon {
         font-size: 18px;
     }
 }
+
+/* --- DAY 10: TIMELINE RAIL (EDUCATION) --- */
+.education-timeline {
+    position: relative;
+    padding-left: 30px;
+    border-left: 2px solid rgba(208, 0, 0, 0.3);
+    /* The Rail */
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.edu-item {
+    position: relative;
+    width: 100%;
+}
+
+/* The Glowing Dot */
+.timeline-marker {
+    position: absolute;
+    left: -36px;
+    /* Aligns dot with the border line */
+    top: 25px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-red);
+    z-index: 2;
+}
+
+/* Connect dot to card with a small horizontal line */
+.timeline-marker::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 4px;
+    width: 25px;
+    height: 2px;
+    background: rgba(208, 0, 0, 0.5);
+}
+
+/* --- DAY 10: DOMINO STAGGER ENTRANCE --- */
+/* 1. Hide items initially */
+.project-card,
+.hex-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 2. Reveal when parent has .active class */
+.reveal.active .project-card,
+.reveal.active .hex-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 3. The Domino Delays */
+.reveal.active .project-card:nth-child(1),
+.reveal.active .hex-item:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.reveal.active .project-card:nth-child(2),
+.reveal.active .hex-item:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.reveal.active .project-card:nth-child(3),
+.reveal.active .hex-item:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+.reveal.active .hex-item:nth-child(4) {
+    transition-delay: 0.4s;
+}
+
+.reveal.active .hex-item:nth-child(5) {
+    transition-delay: 0.5s;
+}
+
+.reveal.active .hex-item:nth-child(6) {
+    transition-delay: 0.6s;
+}
+
+.reveal.active .hex-item:nth-child(7) {
+    transition-delay: 0.7s;
+}
+
+.reveal.active .hex-item:nth-child(8) {
+    transition-delay: 0.8s;
+}
+
+/* --- DAY 10: SONAR HUD (SIDE NAV) --- */
+@keyframes sonarPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.hud-point.active {
+    position: relative;
+    color: var(--primary-red);
+}
+
+/* The Radar Ring */
+.hud-point.active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+    /* Center it */
+    border: 1px solid var(--primary-red);
+    border-radius: 50%;
+    animation: sonarPulse 1.5s infinite ease-out;
+    pointer-events: none;
+    z-index: -1;
+}
