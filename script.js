@@ -400,32 +400,3 @@ document.querySelectorAll('.project-card').forEach(card => {
 });
 
 document.addEventListener('keydown', (e) => { if (e.key.toLowerCase() === 'm') { document.body.classList.toggle('matrix-mode'); } });
-/* =========================================
-   8. IMPACT CLICK PROTOCOL
-   ========================================= */
-document.addEventListener('click', (e) => {
-    // 1. Create the Ripple Element
-    const ripple = document.createElement('div');
-    ripple.className = 'click-ripple';
-    ripple.style.left = `${e.clientX}px`;
-    ripple.style.top = `${e.clientY}px`;
-    document.body.appendChild(ripple);
-
-    // 2. Remove Ripple after animation
-    setTimeout(() => {
-        ripple.remove();
-    }, 500);
-
-    // 3. Screen Impact Shake (Subtle Jolt)
-    const body = document.body;
-    if (!body.classList.contains('low-power')) {
-        body.style.transition = 'transform 0.05s';
-        const x = Math.random() * 4 - 2; // Random shift X
-        const y = Math.random() * 4 - 2; // Random shift Y
-        body.style.transform = `translate(${x}px, ${y}px)`;
-
-        setTimeout(() => {
-            body.style.transform = 'none';
-        }, 50);
-    }
-});
