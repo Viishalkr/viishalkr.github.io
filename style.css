@@ -29,7 +29,7 @@ body {
     background-attachment: fixed;
 }
 
-/* --- NEW: NEON GLOWING LINES ANIMATION --- */
+/* --- FASTER NEON LINES --- */
 .bg-lines {
     position: fixed;
     top: 0;
@@ -52,42 +52,65 @@ body {
     stroke: var(--primary-red);
     stroke-width: 2px;
     stroke-linecap: round;
-    /* Neon Glow Effect */
-    filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 15px rgba(255, 0, 0, 0.4));
+    /* Stronger Neon Glow */
+    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
 
-    /* Flow Animation Setup */
     stroke-dasharray: 1000;
-    /* Length of the dashes */
     stroke-dashoffset: 1000;
-    /* Hides the line initially */
-    animation: flowLines 10s linear infinite;
+    animation: flowLines linear infinite;
 }
 
-/* Stagger the animation so lines don't move exactly together */
+/* 8 Lines with FASTER speeds (3s - 6s) */
 .line1 {
-    animation-duration: 8s;
+    animation-duration: 4s;
     animation-delay: 0s;
     stroke: #ff0000;
 }
 
 .line2 {
-    animation-duration: 12s;
-    animation-delay: -2s;
+    animation-duration: 6s;
+    animation-delay: -1.5s;
     stroke: #d00000;
     opacity: 0.6;
 }
 
 .line3 {
-    animation-duration: 10s;
-    animation-delay: -5s;
+    animation-duration: 5s;
+    animation-delay: -3s;
     stroke: #ff3333;
 }
 
 .line4 {
-    animation-duration: 15s;
-    animation-delay: -1s;
+    animation-duration: 7s;
+    animation-delay: -0.5s;
     stroke: #990000;
     opacity: 0.4;
+}
+
+.line5 {
+    animation-duration: 4.5s;
+    animation-delay: -2s;
+    stroke: #ff0000;
+    opacity: 0.7;
+}
+
+.line6 {
+    animation-duration: 3.5s;
+    animation-delay: -4s;
+    stroke: #ff4d4d;
+}
+
+.line7 {
+    animation-duration: 6.5s;
+    animation-delay: -1s;
+    stroke: #cc0000;
+    opacity: 0.5;
+}
+
+.line8 {
+    animation-duration: 5.5s;
+    animation-delay: -2.5s;
+    stroke: #ff1a1a;
 }
 
 @keyframes flowLines {
@@ -97,7 +120,6 @@ body {
 
     100% {
         stroke-dashoffset: -1000;
-        /* Moves the dash pattern along the path */
     }
 }
 
