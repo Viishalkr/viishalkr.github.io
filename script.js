@@ -26,6 +26,35 @@ if (cursorDot && cursorOutline) {
     });
 }
 
+// --- 3D TILT EFFECT LOGIC ---
+const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card');
+
+cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Calculate center
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        // Rotate math (Max 10 degrees)
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        // Remove transition for instant follow
+        card.style.transition = 'none';
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        // Add transition back for smooth reset
+        card.style.transition = 'transform 0.5s ease';
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+    });
+});
+
 // SCROLL REVEAL
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
