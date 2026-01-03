@@ -349,3 +349,34 @@ function revealOnScroll() {
 }
 window.addEventListener('scroll', revealOnScroll);
 window.onload = () => { revealOnScroll(); };
+// --- DAY 6: GLITCH NAVIGATION ---
+const navLinks = document.querySelectorAll('nav a, .hud-point, .back-to-top');
+
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault(); // Stop immediate jump
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+
+        if (!targetSection) return;
+
+        // 1. Trigger Glitch
+        document.body.classList.add('glitching');
+
+        // 2. Play Sound (Optional placeholder)
+        // const audio = new Audio('assets/glitch.mp3'); audio.play();
+
+        // 3. Wait, then Jump
+        setTimeout(() => {
+            window.scrollTo({
+                top: targetSection.offsetTop,
+                behavior: 'auto' // Instant jump feels more "teleporty" than smooth during a glitch
+            });
+
+            // 4. Remove Glitch
+            setTimeout(() => {
+                document.body.classList.remove('glitching');
+            }, 200); // Short cooldown
+        }, 300); // Duration of the glitch
+    });
+});
