@@ -1,4 +1,6 @@
-// --- 1. TERMINAL BOOT SEQUENCE ---
+/* =========================================
+   1. TERMINAL BOOT SEQUENCE
+   ========================================= */
 const preloader = document.getElementById('preloader');
 const bootText = document.getElementById('boot-text');
 const body = document.body;
@@ -35,7 +37,9 @@ if (preloader && bootText) {
     setTimeout(typeLine, 500);
 }
 
-// --- 2. PERFORMANCE MODE TOGGLE ---
+/* =========================================
+   2. PERFORMANCE MODE (ECO)
+   ========================================= */
 function togglePerformance() {
     const body = document.body;
     const statusText = document.getElementById('perf-text');
@@ -43,62 +47,44 @@ function togglePerformance() {
     body.classList.toggle('low-power');
 
     if (body.classList.contains('low-power')) {
-        statusText.innerText = "ECO MODE";
-        statusText.style.color = "yellow";
-        statusText.style.textShadow = "none";
+        if (statusText) {
+            statusText.innerText = "ECO MODE";
+            statusText.style.color = "yellow";
+            statusText.style.textShadow = "none";
+        }
         localStorage.setItem('perfMode', 'low');
     } else {
-        statusText.innerText = "HIGH PERF";
-        statusText.style.color = "#0f0";
-        statusText.style.textShadow = "0 0 5px #0f0";
+        if (statusText) {
+            statusText.innerText = "HIGH PERF";
+            statusText.style.color = "#0f0";
+            statusText.style.textShadow = "0 0 5px #0f0";
+        }
         localStorage.setItem('perfMode', 'high');
     }
 }
+
 window.addEventListener('DOMContentLoaded', () => {
     const savedMode = localStorage.getItem('perfMode');
     if (savedMode === 'low') {
         togglePerformance();
     }
+    updateTelemetry(); // Start telemetry immediately
 });
 
-// --- 3. PARALLAX BACKGROUND (Desktop Only) ---
-document.addEventListener('mousemove', (e) => {
-    if (document.body.classList.contains('low-power') || window.innerWidth < 768) return;
-    const layers = document.querySelectorAll('.parallax-layer');
-    layers.forEach(layer => {
-        const speed = layer.getAttribute('data-speed');
-        const x = (window.innerWidth - e.pageX * speed) / 100;
-        const y = (window.innerHeight - e.pageY * speed) / 100;
-        layer.style.transform = `translateX(${x}px) translateY(${y}px)`;
-    });
-});
-
-// --- 4. SIDE HUD SCROLL SPY ---
-const sections = document.querySelectorAll('section');
-const hudPoints = document.querySelectorAll('.hud-point');
-const observerOptions = { threshold: 0.3 };
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            hudPoints.forEach(point => point.classList.remove('active'));
-            const id = entry.target.getAttribute('id');
-            const activeLink = document.querySelector(`.hud-point[href="#${id}"]`);
-            if (activeLink) activeLink.classList.add('active');
-        }
-    });
-}, observerOptions);
-sections.forEach(section => observer.observe(section));
-
-// --- 5. NEURAL NETWORK ANIMATION (Desktop Only) ---
+/* =========================================
+   3. NEURAL NETWORK BACKGROUND (CANVAS)
+   ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 let particlesArray;
 
+// Resize Logic
 if (canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
 
+// Mouse Interaction
 let mouse = { x: null, y: null, radius: 150 };
 window.addEventListener('mousemove', (event) => {
     mouse.x = event.x;
@@ -125,6 +111,8 @@ class Particle {
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
         this.x += this.directionX;
         this.y += this.directionY;
+
+        // Mouse repulsion
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -138,8 +126,8 @@ class Particle {
     }
 }
 
-function init() {
-    if (!canvas || window.innerWidth < 768) return; // Stop on mobile
+function initParticles() {
+    if (!canvas || window.innerWidth < 768) return; // Disable on mobile
     particlesArray = [];
     let numberOfParticles = (canvas.height * canvas.width) / 9000;
     for (let i = 0; i < numberOfParticles; i++) {
@@ -153,12 +141,13 @@ function init() {
     }
 }
 
-function connect() {
+function connectParticles() {
     let opacityValue = 1;
     for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
             let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
                 ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                 opacityValue = 1 - (distance / 20000);
                 ctx.strokeStyle = 'rgba(208, 0, 0,' + opacityValue + ')';
@@ -169,6 +158,7 @@ function connect() {
                 ctx.stroke();
             }
         }
+        // Connect to mouse
         let mouseDist = ((particlesArray[a].x - mouse.x) * (particlesArray[a].x - mouse.x)) +
             ((particlesArray[a].y - mouse.y) * (particlesArray[a].y - mouse.y));
         if (mouseDist < 20000) {
@@ -182,33 +172,103 @@ function connect() {
     }
 }
 
-function animate() {
-    // Kill loop on mobile or low power
+function animateParticles() {
+    // Stop animation on mobile or low power
     if (!canvas || document.body.classList.contains('low-power') || window.innerWidth < 768) {
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animateParticles);
         return;
     }
-    requestAnimationFrame(animate);
+    requestAnimationFrame(animateParticles);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     for (let i = 0; i < particlesArray.length; i++) {
         particlesArray[i].update();
     }
-    connect();
+    connectParticles();
 }
 
 window.addEventListener('resize', () => {
     if (canvas && window.innerWidth > 768) {
         canvas.width = innerWidth;
         canvas.height = innerHeight;
-        init();
+        initParticles();
     }
 });
 if (canvas) {
-    init();
-    animate();
+    initParticles();
+    animateParticles();
 }
 
-// --- 6. MISSION REPORT MODAL LOGIC ---
+/* =========================================
+   4. LIVE TELEMETRY WIDGET
+   ========================================= */
+function updateTelemetry() {
+    const timeEl = document.getElementById('tele-time');
+    const pingEl = document.getElementById('tele-ping');
+
+    if (timeEl) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+        timeEl.innerText = timeString;
+    }
+
+    // Fake Ping Fluctuation
+    if (pingEl && Math.random() > 0.9) {
+        const ping = Math.floor(Math.random() * 40) + 10;
+        pingEl.innerText = `${ping}ms`;
+    }
+}
+setInterval(updateTelemetry, 1000);
+
+/* =========================================
+   5. GLITCH NAVIGATION & SCROLL SPY
+   ========================================= */
+// Glitch Transition
+const navLinks = document.querySelectorAll('nav a, .hud-point, .back-to-top');
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        if (targetId === '#') return; // Ignore empty links
+        const targetSection = document.querySelector(targetId);
+
+        if (!targetSection) return;
+
+        // Trigger Glitch
+        document.body.classList.add('glitching');
+
+        // Wait, then Jump
+        setTimeout(() => {
+            window.scrollTo({
+                top: targetSection.offsetTop,
+                behavior: 'auto'
+            });
+            setTimeout(() => {
+                document.body.classList.remove('glitching');
+            }, 200);
+        }, 300);
+    });
+});
+
+// Scroll Spy (Side HUD)
+const sections = document.querySelectorAll('section');
+const hudPoints = document.querySelectorAll('.hud-point');
+const observerOptions = { threshold: 0.3 };
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            hudPoints.forEach(point => point.classList.remove('active'));
+            const id = entry.target.getAttribute('id');
+            const activeLink = document.querySelector(`.hud-point[href="#${id}"]`);
+            if (activeLink) activeLink.classList.add('active');
+        }
+    });
+}, observerOptions);
+sections.forEach(section => observer.observe(section));
+
+/* =========================================
+   6. MODAL & INTERACTIONS
+   ========================================= */
+// Modal Logic
 const modal = document.getElementById("projectModal");
 if (modal) {
     const modalImg = document.getElementById("modalImg");
@@ -236,26 +296,19 @@ if (modal) {
     window.onclick = (event) => { if (event.target == modal) closeModal(); }
 }
 
-// --- 7. LEGACY INTERACTIONS ---
-window.addEventListener('scroll', () => {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (scrollTop / scrollHeight) * 100;
-    const pBar = document.getElementById("scroll-progress");
-    if (pBar) pBar.style.width = `${scrolled}%`;
-});
-
-const magnets = document.querySelectorAll('.magnet-btn');
-magnets.forEach((magnet) => {
-    magnet.addEventListener('mousemove', (e) => {
-        const rect = magnet.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+// Parallax (Desktop Only)
+document.addEventListener('mousemove', (e) => {
+    if (document.body.classList.contains('low-power') || window.innerWidth < 768) return;
+    const layers = document.querySelectorAll('.parallax-layer');
+    layers.forEach(layer => {
+        const speed = layer.getAttribute('data-speed');
+        const x = (window.innerWidth - e.pageX * speed) / 100;
+        const y = (window.innerHeight - e.pageY * speed) / 100;
+        layer.style.transform = `translateX(${x}px) translateY(${y}px)`;
     });
-    magnet.addEventListener('mouseleave', () => { magnet.style.transform = 'translate(0, 0)'; });
 });
 
+// Hacker Text Effect
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
 function hackText(element) {
     if (element.getAttribute('data-hacking') === 'true') return;
@@ -279,19 +332,12 @@ document.querySelectorAll("nav a, h2").forEach(element => {
     element.onmouseover = () => hackText(element);
 });
 
-window.addEventListener('click', (e) => {
-    const ripple = document.createElement('div');
-    ripple.classList.add('ripple');
-    ripple.style.left = `${e.clientX}px`;
-    ripple.style.top = `${e.clientY}px`;
-    document.body.appendChild(ripple);
-    setTimeout(() => { ripple.remove(); }, 600);
-});
-
+// Cursor & Tilt (Desktop Only)
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 if (cursorDot && cursorOutline) {
     window.addEventListener("mousemove", (e) => {
+        if (window.innerWidth < 768) return;
         const posX = e.clientX;
         const posY = e.clientY;
         cursorDot.style.left = `${posX}px`;
@@ -308,7 +354,6 @@ if (cursorDot && cursorOutline) {
 const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card, .holo-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
-        // Disable tilt on mobile or low power
         if (document.body.classList.contains('low-power') || window.innerWidth < 768) return;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -326,17 +371,20 @@ cards.forEach(card => {
     });
 });
 
+// Set Project Backgrounds
 document.querySelectorAll('.project-card').forEach(card => {
     const imgPath = card.getAttribute('data-img');
     if (imgPath) card.style.backgroundImage = `url('${imgPath}')`;
 });
 
+// Matrix Mode Key Listener
 document.addEventListener('keydown', (e) => {
     if (e.key.toLowerCase() === 'm') {
         document.body.classList.toggle('matrix-mode');
     }
 });
 
+// Scroll Reveal
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
@@ -346,57 +394,12 @@ function revealOnScroll() {
             if (heading) setTimeout(() => hackText(heading), 200);
         }
     });
+    // Update scroll bar
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (scrollTop / scrollHeight) * 100;
+    const pBar = document.getElementById("scroll-progress");
+    if (pBar) pBar.style.width = `${scrolled}%`;
 }
 window.addEventListener('scroll', revealOnScroll);
 window.onload = () => { revealOnScroll(); };
-// --- DAY 6: GLITCH NAVIGATION ---
-const navLinks = document.querySelectorAll('nav a, .hud-point, .back-to-top');
-
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault(); // Stop immediate jump
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-
-        if (!targetSection) return;
-
-        // 1. Trigger Glitch
-        document.body.classList.add('glitching');
-
-        // 2. Play Sound (Optional placeholder)
-        // const audio = new Audio('assets/glitch.mp3'); audio.play();
-
-        // 3. Wait, then Jump
-        setTimeout(() => {
-            window.scrollTo({
-                top: targetSection.offsetTop,
-                behavior: 'auto' // Instant jump feels more "teleporty" than smooth during a glitch
-            });
-
-            // 4. Remove Glitch
-            setTimeout(() => {
-                document.body.classList.remove('glitching');
-            }, 200); // Short cooldown
-        }, 300); // Duration of the glitch
-    });
-});
-// --- DAY 7: LIVE TELEMETRY LOGIC ---
-function updateTelemetry() {
-    const timeEl = document.getElementById('tele-time');
-    const pingEl = document.getElementById('tele-ping');
-
-    if (timeEl) {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-        timeEl.innerText = timeString;
-    }
-
-    // Fake Ping Fluctuation
-    if (pingEl && Math.random() > 0.9) { // Update only sometimes
-        const ping = Math.floor(Math.random() * 40) + 10;
-        pingEl.innerText = `${ping}ms`;
-    }
-}
-// Update every second
-setInterval(updateTelemetry, 1000);
-updateTelemetry();
