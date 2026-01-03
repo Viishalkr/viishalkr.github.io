@@ -42,22 +42,6 @@
         <a href="#contact" class="hud-point" data-label="LINK">06</a>
         <div class="hud-line"></div>
     </div>
-
-    <div class="kinetic-wrapper">
-        <div class="kinetic-text k-1">
-            <span>/// SYSTEM ONLINE /// VISHAL_OS /// DESIGN PROTOCOLS /// SYSTEM ONLINE /// VISHAL_OS /// DESIGN
-                PROTOCOLS</span>
-            <span>/// SYSTEM ONLINE /// VISHAL_OS /// DESIGN PROTOCOLS /// SYSTEM ONLINE /// VISHAL_OS /// DESIGN
-                PROTOCOLS</span>
-        </div>
-        <div class="kinetic-text k-2">
-            <span>/// CREATIVE DEVELOPER /// UI / UX /// MOTION GRAPHICS /// CREATIVE DEVELOPER /// UI / UX /// MOTION
-                GRAPHICS</span>
-            <span>/// CREATIVE DEVELOPER /// UI / UX /// MOTION GRAPHICS /// CREATIVE DEVELOPER /// UI / UX /// MOTION
-                GRAPHICS</span>
-        </div>
-    </div>
-
     <div class="scanlines"></div>
     <div class="bg-grid parallax-layer" data-speed="2"></div>
     <div id="particles"></div>
@@ -126,13 +110,47 @@
     <section class="section about reveal angled-section" id="about">
         <div class="container">
             <h2>ABOUT ME</h2>
-            <div class="text-content">
-                <p>I’m Vishal, a creative designer focused on UI/UX, web design, and graphic design. I enjoy crafting
-                    clean visuals and meaningful digital experiences.</p>
-                <br>
-                <p>My journey started with a curiosity for how things look, which quickly evolved into an obsession with
-                    how things work. From crafting the visual identity of a brand to coding responsive websites, I
-                    thrive at the intersection of creativity and technology.</p>
+            <div class="about-grid">
+                <div class="text-content">
+                    <p>I’m Vishal, a creative designer focused on UI/UX, web design, and graphic design.</p>
+                    <br>
+                    <p>My journey started with a curiosity for how things look, which quickly evolved into an obsession
+                        with how things work. From crafting the visual identity of a brand to coding responsive
+                        websites, I thrive at the intersection of creativity and technology.</p>
+                </div>
+
+                <div class="holo-card" data-tilt>
+                    <div class="holo-header">
+                        <span>ID: VISHAL_01</span>
+                        <span class="holo-status">ACTIVE</span>
+                    </div>
+                    <div class="holo-body">
+                        <div class="holo-img-box">
+                            <img src="assets/profile.jpg" alt="Agent Profile" class="holo-img">
+                            <div class="holo-scanner"></div>
+                        </div>
+                        <div class="holo-info">
+                            <div class="stat-row">
+                                <span>CREATIVITY</span>
+                                <div class="stat-line">
+                                    <div style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <span>LOGIC</span>
+                                <div class="stat-line">
+                                    <div style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <span>CAFFEINE</span>
+                                <div class="stat-line">
+                                    <div style="width: 85%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -247,7 +265,13 @@
     </section>
 
     <footer class="cyber-footer">
-        <div class="sys-status"><span class="status-dot"></span>SYSTEM: ONLINE</div>
+        <div class="sys-status">
+            <span class="status-dot"></span>
+            SYSTEM: <span id="perf-text">HIGH PERF</span>
+        </div>
+
+        <div class="perf-toggle-btn" onclick="togglePerformance()">[ TOGGLE ECO MODE ]</div>
+
         <div class="footer-copyright">© 2026 VISHAL_OS</div>
         <div class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">BACK TO TOP ▲</div>
     </footer>

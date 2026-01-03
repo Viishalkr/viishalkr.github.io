@@ -35,8 +35,35 @@ if (preloader && bootText) {
     setTimeout(typeLine, 500);
 }
 
-// --- 2. PARALLAX BACKGROUND ---
+// --- 2. PERFORMANCE MODE TOGGLE ---
+function togglePerformance() {
+    const body = document.body;
+    const statusText = document.getElementById('perf-text');
+
+    body.classList.toggle('low-power');
+
+    if (body.classList.contains('low-power')) {
+        statusText.innerText = "ECO MODE";
+        statusText.style.color = "yellow";
+        statusText.style.textShadow = "none";
+        localStorage.setItem('perfMode', 'low');
+    } else {
+        statusText.innerText = "HIGH PERF";
+        statusText.style.color = "#0f0";
+        statusText.style.textShadow = "0 0 5px #0f0";
+        localStorage.setItem('perfMode', 'high');
+    }
+}
+window.addEventListener('DOMContentLoaded', () => {
+    const savedMode = localStorage.getItem('perfMode');
+    if (savedMode === 'low') {
+        togglePerformance();
+    }
+});
+
+// --- 3. PARALLAX BACKGROUND ---
 document.addEventListener('mousemove', (e) => {
+    if (document.body.classList.contains('low-power')) return;
     const layers = document.querySelectorAll('.parallax-layer');
     layers.forEach(layer => {
         const speed = layer.getAttribute('data-speed');
@@ -46,7 +73,7 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
-// --- 3. SIDE HUD SCROLL SPY ---
+// --- 4. SIDE HUD SCROLL SPY ---
 const sections = document.querySelectorAll('section');
 const hudPoints = document.querySelectorAll('.hud-point');
 const observerOptions = { threshold: 0.3 };
@@ -62,11 +89,11 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 sections.forEach(section => observer.observe(section));
 
-// --- 4. FLOATING DATA PARTICLES ---
+// --- 5. FLOATING DATA PARTICLES ---
 const particleContainer = document.getElementById('particles');
 const particleChars = ['0', '1', 'A', 'B', 'X', 'Y', '99', 'FF', '00'];
 function createParticle() {
-    if (!particleContainer) return;
+    if (!particleContainer || document.body.classList.contains('low-power')) return;
     const particle = document.createElement('div');
     particle.classList.add('particle');
     const randomChar = particleChars[Math.floor(Math.random() * particleChars.length)];
@@ -81,7 +108,7 @@ function createParticle() {
 }
 setInterval(createParticle, 200);
 
-// --- 5. MISSION REPORT MODAL LOGIC ---
+// --- 6. MISSION REPORT MODAL LOGIC ---
 const modal = document.getElementById("projectModal");
 if (modal) {
     const modalImg = document.getElementById("modalImg");
@@ -109,7 +136,7 @@ if (modal) {
     window.onclick = (event) => { if (event.target == modal) closeModal(); }
 }
 
-// --- 6. LEGACY INTERACTIONS (MAGNET, HACKER TEXT, CURSOR, TILT) ---
+// --- 7. LEGACY INTERACTIONS ---
 window.addEventListener('scroll', () => {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -171,16 +198,17 @@ if (cursorDot && cursorOutline) {
         cursorDot.style.top = `${posY}px`;
         cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
     });
-    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2, .cyber-btn, .return-btn');
+    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2, .cyber-btn, .return-btn, .holo-card');
     interactables.forEach(el => {
         el.addEventListener('mouseenter', () => cursorOutline.classList.add("hovered"));
         el.addEventListener('mouseleave', () => cursorOutline.classList.remove("hovered"));
     });
 }
 
-const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card');
+const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card, .holo-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
+        if (document.body.classList.contains('low-power')) return;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
