@@ -1,9 +1,27 @@
 /* =========================================
-   1. TERMINAL BOOT SEQUENCE
+   1. TERMINAL BOOT SEQUENCE & TYPEWRITER
    ========================================= */
 const preloader = document.getElementById('preloader');
 const bootText = document.getElementById('boot-text');
 const body = document.body;
+
+// Function to type out "hii i'm VISHAL"
+function startTypewriter() {
+    const greeting = document.querySelector('.greeting');
+    if (greeting) {
+        const text = "hii i'm VISHAL";
+        greeting.innerHTML = ""; // Clear existing text
+        let i = 0;
+        function type() {
+            if (i < text.length) {
+                greeting.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, 100); // Typing speed
+            }
+        }
+        setTimeout(type, 500); // Small delay before typing starts
+    }
+}
 
 if (preloader && bootText) {
     const logs = [
@@ -27,9 +45,14 @@ if (preloader && bootText) {
             setTimeout(typeLine, Math.random() * 300 + 100);
             i++;
         } else {
+            // BOOT COMPLETE
             setTimeout(() => {
                 preloader.classList.add('loaded');
                 body.classList.remove('no-scroll');
+
+                // TRIGGER TYPEWRITER HERE
+                startTypewriter();
+
                 setTimeout(() => preloader.style.display = 'none', 800);
             }, 800);
         }

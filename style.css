@@ -1724,3 +1724,92 @@ body.matrix-mode .hex-item:hover .hex-icon {
     pointer-events: none;
     z-index: -1;
 }
+
+/* --- DAY 10 UPDATE: TYPEWRITER CURSOR --- */
+.greeting {
+    border-right: 2px solid var(--primary-red);
+    display: inline-block;
+    padding-right: 5px;
+    animation: blinkCursor 0.7s step-end infinite;
+}
+
+@keyframes blinkCursor {
+
+    from,
+    to {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: var(--primary-red);
+    }
+}
+
+/* --- DAY 10 UPDATE: RANDOM SKILL PULSE --- */
+/* This animates the red overlay (::after) inside the hexagons */
+@keyframes hexBreathe {
+
+    0%,
+    100% {
+        opacity: 0.1;
+    }
+
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 20px var(--primary-red);
+    }
+}
+
+.hex-item::after {
+    /* Apply the animation to the glow layer */
+    animation: hexBreathe 4s infinite ease-in-out;
+}
+
+/* Randomize the timing so they don't pulse all at once (Robotic vs Organic) */
+.hex-item:nth-child(1)::after {
+    animation-duration: 3.5s;
+    animation-delay: 0s;
+}
+
+.hex-item:nth-child(2)::after {
+    animation-duration: 4.2s;
+    animation-delay: 1.5s;
+}
+
+.hex-item:nth-child(3)::after {
+    animation-duration: 3.8s;
+    animation-delay: 0.5s;
+}
+
+.hex-item:nth-child(4)::after {
+    animation-duration: 4.5s;
+    animation-delay: 2.2s;
+}
+
+.hex-item:nth-child(5)::after {
+    animation-duration: 3.2s;
+    animation-delay: 1.1s;
+}
+
+.hex-item:nth-child(6)::after {
+    animation-duration: 4.0s;
+    animation-delay: 0.8s;
+}
+
+.hex-item:nth-child(7)::after {
+    animation-duration: 3.7s;
+    animation-delay: 2.5s;
+}
+
+.hex-item:nth-child(8)::after {
+    animation-duration: 4.1s;
+    animation-delay: 1.9s;
+}
+
+/* Stronger hover effect to override the gentle pulse */
+.hex-item:hover::after {
+    opacity: 1 !important;
+    animation: none;
+    /* Stop pulsing when hovered */
+    box-shadow: 0 0 20px var(--primary-red);
+}
