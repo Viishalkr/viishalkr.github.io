@@ -1,26 +1,58 @@
-// --- 1. SYSTEM PRELOADER ---
+// --- 1. NEW: TERMINAL BOOT SEQUENCE ---
 const preloader = document.getElementById('preloader');
-const progressBar = document.querySelector('.progress-bar-fill');
-const percentText = document.querySelector('.percent');
+const bootText = document.getElementById('boot-text');
 const body = document.body;
 
-if (preloader) {
-    let load = 0;
-    const interval = setInterval(() => {
-        load += 1;
-        if (load > 100) {
-            clearInterval(interval);
-            preloader.classList.add('loaded');
-            body.classList.remove('no-scroll');
-            setTimeout(() => { preloader.style.display = 'none'; }, 800);
+if (preloader && bootText) {
+    const logs = [
+        "INITIALIZING CORE...",
+        "LOADING VISHAL_OS...",
+        "DECRYPTING SECURE ASSETS...",
+        "MOUNTING FILE SYSTEM...",
+        "ESTABLISHING NEURAL LINK...",
+        "ACCESS GRANTED.",
+        "WELCOME, USER."
+    ];
+
+    let i = 0;
+    const typeLine = () => {
+        if (i < logs.length) {
+            const line = document.createElement('div');
+            line.classList.add('log-line');
+            if (i === logs.length - 1) line.classList.add('success');
+            line.innerText = `> ${logs[i]}`;
+            bootText.appendChild(line);
+            bootText.scrollTop = bootText.scrollHeight;
+
+            // Random typing speed for realism
+            setTimeout(typeLine, Math.random() * 300 + 100);
+            i++;
         } else {
-            progressBar.style.width = `${load}%`;
-            percentText.innerText = `${load}%`;
+            // Boot Complete
+            setTimeout(() => {
+                preloader.classList.add('loaded');
+                body.classList.remove('no-scroll');
+                setTimeout(() => preloader.style.display = 'none', 800);
+            }, 800);
         }
-    }, 20);
+    };
+
+    // Start boot sequence
+    setTimeout(typeLine, 500);
 }
 
-// --- 2. LASER SCROLL PROGRESS ---
+// --- 2. NEW: PARALLAX BACKGROUND ---
+document.addEventListener('mousemove', (e) => {
+    const layers = document.querySelectorAll('.parallax-layer');
+    layers.forEach(layer => {
+        const speed = layer.getAttribute('data-speed');
+        const x = (window.innerWidth - e.pageX * speed) / 100;
+        const y = (window.innerHeight - e.pageY * speed) / 100;
+        layer.style.transform = `translateX(${x}px) translateY(${y}px)`;
+    });
+});
+
+// --- 3. LASER SCROLL PROGRESS ---
 window.addEventListener('scroll', () => {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -29,7 +61,7 @@ window.addEventListener('scroll', () => {
     if (pBar) pBar.style.width = `${scrolled}%`;
 });
 
-// --- 3. MAGNETIC BUTTONS ---
+// --- 4. MAGNETIC BUTTONS ---
 const magnets = document.querySelectorAll('.magnet-btn');
 magnets.forEach((magnet) => {
     magnet.addEventListener('mousemove', (e) => {
@@ -43,7 +75,7 @@ magnets.forEach((magnet) => {
     });
 });
 
-// --- 4. HACKER TEXT SCRAMBLE ---
+// --- 5. HACKER TEXT SCRAMBLE ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
 
 function hackText(element) {
@@ -71,7 +103,7 @@ document.querySelectorAll("nav a, h2").forEach(element => {
     element.onmouseover = () => hackText(element);
 });
 
-// --- 5. CLICK SHOCKWAVE EFFECT ---
+// --- 6. CLICK SHOCKWAVE EFFECT ---
 window.addEventListener('click', (e) => {
     const ripple = document.createElement('div');
     ripple.classList.add('ripple');
@@ -81,7 +113,7 @@ window.addEventListener('click', (e) => {
     setTimeout(() => { ripple.remove(); }, 600);
 });
 
-// --- 6. CUSTOM CURSOR ---
+// --- 7. CUSTOM CURSOR ---
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 if (cursorDot && cursorOutline) {
@@ -99,7 +131,7 @@ if (cursorDot && cursorOutline) {
     });
 }
 
-// --- 7. 3D TILT EFFECT ---
+// --- 8. 3D TILT EFFECT ---
 const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -119,20 +151,20 @@ cards.forEach(card => {
     });
 });
 
-// --- 8. SET PROJECT IMAGES ---
+// --- 9. SET PROJECT IMAGES ---
 document.querySelectorAll('.project-card').forEach(card => {
     const imgPath = card.getAttribute('data-img');
     if (imgPath) card.style.backgroundImage = `url('${imgPath}')`;
 });
 
-// --- 9. MATRIX MODE EASTER EGG ---
+// --- 10. MATRIX MODE EASTER EGG ---
 document.addEventListener('keydown', (e) => {
     if (e.key.toLowerCase() === 'm') {
         document.body.classList.toggle('matrix-mode');
     }
 });
 
-// --- 10. SCROLL REVEAL & AUTO-DECRYPT ---
+// --- 11. SCROLL REVEAL & AUTO-DECRYPT ---
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
