@@ -8,14 +8,14 @@
     --card-bg: rgba(20, 20, 20, 0.6);
 }
 
-/* --- PIXEL PERFECT: CUSTOM SELECTION --- */
+/* CUSTOM SELECTION */
 ::selection {
     background: var(--primary-red);
     color: #fff;
     text-shadow: 0 0 10px #fff;
 }
 
-/* --- CYBERPUNK SCROLLBAR --- */
+/* CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
     width: 8px;
     background: #050505;
@@ -51,7 +51,7 @@ body.no-scroll {
     overflow: hidden;
 }
 
-/* --- TACTICAL GRID OVERLAY --- */
+/* GRID OVERLAY */
 .bg-grid {
     position: fixed;
     top: 0;
@@ -64,7 +64,7 @@ body.no-scroll {
     pointer-events: none;
 }
 
-/* --- SYSTEM PRELOADER --- */
+/* SYSTEM PRELOADER */
 #preloader {
     position: fixed;
     top: 0;
@@ -121,7 +121,7 @@ body.no-scroll {
     font-weight: bold;
 }
 
-/* --- LASER SCROLL BAR --- */
+/* LASER SCROLL BAR */
 #scroll-progress {
     position: fixed;
     top: 0;
@@ -134,7 +134,7 @@ body.no-scroll {
     transition: width 0.1s ease-out;
 }
 
-/* --- FASTER NEON LINES --- */
+/* NEON LINES */
 .bg-lines {
     position: fixed;
     top: 0;
@@ -225,7 +225,7 @@ body.no-scroll {
     }
 }
 
-/* --- FILM GRAIN --- */
+/* NOISE */
 .noise {
     position: fixed;
     top: 0;
@@ -315,7 +315,7 @@ nav a.active {
     opacity: 0.9;
 }
 
-/* --- PIXEL PERFECT: HERO TECH BADGES --- */
+/* HERO BADGES */
 .roles {
     display: flex;
     gap: 15px;
@@ -345,7 +345,7 @@ nav a.active {
     color: #fff;
 }
 
-/* SCROLL INDICATOR */
+/* SCROLL DOWN INDICATOR */
 .scroll-indicator {
     position: absolute;
     bottom: 30px;
@@ -485,7 +485,7 @@ h2:hover {
     text-shadow: 1px 1px 2px #000;
 }
 
-/* GENERAL CARDS */
+/* CARDS */
 .edu-card,
 .skill-card {
     background: var(--card-bg);
@@ -511,7 +511,6 @@ h2:hover {
     background: rgba(30, 30, 30, 0.9);
 }
 
-/* --- PROJECT CARDS (RGB GLITCH) --- */
 .project-card {
     height: 350px;
     padding: 30px;
@@ -607,7 +606,7 @@ h2:hover {
     gap: 40px;
 }
 
-/* --- PIXEL PERFECT: SEGMENTED SKILL BARS --- */
+/* SEGMENTED SKILL BARS */
 .edu-year {
     color: var(--primary-red);
     font-weight: bold;
@@ -766,6 +765,69 @@ body:hover .cursor-outline.hovered {
     backdrop-filter: blur(5px);
 }
 
+/* --- NEW: CYBERPUNK FOOTER --- */
+.cyber-footer {
+    width: 100%;
+    padding: 20px 50px;
+    background: #000;
+    border-top: 1px solid var(--primary-red);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    z-index: 100;
+    position: relative;
+}
+
+.sys-status {
+    color: #0f0;
+    text-shadow: 0 0 5px #0f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #0f0;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #0f0;
+    animation: pulse 2s infinite;
+}
+
+.back-to-top {
+    cursor: pointer;
+    transition: 0.3s;
+    color: var(--primary-red);
+    font-weight: bold;
+}
+
+.back-to-top:hover {
+    text-shadow: 0 0 10px var(--primary-red);
+    transform: translateY(-2px);
+}
+
+.footer-copyright {
+    color: #666;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 @media (max-width: 768px) {
     body {
         cursor: auto;
@@ -805,5 +867,11 @@ body:hover .cursor-outline.hovered {
 
     .angled-section::before {
         transform: skewY(-2deg);
+    }
+
+    .cyber-footer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
     }
 }
