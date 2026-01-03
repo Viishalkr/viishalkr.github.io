@@ -6,27 +6,56 @@ const body = document.body;
 
 if (preloader) {
     let load = 0;
-    // Simulate loading time (2.5 seconds total)
     const interval = setInterval(() => {
         load += 1;
-
         if (load > 100) {
             clearInterval(interval);
-            // Hide preloader
             preloader.classList.add('loaded');
-            // Re-enable scrolling
             body.classList.remove('no-scroll');
-            // Remove preloader from DOM after fade out
             setTimeout(() => {
                 preloader.style.display = 'none';
             }, 800);
         } else {
-            // Update UI
             progressBar.style.width = `${load}%`;
             percentText.innerText = `${load}%`;
         }
-    }, 20); // Speed of loading (lower = faster)
+    }, 20);
 }
+
+// --- HACKER TEXT SCRAMBLE EFFECT (NEW) ---
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
+
+// Select targets: Nav links and Section Headings (h2)
+document.querySelectorAll("nav a, h2").forEach(element => {
+    // Save the original text so we can revert to it
+    element.dataset.value = element.innerText;
+
+    element.onmouseover = event => {
+        let iterations = 0;
+
+        const interval = setInterval(() => {
+            // Map over the text and replace with random chars
+            event.target.innerText = event.target.innerText.split("")
+                .map((letter, index) => {
+                    // If we have passed this index, show the real letter
+                    if (index < iterations) {
+                        return event.target.dataset.value[index];
+                    }
+                    // Otherwise show a random hacker character
+                    return letters[Math.floor(Math.random() * letters.length)];
+                })
+                .join("");
+
+            // Stop when all letters are revealed
+            if (iterations >= event.target.dataset.value.length) {
+                clearInterval(interval);
+            }
+
+            // Speed of decryption
+            iterations += 1 / 3;
+        }, 30); // Speed of frame update
+    }
+});
 
 // CUSTOM CURSOR LOGIC
 const cursorDot = document.querySelector(".cursor-dot");
@@ -36,20 +65,15 @@ if (cursorDot && cursorOutline) {
     window.addEventListener("mousemove", (e) => {
         const posX = e.clientX;
         const posY = e.clientY;
-
-        // Dot moves instantly
         cursorDot.style.left = `${posX}px`;
         cursorDot.style.top = `${posY}px`;
-
-        // Outline moves with delay
         cursorOutline.animate({
             left: `${posX}px`,
             top: `${posY}px`
         }, { duration: 500, fill: "forwards" });
     });
 
-    // Add hover effect to links, cards, buttons
-    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card');
+    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2');
     interactables.forEach(el => {
         el.addEventListener('mouseenter', () => cursorOutline.classList.add("hovered"));
         el.addEventListener('mouseleave', () => cursorOutline.classList.remove("hovered"));
@@ -64,22 +88,16 @@ cards.forEach(card => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
-        // Calculate center
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-
-        // Rotate math (Max 10 degrees)
         const rotateX = ((y - centerY) / centerY) * -10;
         const rotateY = ((x - centerX) / centerX) * 10;
 
-        // Remove transition for instant follow
         card.style.transition = 'none';
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
     });
 
     card.addEventListener('mouseleave', () => {
-        // Add transition back for smooth reset
         card.style.transition = 'transform 0.5s ease';
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
     });
@@ -90,7 +108,6 @@ function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     const windowHeight = window.innerHeight;
     const elementVisible = 100;
-
     reveals.forEach((reveal) => {
         const elementTop = reveal.getBoundingClientRect().top;
         if (elementTop < windowHeight - elementVisible) {
