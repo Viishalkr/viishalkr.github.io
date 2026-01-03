@@ -61,6 +61,7 @@ body.no-scroll {
     pointer-events: none;
     z-index: 0;
     opacity: 0.6;
+    transition: all 0.5s ease;
 }
 
 .reactor-ring {
@@ -1484,16 +1485,16 @@ body.matrix-mode .reactor-core {
     background: #00ff00;
 }
 
+/* --- MOBILE COMBAT MODE (THE FIX) --- */
 @media (max-width: 768px) {
-    body {
-        cursor: auto;
-    }
 
+    /* Hide Cursor Elements */
     .cursor-dot,
     .cursor-outline {
-        display: none;
+        display: none !important;
     }
 
+    /* Navbar Adjustment */
     .navbar {
         padding: 15px 20px;
         justify-content: flex-start;
@@ -1506,20 +1507,37 @@ body.matrix-mode .reactor-core {
         gap: 10px;
     }
 
+    /* Reactor Moves to BG */
+    .reactor-container {
+        width: 250px;
+        height: 250px;
+        top: 30%;
+        right: 50%;
+        transform: translateX(50%);
+        opacity: 0.2;
+    }
+
+    /* Typography Resizing */
     .main-title {
         font-size: 18vw;
         text-align: center;
     }
 
+    h2 {
+        font-size: 2rem;
+    }
+
+    /* Layout Stacking */
     .skill-grid,
-    .project-grid {
+    .project-grid,
+    .about-grid,
+    .contact-buttons {
         grid-template-columns: 1fr;
+        flex-direction: column;
+        width: 100%;
     }
 
-    .about-grid {
-        grid-template-columns: 1fr;
-    }
-
+    /* Padding Adjustments */
     .angled-section {
         padding: 80px 0;
         margin: 20px 0;
@@ -1529,29 +1547,16 @@ body.matrix-mode .reactor-core {
         transform: skewY(-2deg);
     }
 
-    .cyber-footer {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
+    .section {
+        padding: 80px 20px;
     }
 
-    .contact-buttons {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .cyber-btn {
-        width: 100%;
-    }
-
+    /* Hide Desktop HUD */
     .side-hud {
         display: none;
     }
 
-    h2 {
-        font-size: 2rem;
-    }
-
+    /* Mobile Modal */
     .modal-container {
         flex-direction: column;
         width: 95%;
@@ -1570,9 +1575,13 @@ body.matrix-mode .reactor-core {
         font-size: 1.5rem;
     }
 
-    .reactor-container {
-        width: 250px;
-        height: 250px;
-        opacity: 0.4;
+    /* Disable Hover Tilt on Mobile */
+    .project-card:hover,
+    .holo-card:hover {
+        transform: none !important;
+    }
+
+    .project-card {
+        animation: none;
     }
 }

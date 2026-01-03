@@ -61,9 +61,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- 3. PARALLAX BACKGROUND ---
+// --- 3. PARALLAX BACKGROUND (Desktop Only) ---
 document.addEventListener('mousemove', (e) => {
-    if (document.body.classList.contains('low-power')) return;
+    if (document.body.classList.contains('low-power') || window.innerWidth < 768) return;
     const layers = document.querySelectorAll('.parallax-layer');
     layers.forEach(layer => {
         const speed = layer.getAttribute('data-speed');
@@ -89,7 +89,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 sections.forEach(section => observer.observe(section));
 
-// --- 5. NEURAL NETWORK ANIMATION ---
+// --- 5. NEURAL NETWORK ANIMATION (Desktop Only) ---
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 let particlesArray;
@@ -139,7 +139,7 @@ class Particle {
 }
 
 function init() {
-    if (!canvas) return;
+    if (!canvas || window.innerWidth < 768) return; // Stop on mobile
     particlesArray = [];
     let numberOfParticles = (canvas.height * canvas.width) / 9000;
     for (let i = 0; i < numberOfParticles; i++) {
@@ -183,7 +183,8 @@ function connect() {
 }
 
 function animate() {
-    if (!canvas || document.body.classList.contains('low-power')) {
+    // Kill loop on mobile or low power
+    if (!canvas || document.body.classList.contains('low-power') || window.innerWidth < 768) {
         requestAnimationFrame(animate);
         return;
     }
@@ -196,7 +197,7 @@ function animate() {
 }
 
 window.addEventListener('resize', () => {
-    if (canvas) {
+    if (canvas && window.innerWidth > 768) {
         canvas.width = innerWidth;
         canvas.height = innerHeight;
         init();
@@ -307,7 +308,8 @@ if (cursorDot && cursorOutline) {
 const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card, .holo-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
-        if (document.body.classList.contains('low-power')) return;
+        // Disable tilt on mobile or low power
+        if (document.body.classList.contains('low-power') || window.innerWidth < 768) return;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
