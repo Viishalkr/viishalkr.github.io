@@ -1,3 +1,33 @@
+// --- SYSTEM PRELOADER LOGIC ---
+const preloader = document.getElementById('preloader');
+const progressBar = document.querySelector('.progress-bar-fill');
+const percentText = document.querySelector('.percent');
+const body = document.body;
+
+if (preloader) {
+    let load = 0;
+    // Simulate loading time (2.5 seconds total)
+    const interval = setInterval(() => {
+        load += 1;
+
+        if (load > 100) {
+            clearInterval(interval);
+            // Hide preloader
+            preloader.classList.add('loaded');
+            // Re-enable scrolling
+            body.classList.remove('no-scroll');
+            // Remove preloader from DOM after fade out
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 800);
+        } else {
+            // Update UI
+            progressBar.style.width = `${load}%`;
+            percentText.innerText = `${load}%`;
+        }
+    }, 20); // Speed of loading (lower = faster)
+}
+
 // CUSTOM CURSOR LOGIC
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
