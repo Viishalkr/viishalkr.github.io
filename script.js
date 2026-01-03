@@ -1,4 +1,4 @@
-// --- SYSTEM PRELOADER LOGIC ---
+// --- PRELOADER ---
 const preloader = document.getElementById('preloader');
 const progressBar = document.querySelector('.progress-bar-fill');
 const percentText = document.querySelector('.percent');
@@ -12,9 +12,7 @@ if (preloader) {
             clearInterval(interval);
             preloader.classList.add('loaded');
             body.classList.remove('no-scroll');
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 800);
+            setTimeout(() => { preloader.style.display = 'none'; }, 800);
         } else {
             progressBar.style.width = `${load}%`;
             percentText.innerText = `${load}%`;
@@ -22,57 +20,62 @@ if (preloader) {
     }, 20);
 }
 
-// --- HACKER TEXT SCRAMBLE EFFECT (NEW) ---
+// --- LASER SCROLL BAR ---
+window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (scrollTop / scrollHeight) * 100;
+    const pBar = document.getElementById("scroll-progress");
+    if (pBar) pBar.style.width = `${scrolled}%`;
+});
+
+// --- 3. NEW: MAGNETIC BUTTONS ---
+const magnets = document.querySelectorAll('.magnet-btn');
+magnets.forEach((magnet) => {
+    magnet.addEventListener('mousemove', (e) => {
+        const rect = magnet.getBoundingClientRect();
+        // Calculate distance from center
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        // Move button slightly (Magnet effect)
+        magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+
+    magnet.addEventListener('mouseleave', () => {
+        // Snap back
+        magnet.style.transform = 'translate(0, 0)';
+    });
+});
+
+// --- HACKER TEXT ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
-
-// Select targets: Nav links and Section Headings (h2)
 document.querySelectorAll("nav a, h2").forEach(element => {
-    // Save the original text so we can revert to it
     element.dataset.value = element.innerText;
-
     element.onmouseover = event => {
         let iterations = 0;
-
         const interval = setInterval(() => {
-            // Map over the text and replace with random chars
-            event.target.innerText = event.target.innerText.split("")
-                .map((letter, index) => {
-                    // If we have passed this index, show the real letter
-                    if (index < iterations) {
-                        return event.target.dataset.value[index];
-                    }
-                    // Otherwise show a random hacker character
-                    return letters[Math.floor(Math.random() * letters.length)];
-                })
-                .join("");
-
-            // Stop when all letters are revealed
-            if (iterations >= event.target.dataset.value.length) {
-                clearInterval(interval);
-            }
-
-            // Speed of decryption
+            event.target.innerText = event.target.innerText.split("").map((letter, index) => {
+                if (index < iterations) return event.target.dataset.value[index];
+                return letters[Math.floor(Math.random() * letters.length)];
+            }).join("");
+            if (iterations >= event.target.dataset.value.length) clearInterval(interval);
             iterations += 1 / 3;
-        }, 30); // Speed of frame update
+        }, 30);
     }
 });
 
-// CUSTOM CURSOR LOGIC
+// --- CUSTOM CURSOR ---
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
-
 if (cursorDot && cursorOutline) {
     window.addEventListener("mousemove", (e) => {
         const posX = e.clientX;
         const posY = e.clientY;
         cursorDot.style.left = `${posX}px`;
         cursorDot.style.top = `${posY}px`;
-        cursorOutline.animate({
-            left: `${posX}px`,
-            top: `${posY}px`
-        }, { duration: 500, fill: "forwards" });
+        cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
     });
-
     const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2');
     interactables.forEach(el => {
         el.addEventListener('mouseenter', () => cursorOutline.classList.add("hovered"));
@@ -80,9 +83,8 @@ if (cursorDot && cursorOutline) {
     });
 }
 
-// --- 3D TILT EFFECT LOGIC ---
+// --- 3D TILT ---
 const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card');
-
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -92,61 +94,36 @@ cards.forEach(card => {
         const centerY = rect.height / 2;
         const rotateX = ((y - centerY) / centerY) * -10;
         const rotateY = ((x - centerX) / centerX) * 10;
-
         card.style.transition = 'none';
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
     });
-
     card.addEventListener('mouseleave', () => {
         card.style.transition = 'transform 0.5s ease';
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
     });
 });
 
-// SCROLL REVEAL
+// SCROLL REVEAL & MODAL
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
-    const windowHeight = window.innerHeight;
-    const elementVisible = 100;
     reveals.forEach((reveal) => {
-        const elementTop = reveal.getBoundingClientRect().top;
-        if (elementTop < windowHeight - elementVisible) {
-            reveal.classList.add('active');
-        }
+        if (reveal.getBoundingClientRect().top < window.innerHeight - 100) reveal.classList.add('active');
     });
 }
 window.addEventListener('scroll', revealOnScroll);
+window.onload = () => { revealOnScroll(); };
 
-// MODAL LOGIC
 const modal = document.getElementById("projectModal");
 if (modal) {
     const modalImg = document.getElementById("modalImg");
     const projectCards = document.querySelectorAll(".project-card");
     const span = document.querySelector(".close");
-
     projectCards.forEach(card => {
         card.addEventListener('click', () => {
             const imgPath = card.getAttribute('data-img');
-            if (imgPath) {
-                modal.style.display = "block";
-                modalImg.src = imgPath;
-            }
+            if (imgPath) { modal.style.display = "block"; modalImg.src = imgPath; }
         });
     });
-
-    if (span) { span.onclick = () => modal.style.display = "none"; }
+    if (span) span.onclick = () => modal.style.display = "none";
     window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
 }
-
-window.onload = () => { revealOnScroll(); };
-// --- LASER SCROLL BAR LOGIC ---
-window.addEventListener('scroll', () => {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (scrollTop / scrollHeight) * 100;
-
-    const progressBar = document.getElementById("scroll-progress");
-    if (progressBar) {
-        progressBar.style.width = `${scrolled}%`;
-    }
-});
