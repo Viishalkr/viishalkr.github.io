@@ -1517,3 +1517,117 @@ body.matrix-mode .hex-item:hover .hex-icon {
         animation: none;
     }
 }
+
+/* --- DAY 9: DATA-STAMP TYPOGRAPHY --- */
+.data-stamp {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: #666;
+    letter-spacing: 1px;
+    margin-left: 20px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    text-shadow: none;
+    /* Remove the metallic shadow from the stamp */
+    background: none;
+    -webkit-text-fill-color: #666;
+    /* Override gradient text */
+    border-left: 1px solid var(--primary-red);
+    padding-left: 10px;
+    display: inline-block;
+    transform: translateY(-5px);
+}
+
+/* --- DAY 9: BREATHING GLOW BORDERS --- */
+@keyframes borderPulse {
+    0% {
+        opacity: 0.3;
+        box-shadow: inset 0 0 0px var(--primary-red);
+    }
+
+    50% {
+        opacity: 1;
+        box-shadow: inset 0 0 10px var(--primary-red);
+    }
+
+    100% {
+        opacity: 0.3;
+        box-shadow: inset 0 0 0px var(--primary-red);
+    }
+}
+
+/* Apply the pulse to the card borders (pseudo-elements) */
+.project-card::before,
+.edu-card::before,
+.skill-card::before,
+.holo-card::before {
+    animation: borderPulse 3s infinite ease-in-out;
+}
+
+/* --- DAY 9: CRT IMAGE PROTOCOL (The Hologram Filter) --- */
+.project-card {
+    /* 1. The Holographic Tint */
+    background-blend-mode: luminosity;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: 0.4s ease;
+}
+
+/* 2. The Scanline Texture */
+.project-card .card-content,
+.project-card .card-sub {
+    z-index: 5;
+    /* Ensure text stays above scanlines */
+}
+
+/* Create the scanline overlay */
+.project-card::after {
+    /* Overwrite previous bracket logic to include scanlines */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* The Scanlines */
+    background: repeating-linear-gradient(0deg,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.2) 1px,
+            transparent 1px,
+            transparent 3px);
+    z-index: 1;
+    pointer-events: none;
+    transition: 0.4s;
+
+    /* Keep the corner brackets visible via box-shadow instead of background-image */
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+/* 3. HOVER STATE: REVEAL FULL COLOR */
+.project-card:hover {
+    background-blend-mode: normal;
+    /* Restore colors */
+    background-color: transparent;
+    /* Remove darkness */
+    filter: contrast(1.1) saturate(1.1);
+    /* Boost colors slightly */
+}
+
+.project-card:hover::after {
+    opacity: 0.2;
+    /* Fade out scanlines */
+}
+
+/* Mobile: Disable the heavy filter so images are always visible */
+@media (max-width: 768px) {
+    .project-card {
+        background-blend-mode: normal;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .data-stamp {
+        display: none;
+    }
+
+    /* Hide stamps on small screens */
+}
