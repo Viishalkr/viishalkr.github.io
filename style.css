@@ -196,7 +196,7 @@ nav a.active {
     letter-spacing: 10px;
     text-transform: uppercase;
     color: transparent;
-    -webkit-text-stroke: 4px rgb(246, 244, 244);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
     opacity: 0.6;
     pointer-events: none;
     z-index: 1;
@@ -502,7 +502,35 @@ body:hover .cursor-outline.hovered {
     cursor: pointer;
 }
 
-/* MOBILE */
+/* --- CYBERPUNK ANGLED SECTIONS --- */
+.angled-section {
+    position: relative;
+    z-index: 1;
+    padding: 120px 0;
+    margin: 50px 0;
+}
+
+.angled-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 5, 5, 0.85);
+    /* Dark background to read text */
+    transform: skewY(-3deg);
+    /* THE TILT */
+    z-index: -1;
+
+    /* Glowing Red Borders on the Slant */
+    border-top: 1px solid var(--primary-red);
+    border-bottom: 1px solid var(--primary-red);
+    box-shadow: 0 0 15px rgba(208, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
     body {
         cursor: auto;
@@ -533,5 +561,15 @@ body:hover .cursor-outline.hovered {
     .skill-grid,
     .project-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Fix angle for mobile */
+    .angled-section {
+        padding: 80px 0;
+        margin: 20px 0;
+    }
+
+    .angled-section::before {
+        transform: skewY(-2deg);
     }
 }
