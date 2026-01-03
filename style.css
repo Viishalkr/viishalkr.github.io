@@ -326,7 +326,6 @@ nav a.active {
     color: #fff;
 }
 
-/* --- MAIN TITLE (GLITCH REMOVED) --- */
 .main-title {
     font-size: 14vw;
     line-height: 0.85;
@@ -450,6 +449,24 @@ h2::after {
     margin-left: 10px;
 }
 
+/* --- DATA STAMPS (Technical Text in Headings) --- */
+.data-stamp {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: #666;
+    letter-spacing: 1px;
+    margin-left: 20px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    text-shadow: none;
+    background: none;
+    -webkit-text-fill-color: #666;
+    border-left: 1px solid var(--primary-red);
+    padding-left: 10px;
+    display: inline-block;
+    transform: translateY(-5px);
+}
+
 .reveal {
     opacity: 0;
     transform: translateY(40px);
@@ -549,7 +566,7 @@ h2::after {
 }
 
 /* =========================================
-   7. CARDS
+   7. CARDS & WORK GRID
    ========================================= */
 .education-grid:hover .edu-card:not(:hover),
 .project-grid:hover .project-card:not(:hover) {
@@ -571,6 +588,24 @@ h2::after {
     cursor: none;
 }
 
+/* Breathing Border Animation */
+@keyframes borderPulse {
+    0% {
+        opacity: 0.3;
+        box-shadow: inset 0 0 0px var(--primary-red);
+    }
+
+    50% {
+        opacity: 1;
+        box-shadow: inset 0 0 10px var(--primary-red);
+    }
+
+    100% {
+        opacity: 0.3;
+        box-shadow: inset 0 0 0px var(--primary-red);
+    }
+}
+
 .project-card::before,
 .edu-card::before,
 .skill-card::before,
@@ -587,6 +622,7 @@ h2::after {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+    animation: borderPulse 3s infinite ease-in-out;
 }
 
 .edu-card:hover,
@@ -600,6 +636,7 @@ h2::after {
     padding: 25px;
 }
 
+/* CRT Image Filter Logic */
 .project-card {
     height: 350px;
     padding: 30px;
@@ -611,29 +648,41 @@ h2::after {
     overflow: hidden;
     transform-style: preserve-3d;
     will-change: transform;
+    background-blend-mode: luminosity;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: 0.4s ease;
 }
 
 .project-card::after {
+    /* Scanlines + Brackets */
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background:
-        linear-gradient(to right, var(--primary-red) 2px, transparent 2px) 0 0,
-        linear-gradient(to bottom, var(--primary-red) 2px, transparent 2px) 0 0,
-        linear-gradient(to left, var(--primary-red) 2px, transparent 2px) 100% 100%,
-        linear-gradient(to top, var(--primary-red) 2px, transparent 2px) 100% 100%;
-    background-size: 10px 10px;
-    background-repeat: no-repeat;
-    opacity: 0.5;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px);
+    z-index: 1;
     pointer-events: none;
+    transition: 0.4s;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
 .project-card:hover {
     animation: rgb-shake 0.4s cubic-bezier(.36, .07, .19, .97) both infinite;
     z-index: 10;
+    background-blend-mode: normal;
+    background-color: transparent;
+    filter: contrast(1.1) saturate(1.1);
+}
+
+.project-card:hover::after {
+    opacity: 0.2;
+}
+
+.project-card .card-content,
+.project-card .card-sub {
+    z-index: 5;
 }
 
 .project-card:hover .card-content {
@@ -1516,118 +1565,13 @@ body.matrix-mode .hex-item:hover .hex-icon {
     .project-card {
         animation: none;
     }
-}
-
-/* --- DAY 9: DATA-STAMP TYPOGRAPHY --- */
-.data-stamp {
-    font-family: 'Fira Code', monospace;
-    font-size: 0.8rem;
-    color: #666;
-    letter-spacing: 1px;
-    margin-left: 20px;
-    opacity: 0.7;
-    text-transform: uppercase;
-    text-shadow: none;
-    /* Remove the metallic shadow from the stamp */
-    background: none;
-    -webkit-text-fill-color: #666;
-    /* Override gradient text */
-    border-left: 1px solid var(--primary-red);
-    padding-left: 10px;
-    display: inline-block;
-    transform: translateY(-5px);
-}
-
-/* --- DAY 9: BREATHING GLOW BORDERS --- */
-@keyframes borderPulse {
-    0% {
-        opacity: 0.3;
-        box-shadow: inset 0 0 0px var(--primary-red);
-    }
-
-    50% {
-        opacity: 1;
-        box-shadow: inset 0 0 10px var(--primary-red);
-    }
-
-    100% {
-        opacity: 0.3;
-        box-shadow: inset 0 0 0px var(--primary-red);
-    }
-}
-
-/* Apply the pulse to the card borders (pseudo-elements) */
-.project-card::before,
-.edu-card::before,
-.skill-card::before,
-.holo-card::before {
-    animation: borderPulse 3s infinite ease-in-out;
-}
-
-/* --- DAY 9: CRT IMAGE PROTOCOL (The Hologram Filter) --- */
-.project-card {
-    /* 1. The Holographic Tint */
-    background-blend-mode: luminosity;
-    background-color: rgba(0, 0, 0, 0.7);
-    transition: 0.4s ease;
-}
-
-/* 2. The Scanline Texture */
-.project-card .card-content,
-.project-card .card-sub {
-    z-index: 5;
-    /* Ensure text stays above scanlines */
-}
-
-/* Create the scanline overlay */
-.project-card::after {
-    /* Overwrite previous bracket logic to include scanlines */
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    /* The Scanlines */
-    background: repeating-linear-gradient(0deg,
-            rgba(0, 0, 0, 0.2),
-            rgba(0, 0, 0, 0.2) 1px,
-            transparent 1px,
-            transparent 3px);
-    z-index: 1;
-    pointer-events: none;
-    transition: 0.4s;
-
-    /* Keep the corner brackets visible via box-shadow instead of background-image */
-    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
-}
-
-/* 3. HOVER STATE: REVEAL FULL COLOR */
-.project-card:hover {
-    background-blend-mode: normal;
-    /* Restore colors */
-    background-color: transparent;
-    /* Remove darkness */
-    filter: contrast(1.1) saturate(1.1);
-    /* Boost colors slightly */
-}
-
-.project-card:hover::after {
-    opacity: 0.2;
-    /* Fade out scanlines */
-}
-
-/* Mobile: Disable the heavy filter so images are always visible */
-@media (max-width: 768px) {
-    .project-card {
-        background-blend-mode: normal;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
 
     .data-stamp {
         display: none;
     }
 
-    /* Hide stamps on small screens */
+    .project-card {
+        background-blend-mode: normal;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
 }

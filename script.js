@@ -284,12 +284,11 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
-/* --- SCRAMBLE TEXT LOGIC (HERO & GENERAL) --- */
+/* --- SCRAMBLE TEXT LOGIC --- */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
 function hackText(element) {
     if (element.getAttribute('data-hacking') === 'true') return;
     element.setAttribute('data-hacking', 'true');
-    // Store original text
     if (!element.dataset.value) element.dataset.value = element.innerText;
 
     let iterations = 0;
@@ -307,7 +306,6 @@ function hackText(element) {
     }, 30);
 }
 
-// Apply scramble to Headings on Scroll
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
@@ -317,7 +315,6 @@ function revealOnScroll() {
             if (heading) setTimeout(() => hackText(heading), 200);
         }
     });
-    // Scroll Bar
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (scrollTop / scrollHeight) * 100;
@@ -340,7 +337,7 @@ if (heroTitle) {
     });
 }
 
-// Magnetic Buttons
+/* --- MAGNETIC BUTTONS --- */
 const magnets = document.querySelectorAll('.magnet-btn');
 magnets.forEach((magnet) => {
     magnet.addEventListener('mousemove', (e) => {
