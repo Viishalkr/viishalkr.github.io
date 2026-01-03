@@ -1,4 +1,4 @@
-// --- 1. NEW: TERMINAL BOOT SEQUENCE ---
+// --- 1. TERMINAL BOOT SEQUENCE ---
 const preloader = document.getElementById('preloader');
 const bootText = document.getElementById('boot-text');
 const body = document.body;
@@ -13,7 +13,6 @@ if (preloader && bootText) {
         "ACCESS GRANTED.",
         "WELCOME, USER."
     ];
-
     let i = 0;
     const typeLine = () => {
         if (i < logs.length) {
@@ -23,12 +22,9 @@ if (preloader && bootText) {
             line.innerText = `> ${logs[i]}`;
             bootText.appendChild(line);
             bootText.scrollTop = bootText.scrollHeight;
-
-            // Random typing speed for realism
             setTimeout(typeLine, Math.random() * 300 + 100);
             i++;
         } else {
-            // Boot Complete
             setTimeout(() => {
                 preloader.classList.add('loaded');
                 body.classList.remove('no-scroll');
@@ -36,12 +32,10 @@ if (preloader && bootText) {
             }, 800);
         }
     };
-
-    // Start boot sequence
     setTimeout(typeLine, 500);
 }
 
-// --- 2. NEW: PARALLAX BACKGROUND ---
+// --- 2. PARALLAX BACKGROUND ---
 document.addEventListener('mousemove', (e) => {
     const layers = document.querySelectorAll('.parallax-layer');
     layers.forEach(layer => {
@@ -52,7 +46,70 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
-// --- 3. LASER SCROLL PROGRESS ---
+// --- 3. SIDE HUD SCROLL SPY ---
+const sections = document.querySelectorAll('section');
+const hudPoints = document.querySelectorAll('.hud-point');
+const observerOptions = { threshold: 0.3 };
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            hudPoints.forEach(point => point.classList.remove('active'));
+            const id = entry.target.getAttribute('id');
+            const activeLink = document.querySelector(`.hud-point[href="#${id}"]`);
+            if (activeLink) activeLink.classList.add('active');
+        }
+    });
+}, observerOptions);
+sections.forEach(section => observer.observe(section));
+
+// --- 4. FLOATING DATA PARTICLES ---
+const particleContainer = document.getElementById('particles');
+const particleChars = ['0', '1', 'A', 'B', 'X', 'Y', '99', 'FF', '00'];
+function createParticle() {
+    if (!particleContainer) return;
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    const randomChar = particleChars[Math.floor(Math.random() * particleChars.length)];
+    particle.innerText = randomChar;
+    particle.style.left = Math.random() * 100 + 'vw';
+    const duration = Math.random() * 5 + 5;
+    const size = Math.random() * 10 + 8;
+    particle.style.fontSize = `${size}px`;
+    particle.style.animationDuration = `${duration}s`;
+    particleContainer.appendChild(particle);
+    setTimeout(() => { particle.remove(); }, duration * 1000);
+}
+setInterval(createParticle, 200);
+
+// --- 5. MISSION REPORT MODAL LOGIC ---
+const modal = document.getElementById("projectModal");
+if (modal) {
+    const modalImg = document.getElementById("modalImg");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalTools = document.getElementById("modalTools");
+    const span = document.querySelector(".close");
+
+    document.querySelectorAll(".project-card").forEach(card => {
+        card.addEventListener('click', () => {
+            const imgPath = card.getAttribute('data-img');
+            const title = card.getAttribute('data-title');
+            const desc = card.getAttribute('data-desc');
+            const tools = card.getAttribute('data-tools');
+            modalImg.src = imgPath;
+            modalTitle.innerText = title;
+            modalDesc.innerText = desc;
+            modalTools.innerText = tools;
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        });
+    });
+    const closeModal = () => { modal.style.display = "none"; document.body.style.overflow = "auto"; };
+    if (span) span.onclick = closeModal;
+    window.onclick = (event) => { if (event.target == modal) closeModal(); }
+}
+
+// --- 6. LEGACY INTERACTIONS (MAGNET, HACKER TEXT, CURSOR, TILT) ---
 window.addEventListener('scroll', () => {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -61,7 +118,6 @@ window.addEventListener('scroll', () => {
     if (pBar) pBar.style.width = `${scrolled}%`;
 });
 
-// --- 4. MAGNETIC BUTTONS ---
 const magnets = document.querySelectorAll('.magnet-btn');
 magnets.forEach((magnet) => {
     magnet.addEventListener('mousemove', (e) => {
@@ -70,26 +126,20 @@ magnets.forEach((magnet) => {
         const y = e.clientY - rect.top - rect.height / 2;
         magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
     });
-    magnet.addEventListener('mouseleave', () => {
-        magnet.style.transform = 'translate(0, 0)';
-    });
+    magnet.addEventListener('mouseleave', () => { magnet.style.transform = 'translate(0, 0)'; });
 });
 
-// --- 5. HACKER TEXT SCRAMBLE ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
-
 function hackText(element) {
     if (element.getAttribute('data-hacking') === 'true') return;
     element.setAttribute('data-hacking', 'true');
     if (!element.dataset.value) element.dataset.value = element.innerText;
-
     let iterations = 0;
     const interval = setInterval(() => {
         element.innerText = element.innerText.split("").map((letter, index) => {
             if (index < iterations) return element.dataset.value[index];
             return letters[Math.floor(Math.random() * letters.length)];
         }).join("");
-
         if (iterations >= element.dataset.value.length) {
             clearInterval(interval);
             element.setAttribute('data-hacking', 'false');
@@ -97,13 +147,11 @@ function hackText(element) {
         iterations += 1 / 3;
     }, 30);
 }
-
 document.querySelectorAll("nav a, h2").forEach(element => {
     element.dataset.value = element.innerText;
     element.onmouseover = () => hackText(element);
 });
 
-// --- 6. CLICK SHOCKWAVE EFFECT ---
 window.addEventListener('click', (e) => {
     const ripple = document.createElement('div');
     ripple.classList.add('ripple');
@@ -113,7 +161,6 @@ window.addEventListener('click', (e) => {
     setTimeout(() => { ripple.remove(); }, 600);
 });
 
-// --- 7. CUSTOM CURSOR ---
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 if (cursorDot && cursorOutline) {
@@ -131,7 +178,6 @@ if (cursorDot && cursorOutline) {
     });
 }
 
-// --- 8. 3D TILT EFFECT ---
 const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -151,20 +197,17 @@ cards.forEach(card => {
     });
 });
 
-// --- 9. SET PROJECT IMAGES ---
 document.querySelectorAll('.project-card').forEach(card => {
     const imgPath = card.getAttribute('data-img');
     if (imgPath) card.style.backgroundImage = `url('${imgPath}')`;
 });
 
-// --- 10. MATRIX MODE EASTER EGG ---
 document.addEventListener('keydown', (e) => {
     if (e.key.toLowerCase() === 'm') {
         document.body.classList.toggle('matrix-mode');
     }
 });
 
-// --- 11. SCROLL REVEAL & AUTO-DECRYPT ---
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
@@ -177,73 +220,3 @@ function revealOnScroll() {
 }
 window.addEventListener('scroll', revealOnScroll);
 window.onload = () => { revealOnScroll(); };
-
-const modal = document.getElementById("projectModal");
-if (modal) {
-    const modalImg = document.getElementById("modalImg");
-    const projectCards = document.querySelectorAll(".project-card");
-    const span = document.querySelector(".close");
-    projectCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const imgPath = card.getAttribute('data-img');
-            if (imgPath) { modal.style.display = "block"; modalImg.src = imgPath; }
-        });
-    });
-    if (span) span.onclick = () => modal.style.display = "none";
-    window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
-}
-// --- DAY 2: SIDE HUD SCROLL SPY ---
-const sections = document.querySelectorAll('section');
-const hudPoints = document.querySelectorAll('.hud-point');
-
-const observerOptions = {
-    threshold: 0.3 // Trigger when 30% of section is visible
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            // Remove active class from all
-            hudPoints.forEach(point => point.classList.remove('active'));
-            // Add active class to corresponding link
-            const id = entry.target.getAttribute('id');
-            const activeLink = document.querySelector(`.hud-point[href="#${id}"]`);
-            if (activeLink) activeLink.classList.add('active');
-        }
-    });
-}, observerOptions);
-
-sections.forEach(section => observer.observe(section));
-
-// --- DAY 2: FLOATING DATA PARTICLES ---
-const particleContainer = document.getElementById('particles');
-const particleChars = ['0', '1', 'A', 'B', 'X', 'Y', '99', 'FF', '00'];
-
-function createParticle() {
-    if (!particleContainer) return;
-
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-
-    // Random position and content
-    const randomChar = particleChars[Math.floor(Math.random() * particleChars.length)];
-    particle.innerText = randomChar;
-    particle.style.left = Math.random() * 100 + 'vw';
-
-    // Random size and speed
-    const duration = Math.random() * 5 + 5; // 5s to 10s
-    const size = Math.random() * 10 + 8; // 8px to 18px
-
-    particle.style.fontSize = `${size}px`;
-    particle.style.animationDuration = `${duration}s`;
-
-    particleContainer.appendChild(particle);
-
-    // Remove after animation
-    setTimeout(() => {
-        particle.remove();
-    }, duration * 1000);
-}
-
-// Generate particles every 200ms
-setInterval(createParticle, 200);

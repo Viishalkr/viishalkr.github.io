@@ -1,7 +1,6 @@
 /* RESET & FONTS */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Oswald:wght@500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
-/* For Terminal */
 
 :root {
     --primary-red: #d00000;
@@ -51,7 +50,169 @@ body.no-scroll {
     overflow: hidden;
 }
 
-/* --- 1. NEW: TERMINAL BOOT PRELOADER --- */
+/* --- UI OVERLAYS --- */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9000;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
+    background-size: 100% 4px;
+    opacity: 0.6;
+}
+
+.bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 110%;
+    height: 110%;
+    left: -5%;
+    top: -5%;
+    z-index: -2;
+    background-size: 50px 50px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    pointer-events: none;
+}
+
+.noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0.03;
+    background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+}
+
+.ripple {
+    position: fixed;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border: 2px solid var(--primary-red);
+    animation: ripple-anim 0.6s linear forwards;
+    z-index: 9999;
+}
+
+@keyframes ripple-anim {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+        border-width: 5px;
+    }
+
+    100% {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+        border-width: 0px;
+    }
+}
+
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    color: rgba(208, 0, 0, 0.3);
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    user-select: none;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+}
+
+/* SIDE HUD */
+.side-hud {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.hud-point {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    color: #555;
+    text-decoration: none;
+    transition: 0.3s;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.hud-point::before {
+    content: attr(data-label);
+    opacity: 0;
+    margin-right: 10px;
+    font-weight: bold;
+    color: var(--primary-red);
+    transform: translateX(10px);
+    transition: 0.3s;
+}
+
+.hud-point:hover::before,
+.hud-point.active::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.hud-point.active {
+    color: var(--primary-red);
+    text-shadow: 0 0 5px var(--primary-red);
+    transform: scale(1.2);
+}
+
+.hud-line {
+    position: absolute;
+    right: 6px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, #333, transparent);
+    z-index: -1;
+}
+
+/* TERMINAL PRELOADER */
 #preloader {
     position: fixed;
     top: 0;
@@ -135,72 +296,6 @@ body.no-scroll {
 .log-line.success {
     color: var(--primary-red);
     font-weight: bold;
-}
-
-/* VISUAL OVERLAYS */
-.scanlines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9000;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
-    background-size: 100% 4px;
-    opacity: 0.6;
-}
-
-.bg-grid {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 110%;
-    height: 110%;
-    left: -5%;
-    top: -5%;
-    z-index: -2;
-    background-size: 50px 50px;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    pointer-events: none;
-}
-
-.noise {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9997;
-    opacity: 0.03;
-    background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-}
-
-.ripple {
-    position: fixed;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    border: 2px solid var(--primary-red);
-    animation: ripple-anim 0.6s linear forwards;
-    z-index: 9999;
-}
-
-@keyframes ripple-anim {
-    0% {
-        width: 0;
-        height: 0;
-        opacity: 1;
-        border-width: 5px;
-    }
-
-    100% {
-        width: 500px;
-        height: 500px;
-        opacity: 0;
-        border-width: 0px;
-    }
 }
 
 /* NEON LINES */
@@ -454,7 +549,6 @@ nav a.active {
     }
 }
 
-/* TYPOGRAPHY */
 .main-title {
     font-size: 14vw;
     line-height: 0.85;
@@ -513,28 +607,32 @@ nav a.active {
     }
 }
 
+/* MILITARY HEADINGS */
 h2 {
-    font-size: 4rem;
-    margin-bottom: 50px;
+    font-size: 3rem;
+    margin-bottom: 60px;
     text-transform: uppercase;
     font-weight: 900;
-    letter-spacing: 1px;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
-    transition: all 0.4s ease;
-    cursor: default;
+    color: #fff;
     position: relative;
+    display: inline-block;
+    letter-spacing: 2px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
 }
 
-h2:hover {
+h2::before {
+    content: '[ ';
     color: var(--primary-red);
-    -webkit-text-stroke: 0px;
-    text-shadow: 0 0 30px rgba(208, 0, 0, 0.8);
-    letter-spacing: 5px;
-    transform: scale(1.05);
+    margin-right: 10px;
 }
 
-/* SECTIONS & CARDS */
+h2::after {
+    content: ' ]';
+    color: var(--primary-red);
+    margin-left: 10px;
+}
+
 .section {
     padding: 100px 5%;
     min-height: auto;
@@ -577,7 +675,7 @@ h2:hover {
     backdrop-filter: blur(5px);
 }
 
-/* FOCUS MODE & CARDS */
+/* CARDS */
 .education-grid:hover .edu-card:not(:hover),
 .skill-grid:hover .skill-card:not(:hover),
 .project-grid:hover .project-card:not(:hover) {
@@ -643,7 +741,6 @@ h2:hover {
     transition: opacity 0.3s;
 }
 
-/* --- 2. NEW: HOLOGRAPHIC SCANNER --- */
 .project-card::after {
     content: '';
     position: absolute;
@@ -733,7 +830,6 @@ h2:hover {
     gap: 40px;
 }
 
-/* DATA BARS */
 .edu-year {
     color: var(--primary-red);
     font-weight: bold;
@@ -862,6 +958,11 @@ h2:hover {
     left: 100%;
 }
 
+.resume-btn {
+    margin-top: 30px;
+    width: 240px;
+}
+
 /* CURSOR */
 .cursor-dot {
     width: 8px;
@@ -908,33 +1009,131 @@ body:hover .cursor-outline.hovered {
     transform: translateY(0);
 }
 
+/* NEW MODAL */
 .modal {
     display: none;
     position: fixed;
-    z-index: 2000;
+    z-index: 10000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(5px);
 }
 
-.modal-content {
-    margin: auto;
+.modal-container {
+    background: #0a0a0a;
+    border: 1px solid var(--primary-red);
+    margin: 5% auto;
+    width: 80%;
+    max-width: 900px;
+    display: flex;
+    box-shadow: 0 0 50px rgba(208, 0, 0, 0.3);
+    position: relative;
+    animation: modalOpen 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalOpen {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-left {
+    flex: 1.5;
+    overflow: hidden;
+    border-right: 1px solid #333;
+}
+
+.modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    width: auto;
-    max-width: 90%;
-    max-height: 90vh;
-    margin-top: 3%;
+}
+
+.modal-right {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--primary-red);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.modal-id {
+    font-family: 'Fira Code', monospace;
+    color: #666;
+    font-size: 12px;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#modalTitle {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
+}
+
+.modal-body p {
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+.modal-tools {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-left: 3px solid var(--primary-red);
+}
+
+.tool-label {
+    display: block;
+    font-size: 10px;
+    color: var(--primary-red);
+    font-weight: bold;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.tool-list {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #fff;
 }
 
 .close {
     position: absolute;
-    top: 30px;
-    right: 40px;
+    top: 10px;
+    right: 20px;
     color: #fff;
-    font-size: 50px;
+    font-size: 40px;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
+    z-index: 5;
+}
+
+.close:hover {
+    color: var(--primary-red);
 }
 
 /* FOOTER */
@@ -1137,148 +1336,30 @@ body.matrix-mode .project-card:hover .card-content {
     .cyber-btn {
         width: 100%;
     }
-}
 
-/* --- DAY 2: SIDE HUD TRACKER --- */
-.side-hud {
-    position: fixed;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 15px;
-    z-index: 1000;
-}
-
-.hud-point {
-    font-family: 'Fira Code', monospace;
-    font-size: 10px;
-    color: #555;
-    text-decoration: none;
-    transition: 0.3s;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.hud-point::before {
-    content: attr(data-label);
-    opacity: 0;
-    margin-right: 10px;
-    font-weight: bold;
-    color: var(--primary-red);
-    transform: translateX(10px);
-    transition: 0.3s;
-}
-
-.hud-point:hover::before,
-.hud-point.active::before {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.hud-point.active {
-    color: var(--primary-red);
-    text-shadow: 0 0 5px var(--primary-red);
-    transform: scale(1.2);
-}
-
-.hud-line {
-    position: absolute;
-    right: 6px;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent, #333, transparent);
-    z-index: -1;
-}
-
-/* --- DAY 2: MILITARY SECTION HEADINGS --- */
-/* We are overriding the previous h2 style */
-h2 {
-    font-size: 3rem;
-    margin-bottom: 60px;
-    text-transform: uppercase;
-    font-weight: 900;
-    color: #fff;
-    position: relative;
-    display: inline-block;
-    letter-spacing: 2px;
-    text-shadow: none;
-    -webkit-text-stroke: 0;
-    /* Reset previous hollow style */
-}
-
-/* The Brackets */
-h2::before {
-    content: '[ ';
-    color: var(--primary-red);
-    margin-right: 10px;
-}
-
-h2::after {
-    content: ' ]';
-    color: var(--primary-red);
-    margin-left: 10px;
-}
-
-/* The Underline Scan */
-h2 {
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-}
-
-/* --- DAY 2: FLOATING DATA PARTICLES --- */
-#particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-}
-
-.particle {
-    position: absolute;
-    color: rgba(208, 0, 0, 0.3);
-    font-family: 'Fira Code', monospace;
-    font-size: 10px;
-    user-select: none;
-    animation: floatUp linear forwards;
-}
-
-@keyframes floatUp {
-    0% {
-        transform: translateY(100vh);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    90% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-100px);
-        opacity: 0;
-    }
-}
-
-/* --- MOBILE FIXES --- */
-@media (max-width: 768px) {
     .side-hud {
         display: none;
     }
 
-    /* Hide HUD on mobile to save space */
     h2 {
         font-size: 2rem;
+    }
+
+    .modal-container {
+        flex-direction: column;
+        width: 95%;
+        margin: 10% auto;
+    }
+
+    .modal-left {
+        height: 200px;
+    }
+
+    .modal-right {
+        padding: 20px;
+    }
+
+    #modalTitle {
+        font-size: 1.5rem;
     }
 }
