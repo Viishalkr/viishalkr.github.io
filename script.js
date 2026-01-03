@@ -1,4 +1,4 @@
-// --- PRELOADER ---
+// --- 1. SYSTEM PRELOADER ---
 const preloader = document.getElementById('preloader');
 const progressBar = document.querySelector('.progress-bar-fill');
 const percentText = document.querySelector('.percent');
@@ -20,7 +20,7 @@ if (preloader) {
     }, 20);
 }
 
-// --- LASER SCROLL BAR ---
+// --- 2. LASER SCROLL PROGRESS ---
 window.addEventListener('scroll', () => {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -29,26 +29,21 @@ window.addEventListener('scroll', () => {
     if (pBar) pBar.style.width = `${scrolled}%`;
 });
 
-// --- 3. NEW: MAGNETIC BUTTONS ---
+// --- 3. MAGNETIC BUTTONS ---
 const magnets = document.querySelectorAll('.magnet-btn');
 magnets.forEach((magnet) => {
     magnet.addEventListener('mousemove', (e) => {
         const rect = magnet.getBoundingClientRect();
-        // Calculate distance from center
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-
-        // Move button slightly (Magnet effect)
         magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
     });
-
     magnet.addEventListener('mouseleave', () => {
-        // Snap back
         magnet.style.transform = 'translate(0, 0)';
     });
 });
 
-// --- HACKER TEXT ---
+// --- 4. HACKER TEXT SCRAMBLE ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
 document.querySelectorAll("nav a, h2").forEach(element => {
     element.dataset.value = element.innerText;
@@ -65,7 +60,7 @@ document.querySelectorAll("nav a, h2").forEach(element => {
     }
 });
 
-// --- CUSTOM CURSOR ---
+// --- 5. CUSTOM CURSOR ---
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 if (cursorDot && cursorOutline) {
@@ -83,7 +78,7 @@ if (cursorDot && cursorOutline) {
     });
 }
 
-// --- 3D TILT ---
+// --- 6. 3D TILT EFFECT ---
 const cards = document.querySelectorAll('.project-card, .skill-card, .edu-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -103,7 +98,15 @@ cards.forEach(card => {
     });
 });
 
-// SCROLL REVEAL & MODAL
+// --- 7. SET PROJECT IMAGES AS BACKGROUNDS ---
+document.querySelectorAll('.project-card').forEach(card => {
+    const imgPath = card.getAttribute('data-img');
+    if (imgPath) {
+        card.style.backgroundImage = `url('${imgPath}')`;
+    }
+});
+
+// --- 8. SCROLL REVEAL & MODAL ---
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
