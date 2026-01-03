@@ -59,7 +59,6 @@ body.no-scroll {
 /* =========================================
    2. UI OVERLAYS & BACKGROUNDS
    ========================================= */
-/* Neural Network Canvas */
 #neural-canvas {
     position: fixed;
     top: 0;
@@ -70,7 +69,6 @@ body.no-scroll {
     pointer-events: none;
 }
 
-/* CRT Scanlines */
 .scanlines {
     position: fixed;
     top: 0;
@@ -84,7 +82,6 @@ body.no-scroll {
     opacity: 0.6;
 }
 
-/* Background Grid */
 .bg-grid {
     position: fixed;
     top: 0;
@@ -99,7 +96,6 @@ body.no-scroll {
     pointer-events: none;
 }
 
-/* Film Noise */
 .noise {
     position: fixed;
     top: 0;
@@ -112,101 +108,34 @@ body.no-scroll {
     background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
 }
 
-/* Neon Flowing Lines */
-.bg-lines {
+.ripple {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 110%;
-    height: 110%;
-    left: -5%;
-    top: -5%;
-    z-index: -1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
     pointer-events: none;
-    overflow: hidden;
+    border: 2px solid var(--primary-red);
+    animation: ripple-anim 0.6s linear forwards;
+    z-index: 9999;
 }
 
-.bg-lines svg {
-    width: 100%;
-    height: 100%;
-    opacity: 0.8;
-}
-
-.line {
-    fill: none;
-    stroke: var(--primary-red);
-    stroke-width: 2px;
-    stroke-linecap: round;
-    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: flowLines linear infinite;
-}
-
-.line1 {
-    animation-duration: 4s;
-    animation-delay: 0s;
-    stroke: #ff0000;
-}
-
-.line2 {
-    animation-duration: 6s;
-    animation-delay: -1.5s;
-    stroke: #d00000;
-    opacity: 0.6;
-}
-
-.line3 {
-    animation-duration: 5s;
-    animation-delay: -3s;
-    stroke: #ff3333;
-}
-
-.line4 {
-    animation-duration: 7s;
-    animation-delay: -0.5s;
-    stroke: #990000;
-    opacity: 0.4;
-}
-
-.line5 {
-    animation-duration: 4.5s;
-    animation-delay: -2s;
-    stroke: #ff0000;
-    opacity: 0.7;
-}
-
-.line6 {
-    animation-duration: 3.5s;
-    animation-delay: -4s;
-    stroke: #ff4d4d;
-}
-
-.line7 {
-    animation-duration: 6.5s;
-    animation-delay: -1s;
-    stroke: #cc0000;
-    opacity: 0.5;
-}
-
-.line8 {
-    animation-duration: 5.5s;
-    animation-delay: -2.5s;
-    stroke: #ff1a1a;
-}
-
-@keyframes flowLines {
+@keyframes ripple-anim {
     0% {
-        stroke-dashoffset: 1000;
+        width: 0;
+        height: 0;
+        opacity: 1;
+        border-width: 5px;
     }
 
     100% {
-        stroke-dashoffset: -1000;
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+        border-width: 0px;
     }
 }
 
 /* =========================================
-   3. INVERTED PREDATOR CURSOR
+   3. CURSOR
    ========================================= */
 .cursor-dot {
     width: 10px;
@@ -247,7 +176,6 @@ body:hover .cursor-outline.hovered {
 /* =========================================
    4. NAVIGATION & HUD
    ========================================= */
-/* Top Navbar */
 .navbar {
     position: fixed;
     top: 0;
@@ -286,7 +214,6 @@ nav a.active {
     color: #fff;
 }
 
-/* Side HUD Tracker */
 .side-hud {
     position: fixed;
     right: 30px;
@@ -342,7 +269,6 @@ nav a.active {
     z-index: -1;
 }
 
-/* Scroll Progress Laser */
 #scroll-progress {
     position: fixed;
     top: 0;
@@ -355,7 +281,6 @@ nav a.active {
     transition: width 0.1s ease-out;
 }
 
-/* Live Telemetry Widget */
 .telemetry {
     position: fixed;
     bottom: 20px;
@@ -429,7 +354,7 @@ nav a.active {
 }
 
 /* =========================================
-   5. HERO & REACTOR CORE
+   5. HERO & SECTIONS
    ========================================= */
 .hero {
     height: 100vh;
@@ -441,86 +366,6 @@ nav a.active {
     padding: 0 5% 80px 5%;
 }
 
-/* Reactor Core Animation */
-.reactor-container {
-    position: absolute;
-    right: 10%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 400px;
-    height: 400px;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.6;
-    transition: all 0.5s ease;
-}
-
-.reactor-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid transparent;
-    box-shadow: 0 0 20px rgba(208, 0, 0, 0.2);
-}
-
-.ring-1 {
-    width: 100%;
-    height: 100%;
-    border-top: 2px solid var(--primary-red);
-    border-bottom: 2px solid var(--primary-red);
-    animation: rotate 10s infinite linear;
-}
-
-.ring-2 {
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 80%;
-    border-left: 2px solid #fff;
-    border-right: 2px solid #fff;
-    animation: rotate 8s infinite reverse linear;
-}
-
-.ring-3 {
-    top: 20%;
-    left: 20%;
-    width: 60%;
-    height: 60%;
-    border: 1px dashed var(--primary-red);
-    animation: rotate 15s infinite linear;
-}
-
-.ring-4 {
-    top: 30%;
-    left: 30%;
-    width: 40%;
-    height: 40%;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    animation: rotate 4s infinite linear reverse;
-}
-
-.reactor-core {
-    position: absolute;
-    top: 45%;
-    left: 45%;
-    width: 10%;
-    height: 10%;
-    background: var(--primary-red);
-    border-radius: 50%;
-    box-shadow: 0 0 40px var(--primary-red);
-    animation: pulse 2s infinite;
-}
-
-@keyframes rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* Hero Text */
 .watermark {
     position: absolute;
     top: 15%;
@@ -675,9 +520,6 @@ nav a.active {
     }
 }
 
-/* =========================================
-   6. SECTIONS & HEADINGS
-   ========================================= */
 .section {
     padding: 100px 5%;
     min-height: auto;
@@ -720,7 +562,6 @@ nav a.active {
     backdrop-filter: blur(5px);
 }
 
-/* Military Headings */
 h2 {
     font-size: 3rem;
     margin-bottom: 60px;
@@ -746,7 +587,6 @@ h2::after {
     margin-left: 10px;
 }
 
-/* Reveal Animation */
 .reveal {
     opacity: 0;
     transform: translateY(40px);
@@ -759,7 +599,7 @@ h2::after {
 }
 
 /* =========================================
-   7. HEX-TECH SKILL TREE (NEW)
+   6. HEX-TECH SKILL TREE
    ========================================= */
 .hex-grid {
     display: flex;
@@ -846,9 +686,8 @@ h2::after {
 }
 
 /* =========================================
-   8. CARDS (TACTICAL CORNERS)
+   7. CARDS
    ========================================= */
-/* Focus Mode */
 .education-grid:hover .edu-card:not(:hover),
 .project-grid:hover .project-card:not(:hover) {
     opacity: 0.3;
@@ -856,7 +695,6 @@ h2::after {
     transform: scale(0.95);
 }
 
-/* Base Card Style with Cut Corners */
 .project-card,
 .edu-card,
 .skill-card,
@@ -870,7 +708,6 @@ h2::after {
     cursor: none;
 }
 
-/* Pseudo-border for Cut Corners */
 .project-card::before,
 .edu-card::before,
 .skill-card::before,
@@ -889,7 +726,6 @@ h2::after {
     pointer-events: none;
 }
 
-/* Hover Effects */
 .edu-card:hover,
 .skill-card:hover {
     background: rgba(30, 30, 30, 0.9);
@@ -897,7 +733,6 @@ h2::after {
     transform: scale(1.05);
 }
 
-/* Specific Card Layouts */
 .edu-card {
     padding: 25px;
 }
@@ -916,7 +751,6 @@ h2::after {
 }
 
 .project-card::after {
-    /* Corner Brackets Overlay */
     content: '';
     position: absolute;
     top: 0;
@@ -1018,9 +852,6 @@ h2::after {
     position: relative;
 }
 
-/* =========================================
-   9. ABOUT SECTION (HOLO CARD)
-   ========================================= */
 .about-grid {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
@@ -1124,7 +955,7 @@ h2::after {
 }
 
 /* =========================================
-   10. CONTACT & FOOTER
+   8. FOOTER & MODALS
    ========================================= */
 .contact-layout {
     display: flex;
@@ -1277,10 +1108,6 @@ h2::after {
     text-shadow: 0 0 5px #fff;
 }
 
-/* =========================================
-   11. MODALS & SECURITY OVERLAY
-   ========================================= */
-/* Terminal Boot Screen */
 #preloader {
     position: fixed;
     top: 0;
@@ -1366,7 +1193,6 @@ h2::after {
     font-weight: bold;
 }
 
-/* Project Modal */
 .modal {
     display: none;
     position: fixed;
@@ -1493,7 +1319,6 @@ h2::after {
     color: var(--primary-red);
 }
 
-/* Glitch Navigation Overlay */
 .glitch-overlay {
     position: fixed;
     top: 0;
@@ -1583,7 +1408,6 @@ body.glitching::after {
     }
 }
 
-/* Security Breach Overlay */
 #security-screen {
     position: fixed;
     top: 0;
@@ -1658,14 +1482,12 @@ body.glitching::after {
 }
 
 /* =========================================
-   12. STATES & MODES
+   9. MOBILE OPTIMIZATION
    ========================================= */
-/* Low Power Mode (Eco Mode) */
 body.low-power .reactor-container,
 body.low-power .scanlines,
 body.low-power .bg-grid,
 body.low-power .noise,
-body.low-power .bg-lines,
 body.low-power #neural-canvas {
     display: none !important;
 }
@@ -1689,14 +1511,8 @@ body.low-power {
     cursor: auto;
 }
 
-/* Matrix Easter Egg Mode */
 body.matrix-mode {
     --primary-red: #00ff00 !important;
-}
-
-body.matrix-mode .line {
-    stroke: #00ff00 !important;
-    filter: drop-shadow(0 0 5px #00ff00);
 }
 
 body.matrix-mode .cursor-outline {
@@ -1712,16 +1528,6 @@ body.matrix-mode .project-card:hover .card-content {
     text-shadow: 2px 0 #fff, -2px 0 #00ff00;
 }
 
-body.matrix-mode .reactor-ring,
-body.matrix-mode .reactor-core {
-    border-color: #00ff00;
-    box-shadow: 0 0 20px #00ff00;
-}
-
-body.matrix-mode .reactor-core {
-    background: #00ff00;
-}
-
 body.matrix-mode .hex-item:hover::after {
     box-shadow: 0 0 20px #00ff00;
 }
@@ -1730,9 +1536,6 @@ body.matrix-mode .hex-item:hover .hex-icon {
     text-shadow: 0 0 10px #00ff00;
 }
 
-/* =========================================
-   13. MOBILE OPTIMIZATION (COMBAT MODE)
-   ========================================= */
 @media (max-width: 768px) {
 
     .cursor-dot,
@@ -1752,15 +1555,6 @@ body.matrix-mode .hex-item:hover .hex-icon {
     nav {
         width: 100%;
         gap: 10px;
-    }
-
-    .reactor-container {
-        width: 250px;
-        height: 250px;
-        top: 30%;
-        right: 50%;
-        transform: translateX(50%);
-        opacity: 0.2;
     }
 
     .main-title {
