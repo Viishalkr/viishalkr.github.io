@@ -15,6 +15,22 @@
     --card-bg: rgba(20, 20, 20, 0.6);
 }
 
+/* --- LASER SCROLL BAR --- */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    /* Starts at 0 */
+    height: 3px;
+    background: var(--primary-red);
+    z-index: 10000;
+    /* On top of everything */
+    box-shadow: 0 0 10px var(--primary-red), 0 0 20px var(--primary-red);
+    /* Neon Glow */
+    transition: width 0.1s ease-out;
+}
+
 body {
     background-color: var(--bg-black);
     color: var(--text-white);

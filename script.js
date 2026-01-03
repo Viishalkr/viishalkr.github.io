@@ -139,3 +139,14 @@ if (modal) {
 }
 
 window.onload = () => { revealOnScroll(); };
+// --- LASER SCROLL BAR LOGIC ---
+window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (scrollTop / scrollHeight) * 100;
+
+    const progressBar = document.getElementById("scroll-progress");
+    if (progressBar) {
+        progressBar.style.width = `${scrolled}%`;
+    }
+});
