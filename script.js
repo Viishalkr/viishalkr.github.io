@@ -43,15 +43,12 @@ magnets.forEach((magnet) => {
     });
 });
 
-// --- 4. HACKER TEXT SCRAMBLE (REUSABLE) ---
+// --- 4. HACKER TEXT SCRAMBLE ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
 
 function hackText(element) {
-    // Only hack if not already hacking (prevents loop)
     if (element.getAttribute('data-hacking') === 'true') return;
     element.setAttribute('data-hacking', 'true');
-
-    // Store original text if not stored
     if (!element.dataset.value) element.dataset.value = element.innerText;
 
     let iterations = 0;
@@ -69,9 +66,8 @@ function hackText(element) {
     }, 30);
 }
 
-// Hover trigger
 document.querySelectorAll("nav a, h2").forEach(element => {
-    element.dataset.value = element.innerText; // Pre-store
+    element.dataset.value = element.innerText;
     element.onmouseover = () => hackText(element);
 });
 
@@ -82,8 +78,6 @@ window.addEventListener('click', (e) => {
     ripple.style.left = `${e.clientX}px`;
     ripple.style.top = `${e.clientY}px`;
     document.body.appendChild(ripple);
-
-    // Remove after animation
     setTimeout(() => { ripple.remove(); }, 600);
 });
 
@@ -98,7 +92,7 @@ if (cursorDot && cursorOutline) {
         cursorDot.style.top = `${posY}px`;
         cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
     });
-    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2');
+    const interactables = document.querySelectorAll('a, .project-card, .skill-card, .edu-card, h2, .cyber-btn, .return-btn');
     interactables.forEach(el => {
         el.addEventListener('mouseenter', () => cursorOutline.classList.add("hovered"));
         el.addEventListener('mouseleave', () => cursorOutline.classList.remove("hovered"));
@@ -125,25 +119,27 @@ cards.forEach(card => {
     });
 });
 
-// --- 8. SET IMAGES ---
+// --- 8. SET PROJECT IMAGES ---
 document.querySelectorAll('.project-card').forEach(card => {
     const imgPath = card.getAttribute('data-img');
     if (imgPath) card.style.backgroundImage = `url('${imgPath}')`;
 });
 
-// --- 9. SCROLL REVEAL & AUTO-DECRYPTION ---
+// --- 9. MATRIX MODE EASTER EGG ---
+document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'm') {
+        document.body.classList.toggle('matrix-mode');
+    }
+});
+
+// --- 10. SCROLL REVEAL & AUTO-DECRYPT ---
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach((reveal) => {
         if (reveal.getBoundingClientRect().top < window.innerHeight - 100) {
             reveal.classList.add('active');
-
-            // Check if there is an h2 inside to hack
             const heading = reveal.querySelector('h2');
-            if (heading) {
-                // Small delay so it happens as it slides up
-                setTimeout(() => hackText(heading), 200);
-            }
+            if (heading) setTimeout(() => hackText(heading), 200);
         }
     });
 }
@@ -164,17 +160,3 @@ if (modal) {
     if (span) span.onclick = () => modal.style.display = "none";
     window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
 }
-// --- MATRIX MODE EASTER EGG ---
-// Press 'M' to toggle between Cyberpunk Red and Matrix Green
-document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'm') {
-        document.body.classList.toggle('matrix-mode');
-
-        // Optional: Play a sound or log to console
-        if (document.body.classList.contains('matrix-mode')) {
-            console.log("SYSTEM HACKED: MATRIX MODE ENGAGED");
-        } else {
-            console.log("SYSTEM RESTORED");
-        }
-    }
-});
