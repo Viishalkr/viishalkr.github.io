@@ -1813,3 +1813,59 @@ body.matrix-mode .hex-item:hover .hex-icon {
     /* Stop pulsing when hovered */
     box-shadow: 0 0 20px var(--primary-red);
 }
+
+/* --- DAY 10: LASER SCROLLBAR --- */
+#scroll-progress {
+    /* Existing styles remain, we just add the 'head' */
+    overflow: visible;
+}
+
+#scroll-progress::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, #fff);
+    box-shadow: 0 0 15px #fff, 0 0 30px var(--primary-red);
+    border-radius: 100%;
+    z-index: 10001;
+}
+
+/* --- DAY 10: GRID SEARCHLIGHT --- */
+/* We modify the existing .bg-grid to use a mask */
+.bg-grid {
+    /* Using CSS Variables set by JS for mouse position */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+
+    /* The Mask creates the spotlight effect */
+    -webkit-mask-image: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), black 10%, transparent 60%);
+    mask-image: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), black 10%, transparent 60%);
+
+    /* Ensure it's slightly brighter so the spotlight pops */
+    opacity: 0.4 !important;
+    transition: opacity 0.5s;
+}
+
+/* --- DAY 10: DECRYPTION TEXT (REDACTED) --- */
+.decrypt {
+    font-family: 'Fira Code', monospace;
+    background: #222;
+    /* Looks like a redacted block initially */
+    color: transparent;
+    padding: 0 4px;
+    border-radius: 2px;
+    position: relative;
+    transition: 0.3s;
+}
+
+.decrypt.revealed {
+    background: transparent;
+    color: var(--primary-red);
+    /* Highlight color */
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(208, 0, 0, 0.4);
+}

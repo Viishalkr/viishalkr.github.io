@@ -494,3 +494,70 @@ document.addEventListener('keydown', (e) => {
         document.body.classList.toggle('matrix-mode');
     }
 });
+/* =========================================
+   8. GRID SEARCHLIGHT & DECRYPTION PROTOCOL
+   ========================================= */
+
+// 1. GRID SEARCHLIGHT TRACKER
+const bgGrid = document.querySelector('.bg-grid');
+if (bgGrid) {
+    document.addEventListener('mousemove', (e) => {
+        // Update CSS variables with mouse position
+        const x = e.clientX;
+        const y = e.clientY;
+        bgGrid.style.setProperty('--mouse-x', `${x}px`);
+        bgGrid.style.setProperty('--mouse-y', `${y}px`);
+    });
+}
+
+// 2. DECRYPTION TEXT OBSERVER
+const decryptNodes = document.querySelectorAll('.decrypt');
+
+// Configuration
+const decryptLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+function runDecryption(element) {
+    if (element.classList.contains('revealed')) return;
+
+    const finalValue = element.getAttribute('data-value');
+    let iterations = 0;
+
+    // 1. Remove the "Redacted" block style
+    element.classList.add('revealed');
+    element.innerText = finalValue; // Set width correctly
+
+    // 2. Start the scramble effect
+    const interval = setInterval(() => {
+        element.innerText = finalValue.split("").map((letter, index) => {
+            if (index < iterations) return finalValue[index];
+            return decryptLetters[Math.floor(Math.random() * decryptLetters.length)];
+        }).join("");
+
+        if (iterations >= finalValue.length) {
+            clearInterval(interval);
+            element.innerText = finalValue; // Ensure final text is clean
+        }
+
+        iterations += 1 / 2; // Speed of decryption
+    }, 30);
+}
+
+// Trigger when scrolled into view
+const decryptObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Add a small random delay for each word so they don't pop at once
+            setTimeout(() => {
+                runDecryption(entry.target);
+            }, Math.random() * 500);
+
+            decryptObserver.unobserve(entry.target); // Run only once
+        }
+    });
+}, { threshold: 1.0 });
+
+decryptNodes.forEach(node => {
+    // Set initial text to random block length
+    node.innerText = "██████";
+    decryptObserver.observe(node);
+});
