@@ -50,7 +50,131 @@ body.no-scroll {
     overflow: hidden;
 }
 
-/* --- UI OVERLAYS --- */
+/* --- NEW: REACTOR CORE ANIMATION --- */
+.reactor-container {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 400px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+}
+
+.reactor-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    box-shadow: 0 0 20px rgba(208, 0, 0, 0.2);
+}
+
+.ring-1 {
+    width: 100%;
+    height: 100%;
+    border-top: 2px solid var(--primary-red);
+    border-bottom: 2px solid var(--primary-red);
+    animation: rotate 10s infinite linear;
+}
+
+.ring-2 {
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+    animation: rotate 8s infinite reverse linear;
+}
+
+.ring-3 {
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    border: 1px dashed var(--primary-red);
+    animation: rotate 15s infinite linear;
+}
+
+.ring-4 {
+    top: 30%;
+    left: 30%;
+    width: 40%;
+    height: 40%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: rotate 4s infinite linear reverse;
+}
+
+.reactor-core {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 10%;
+    height: 10%;
+    background: var(--primary-red);
+    border-radius: 50%;
+    box-shadow: 0 0 40px var(--primary-red);
+    animation: pulse 2s infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- NEW: KINETIC TYPOGRAPHY --- */
+.kinetic-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0.05;
+    transform: rotate(-10deg) scale(1.2);
+}
+
+.kinetic-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 8rem;
+    font-weight: 900;
+    white-space: nowrap;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 2px #fff;
+    display: flex;
+    gap: 50px;
+}
+
+.k-1 {
+    animation: scrollText 40s linear infinite;
+}
+
+.k-2 {
+    animation: scrollText 40s linear infinite reverse;
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* OVERLAYS */
 .scanlines {
     position: fixed;
     top: 0;
@@ -607,7 +731,7 @@ nav a.active {
     }
 }
 
-/* MILITARY HEADINGS */
+/* HEADINGS & SECTIONS */
 h2 {
     font-size: 3rem;
     margin-bottom: 60px;
@@ -880,7 +1004,7 @@ h2::after {
     font-weight: bold;
 }
 
-/* CONTACT BUTTONS */
+/* CONTACT & FOOTER */
 .contact-layout {
     display: flex;
     flex-direction: column;
@@ -963,7 +1087,6 @@ h2::after {
     width: 240px;
 }
 
-/* CURSOR */
 .cursor-dot {
     width: 8px;
     height: 8px;
@@ -1009,7 +1132,6 @@ body:hover .cursor-outline.hovered {
     transform: translateY(0);
 }
 
-/* NEW MODAL */
 .modal {
     display: none;
     position: fixed;
@@ -1136,7 +1258,6 @@ body:hover .cursor-outline.hovered {
     color: var(--primary-red);
 }
 
-/* FOOTER */
 .cyber-footer {
     width: 100%;
     padding: 20px 50px;
@@ -1199,7 +1320,6 @@ body:hover .cursor-outline.hovered {
     }
 }
 
-/* 404 & MATRIX MODE */
 body.error-page {
     display: flex;
     justify-content: center;
@@ -1279,6 +1399,16 @@ body.matrix-mode ::selection {
 
 body.matrix-mode .project-card:hover .card-content {
     text-shadow: 2px 0 #fff, -2px 0 #00ff00;
+}
+
+body.matrix-mode .reactor-ring,
+body.matrix-mode .reactor-core {
+    border-color: #00ff00;
+    box-shadow: 0 0 20px #00ff00;
+}
+
+body.matrix-mode .reactor-core {
+    background: #00ff00;
 }
 
 @media (max-width: 768px) {
@@ -1361,5 +1491,15 @@ body.matrix-mode .project-card:hover .card-content {
 
     #modalTitle {
         font-size: 1.5rem;
+    }
+
+    .reactor-container {
+        width: 250px;
+        height: 250px;
+        opacity: 0.4;
+    }
+
+    .kinetic-text {
+        font-size: 4rem;
     }
 }
