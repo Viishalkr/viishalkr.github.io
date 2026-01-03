@@ -8,6 +8,13 @@
     --card-bg: rgba(20, 20, 20, 0.6);
 }
 
+/* --- PIXEL PERFECT: CUSTOM SELECTION --- */
+::selection {
+    background: var(--primary-red);
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+}
+
 /* --- CYBERPUNK SCROLLBAR --- */
 ::-webkit-scrollbar {
     width: 8px;
@@ -308,12 +315,34 @@ nav a.active {
     opacity: 0.9;
 }
 
+/* --- PIXEL PERFECT: HERO TECH BADGES --- */
 .roles {
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 4px;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.roles span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
     color: #eee;
     text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.roles span:hover {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 15px rgba(208, 0, 0, 0.3);
+    transform: translateY(-2px);
+    color: #fff;
 }
 
 /* SCROLL INDICATOR */
@@ -578,7 +607,7 @@ h2:hover {
     gap: 40px;
 }
 
-/* TEXT */
+/* --- PIXEL PERFECT: SEGMENTED SKILL BARS --- */
 .edu-year {
     color: var(--primary-red);
     font-weight: bold;
@@ -594,15 +623,17 @@ h2:hover {
 
 .skill-bar-bg {
     width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .skill-bar-fill {
     height: 100%;
-    background: var(--primary-red);
-    border-radius: 3px;
+    background-image: repeating-linear-gradient(-45deg, var(--primary-red) 0px, var(--primary-red) 4px, transparent 4px, transparent 8px);
+    background-color: transparent;
     width: 0;
     transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
     box-shadow: 0 0 10px var(--primary-red);
