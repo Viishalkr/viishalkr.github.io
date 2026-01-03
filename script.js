@@ -192,3 +192,58 @@ if (modal) {
     if (span) span.onclick = () => modal.style.display = "none";
     window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
 }
+// --- DAY 2: SIDE HUD SCROLL SPY ---
+const sections = document.querySelectorAll('section');
+const hudPoints = document.querySelectorAll('.hud-point');
+
+const observerOptions = {
+    threshold: 0.3 // Trigger when 30% of section is visible
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Remove active class from all
+            hudPoints.forEach(point => point.classList.remove('active'));
+            // Add active class to corresponding link
+            const id = entry.target.getAttribute('id');
+            const activeLink = document.querySelector(`.hud-point[href="#${id}"]`);
+            if (activeLink) activeLink.classList.add('active');
+        }
+    });
+}, observerOptions);
+
+sections.forEach(section => observer.observe(section));
+
+// --- DAY 2: FLOATING DATA PARTICLES ---
+const particleContainer = document.getElementById('particles');
+const particleChars = ['0', '1', 'A', 'B', 'X', 'Y', '99', 'FF', '00'];
+
+function createParticle() {
+    if (!particleContainer) return;
+
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+
+    // Random position and content
+    const randomChar = particleChars[Math.floor(Math.random() * particleChars.length)];
+    particle.innerText = randomChar;
+    particle.style.left = Math.random() * 100 + 'vw';
+
+    // Random size and speed
+    const duration = Math.random() * 5 + 5; // 5s to 10s
+    const size = Math.random() * 10 + 8; // 8px to 18px
+
+    particle.style.fontSize = `${size}px`;
+    particle.style.animationDuration = `${duration}s`;
+
+    particleContainer.appendChild(particle);
+
+    // Remove after animation
+    setTimeout(() => {
+        particle.remove();
+    }, duration * 1000);
+}
+
+// Generate particles every 200ms
+setInterval(createParticle, 200);

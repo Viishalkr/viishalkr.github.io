@@ -1138,3 +1138,147 @@ body.matrix-mode .project-card:hover .card-content {
         width: 100%;
     }
 }
+
+/* --- DAY 2: SIDE HUD TRACKER --- */
+.side-hud {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.hud-point {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    color: #555;
+    text-decoration: none;
+    transition: 0.3s;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.hud-point::before {
+    content: attr(data-label);
+    opacity: 0;
+    margin-right: 10px;
+    font-weight: bold;
+    color: var(--primary-red);
+    transform: translateX(10px);
+    transition: 0.3s;
+}
+
+.hud-point:hover::before,
+.hud-point.active::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.hud-point.active {
+    color: var(--primary-red);
+    text-shadow: 0 0 5px var(--primary-red);
+    transform: scale(1.2);
+}
+
+.hud-line {
+    position: absolute;
+    right: 6px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, #333, transparent);
+    z-index: -1;
+}
+
+/* --- DAY 2: MILITARY SECTION HEADINGS --- */
+/* We are overriding the previous h2 style */
+h2 {
+    font-size: 3rem;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+    letter-spacing: 2px;
+    text-shadow: none;
+    -webkit-text-stroke: 0;
+    /* Reset previous hollow style */
+}
+
+/* The Brackets */
+h2::before {
+    content: '[ ';
+    color: var(--primary-red);
+    margin-right: 10px;
+}
+
+h2::after {
+    content: ' ]';
+    color: var(--primary-red);
+    margin-left: 10px;
+}
+
+/* The Underline Scan */
+h2 {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+/* --- DAY 2: FLOATING DATA PARTICLES --- */
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    color: rgba(208, 0, 0, 0.3);
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    user-select: none;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+}
+
+/* --- MOBILE FIXES --- */
+@media (max-width: 768px) {
+    .side-hud {
+        display: none;
+    }
+
+    /* Hide HUD on mobile to save space */
+    h2 {
+        font-size: 2rem;
+    }
+}
