@@ -380,3 +380,23 @@ navLinks.forEach(link => {
         }, 300); // Duration of the glitch
     });
 });
+// --- DAY 7: LIVE TELEMETRY LOGIC ---
+function updateTelemetry() {
+    const timeEl = document.getElementById('tele-time');
+    const pingEl = document.getElementById('tele-ping');
+
+    if (timeEl) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+        timeEl.innerText = timeString;
+    }
+
+    // Fake Ping Fluctuation
+    if (pingEl && Math.random() > 0.9) { // Update only sometimes
+        const ping = Math.floor(Math.random() * 40) + 10;
+        pingEl.innerText = `${ping}ms`;
+    }
+}
+// Update every second
+setInterval(updateTelemetry, 1000);
+updateTelemetry();
