@@ -1,9 +1,25 @@
 /* =========================================
-   1. TERMINAL BOOT SEQUENCE
+   1. TERMINAL BOOT & ONE-TIME SHUFFLE
    ========================================= */
 const preloader = document.getElementById('preloader');
 const bootText = document.getElementById('boot-text');
 const body = document.body;
+
+// Function to shuffle text ONCE
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function hackTextOnce(element) {
+    if (!element) return;
+    const originalText = element.innerText;
+    let iterations = 0;
+    const interval = setInterval(() => {
+        element.innerText = originalText.split("").map((letter, index) => {
+            if (index < iterations) return originalText[index];
+            return letters[Math.floor(Math.random() * 26)];
+        }).join("");
+        if (iterations >= originalText.length) clearInterval(interval);
+        iterations += 1 / 2;
+    }, 30);
+}
 
 function startTypewriter() {
     const greeting = document.querySelector('.greeting');
@@ -20,6 +36,9 @@ function startTypewriter() {
         }
         setTimeout(type, 500);
     }
+    // TRIGGER TEXT SHUFFLE ONCE HERE
+    const mainTitle = document.querySelector('.main-title');
+    hackTextOnce(mainTitle);
 }
 
 if (preloader && bootText) {
@@ -37,7 +56,7 @@ if (preloader && bootText) {
             line.classList.add('log-line');
             line.innerText = `> ${logs[i]}`;
             bootText.appendChild(line);
-            bootText.scrollTop = bootText.scrollHeight; // Auto scroll
+            bootText.scrollTop = bootText.scrollHeight;
             setTimeout(typeLine, 300);
             i++;
         } else {
@@ -53,7 +72,23 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. NEURAL NETWORK BACKGROUND
+   2. ECO MODE TOGGLE
+   ========================================= */
+function togglePerformance() {
+    const body = document.body;
+    const statusText = document.getElementById('perf-text');
+    body.classList.toggle('low-power');
+    if (body.classList.contains('low-power')) {
+        if (statusText) { statusText.innerText = "ECO MODE"; statusText.style.color = "yellow"; statusText.style.textShadow = "none"; }
+    } else {
+        if (statusText) { statusText.innerText = "HIGH PERF"; statusText.style.color = "#F42C1D"; statusText.style.textShadow = "0 0 5px #F42C1D"; }
+    }
+}
+// Attach to global window object so onclick works
+window.togglePerformance = togglePerformance;
+
+/* =========================================
+   3. NEURAL NETWORK BACKGROUND (RESPONSIVE)
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -65,8 +100,8 @@ let mouse = { x: null, y: null, radius: 150 };
 window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
 
 class Particle {
-    constructor(x, y, directionX, directionY, size, color) {
-        this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
+    constructor(x, y, directionX, directionY, size) {
+        this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size;
     }
     draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = '#F42C1D'; ctx.fill(); }
     update() {
@@ -87,7 +122,7 @@ function initParticles() {
         let y = Math.random() * innerHeight;
         let directionX = (Math.random() * 0.4) - 0.2;
         let directionY = (Math.random() * 0.4) - 0.2;
-        particlesArray.push(new Particle(x, y, directionX, directionY, size, '#F42C1D'));
+        particlesArray.push(new Particle(x, y, directionX, directionY, size));
     }
 }
 
@@ -101,11 +136,22 @@ function connectParticles() {
                 ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
             }
         }
+        // CONNECT TO MOUSE
+        let mouseDist = ((particlesArray[a].x - mouse.x) ** 2) + ((particlesArray[a].y - mouse.y) ** 2);
+        if (mouseDist < 25000) {
+            ctx.strokeStyle = 'rgba(244, 44, 29, 0.4)';
+            ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+        }
     }
 }
 
 function animateParticles() {
     if (!canvas) return;
+    if (document.body.classList.contains('low-power')) {
+        ctx.clearRect(0, 0, innerWidth, innerHeight); // Clear canvas in eco mode
+        requestAnimationFrame(animateParticles);
+        return;
+    }
     requestAnimationFrame(animateParticles); ctx.clearRect(0, 0, innerWidth, innerHeight);
     for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
     connectParticles();
@@ -115,7 +161,7 @@ window.addEventListener('resize', () => { if (canvas && window.innerWidth > 768)
 if (canvas) { initParticles(); animateParticles(); }
 
 /* =========================================
-   3. NAVIGATION & SCROLL
+   4. NAVIGATION & SCROLL
    ========================================= */
 const navLinks = document.querySelectorAll('nav a, .hud-point, .back-to-top');
 navLinks.forEach(link => {
@@ -145,7 +191,7 @@ const observer = new IntersectionObserver((entries) => {
 sections.forEach(section => observer.observe(section));
 
 /* =========================================
-   4. MODAL LOGIC (GALLERY)
+   5. MODAL LOGIC (GALLERY)
    ========================================= */
 const galleryData = {
     "PHOTOGRAPHY": ["assets/work/photo.jpg", "assets/work/photo2.jpg"],
@@ -197,7 +243,7 @@ if (closeBtn) closeBtn.onclick = closeModal;
 window.onclick = (event) => { if (event.target == modal) closeModal(); };
 
 /* =========================================
-   5. ANIMATIONS (REVEAL & 3D TILT)
+   6. ANIMATIONS & ROLES
    ========================================= */
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
@@ -206,7 +252,6 @@ function revealOnScroll() {
             reveal.classList.add('active');
         }
     });
-    // Scroll Progress
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (scrollTop / scrollHeight) * 100;
@@ -216,18 +261,20 @@ function revealOnScroll() {
 window.addEventListener('scroll', revealOnScroll);
 window.onload = () => { revealOnScroll(); };
 
-// Cycle Hero Title
+// Cycle Hero Title (Roles Updated)
 const heroTitle = document.getElementById('hero-title');
 if (heroTitle) {
-    const roles = ["DESIGNER", "DEVELOPER", "CREATOR", "ARCHITECT"];
+    const roles = ["DESIGNER", "PHOTOGRAPHER", "VIDEOGRAPHER", "CREATOR"];
     let roleIndex = 0;
     heroTitle.addEventListener('mouseover', () => {
         roleIndex = (roleIndex + 1) % roles.length;
         heroTitle.innerText = roles[roleIndex];
+        // Optional: Trigger shuffle on hover too
+        // hackTextOnce(heroTitle); 
     });
 }
 
-// Reveal Decrypt text (Instant)
+// Reveal Decrypt text
 document.querySelectorAll('.decrypt').forEach(node => {
     node.innerText = node.getAttribute('data-value');
     node.classList.add('revealed');
@@ -245,26 +292,24 @@ magnets.forEach((magnet) => {
     magnet.addEventListener('mouseleave', () => { magnet.style.transform = 'translate(0, 0)'; });
 });
 
-/* CURSOR & 3D TILT (RESTORED) */
+/* CURSOR & 3D TILT */
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 
 if (cursorDot && cursorOutline) {
     window.addEventListener("mousemove", (e) => {
         const posX = e.clientX; const posY = e.clientY;
-        // Simple cursor follow
         cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
         cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
     });
 
-    const interactables = document.querySelectorAll('a, .project-card, .hex-item, button, .magnet-btn');
+    const interactables = document.querySelectorAll('a, .project-card, .hex-item, button, .magnet-btn, .hud-point');
     interactables.forEach(el => {
         el.addEventListener('mouseenter', () => cursorOutline.classList.add("hovered"));
         el.addEventListener('mouseleave', () => cursorOutline.classList.remove("hovered"));
     });
 }
 
-// 3D Card Tilt Logic
 const cards = document.querySelectorAll('.project-card, .holo-card');
 cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -274,13 +319,10 @@ cards.forEach(card => {
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        // Calculate rotation based on mouse position
-        const rotateX = ((y - centerY) / centerY) * -5; // Subtle tilt
+        const rotateX = ((y - centerY) / centerY) * -5;
         const rotateY = ((x - centerX) / centerX) * 5;
-
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
     });
-
     card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
     });

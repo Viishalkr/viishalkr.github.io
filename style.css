@@ -49,7 +49,6 @@ body {
     background-color: var(--bg-black);
     color: var(--text-white);
     overflow-x: hidden;
-    /* Clean Gradient */
     background-image: linear-gradient(to bottom, #070709 0%, #110202 100%);
     background-attachment: fixed;
 }
@@ -59,7 +58,7 @@ body.no-scroll {
 }
 
 /* =========================================
-   2. UI OVERLAYS (CLEAN - NO GRAIN)
+   2. UI OVERLAYS
    ========================================= */
 #neural-canvas {
     position: fixed;
@@ -72,7 +71,7 @@ body.no-scroll {
     opacity: 0.4;
 }
 
-/* Hiding Retro Elements as requested */
+/* Hiding Retro Elements */
 .scanlines,
 .noise,
 .glitch-overlay,
@@ -168,7 +167,7 @@ nav a.active {
     box-shadow: 0 0 15px rgba(244, 44, 29, 0.3);
 }
 
-/* SIDE HUD */
+/* SIDE HUD (NUMBERS FIXED) */
 .side-hud {
     position: fixed;
     right: 30px;
@@ -177,26 +176,44 @@ nav a.active {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 15px;
+    gap: 20px;
     z-index: 1000;
 }
 
 .hud-point {
-    width: 8px;
-    height: 8px;
-    background: #333;
-    border-radius: 50%;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    color: #555;
+    text-decoration: none;
     transition: 0.3s;
     position: relative;
-    cursor: pointer;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+/* The Label (About, Work, etc) */
+.hud-point::before {
+    content: attr(data-label);
+    opacity: 0;
+    margin-right: 15px;
+    font-weight: bold;
+    color: var(--primary-red);
+    font-size: 12px;
+    transform: translateX(10px);
+    transition: 0.3s;
+}
+
+.hud-point:hover::before,
+.hud-point.active::before {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .hud-point:hover,
 .hud-point.active {
-    background: var(--primary-red);
-    transform: scale(1.5);
-    box-shadow: 0 0 10px var(--primary-red);
+    color: var(--primary-red);
+    text-shadow: 0 0 10px var(--primary-red);
+    transform: scale(1.1);
 }
 
 /* SCROLLBAR PROGRESS */
@@ -258,7 +275,6 @@ nav a.active {
     text-transform: uppercase;
     padding: 10px 20px;
     border: 1px solid #333;
-    /* Clean "Tech" corners */
     clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
     transition: 0.3s;
     background: rgba(255, 255, 255, 0.05);
@@ -323,7 +339,6 @@ h2 {
     display: inline-block;
 }
 
-/* Remove bracket pseudo-elements */
 h2::before,
 h2::after {
     content: none !important;
@@ -341,9 +356,10 @@ h2::after {
     margin-bottom: 20px;
 }
 
-/* Angled Section Backgrounds - RESTORED */
+/* RED DIAGONAL LINES RESTORED */
 .angled-section {
     position: relative;
+    padding: 120px 10%;
 }
 
 .angled-section::before {
@@ -356,12 +372,14 @@ h2::after {
     background: rgba(20, 20, 20, 0.4);
     transform: skewY(-2deg);
     z-index: -1;
-    border-top: 1px solid #222;
-    border-bottom: 1px solid #222;
+    border-top: 1px solid var(--primary-red);
+    /* Red Line Top */
+    border-bottom: 1px solid var(--primary-red);
+    /* Red Line Bottom */
 }
 
 /* =========================================
-   6. SKILLS (HEXAGONS RESTORED)
+   6. SKILLS (HEXAGONS)
    ========================================= */
 .hex-grid {
     display: flex;
@@ -375,19 +393,16 @@ h2::after {
     width: 120px;
     height: 135px;
     position: relative;
-    /* The proper hexagon shape */
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     background: #111;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: -30px;
-    /* Nesting effect */
     transition: 0.3s;
     cursor: default;
 }
 
-/* Inner border effect for Hexagon */
 .hex-item::before {
     content: '';
     position: absolute;
@@ -404,7 +419,6 @@ h2::after {
     background: var(--primary-red);
     z-index: 0;
     opacity: 0.2;
-    /* Subtle red border */
     transition: 0.3s;
 }
 
@@ -446,7 +460,7 @@ h2::after {
 }
 
 /* =========================================
-   7. PROJECTS & CARDS (3D & CLEAN)
+   7. PROJECTS & CARDS
    ========================================= */
 .project-grid {
     display: grid;
@@ -458,7 +472,6 @@ h2::after {
     height: 400px;
     background-color: var(--card-bg);
     border: 1px solid #222;
-    /* Clean Tech Cut Corner */
     clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
     position: relative;
     display: flex;
@@ -466,13 +479,11 @@ h2::after {
     justify-content: flex-end;
     padding: 30px;
     transition: transform 0.1s;
-    /* Fast transition for 3D tilt */
     background-size: cover;
     background-position: center;
     overflow: hidden;
 }
 
-/* Gradient Overlay */
 .project-card::before {
     content: '';
     position: absolute;
@@ -509,7 +520,6 @@ h2::after {
     line-height: 1;
 }
 
-/* REMOVE SCANLINES/GLITCH ON CARDS */
 .project-card::after {
     display: none;
 }
@@ -579,7 +589,6 @@ h2::after {
     padding: 20px;
     border: 1px solid #222;
     background: #111;
-    /* Restored tech corner */
     clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
 }
 
@@ -588,10 +597,8 @@ h2::after {
     height: 100%;
     object-fit: cover;
     filter: none;
-    /* Full color */
 }
 
-/* Remove Scanner */
 .holo-scanner {
     display: none;
 }
@@ -679,7 +686,7 @@ h2::after {
     color: var(--primary-red);
 }
 
-/* BOOT TERMINAL (CLEANER) */
+/* BOOT TERMINAL */
 #preloader {
     position: fixed;
     top: 0;
