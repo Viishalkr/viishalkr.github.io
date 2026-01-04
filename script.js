@@ -163,6 +163,11 @@ function connectParticles() {
 
 function animateParticles() {
     if (!canvas) return;
+    if (document.body.classList.contains('low-power')) {
+        ctx.clearRect(0, 0, innerWidth, innerHeight); // Clear canvas in eco mode
+        requestAnimationFrame(animateParticles);
+        return;
+    }
     requestAnimationFrame(animateParticles);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     for (let i = 0; i < particlesArray.length; i++) {
@@ -240,12 +245,7 @@ document.querySelectorAll('nav a, .hud-point').forEach(link => {
 /* =========================================
    7. MODAL (GALLERY)
    ========================================= */
-const galleryData = {
-    "PHOTOGRAPHY": ["assets/work/photo.jpg"],
-    "GRAPHIC DESIGN": ["assets/work/design.jpg"],
-    "VIDEO EDITING": ["assets/work/video.jpg"]
-};
-// Use simple single image logic for now or expand if needed
+// Use simple single image logic for now
 const modal = document.getElementById("projectModal");
 const modalImg = document.getElementById("modalImg");
 const modalTitle = document.getElementById("modalTitle");

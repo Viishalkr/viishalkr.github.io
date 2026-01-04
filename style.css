@@ -69,10 +69,8 @@ body.no-scroll {
     z-index: -1;
     pointer-events: none;
     opacity: 0.6;
-    /* Increased opacity for visibility */
 }
 
-/* Hiding Retro Elements but keeping Security Screen Structure */
 .scanlines,
 .noise,
 .glitch-overlay,
@@ -353,7 +351,7 @@ h2::after {
     margin-bottom: 20px;
 }
 
-/* RED DIAGONAL LINES */
+/* ANGLED SECTIONS (RED LINES) */
 .angled-section {
     position: relative;
     padding: 120px 10%;
@@ -371,6 +369,11 @@ h2::after {
     z-index: -1;
     border-top: 1px solid var(--primary-red);
     border-bottom: 1px solid var(--primary-red);
+}
+
+/* *** FIX: REMOVE BOTTOM LINE FROM CONTACT SECTION *** */
+#contact.angled-section::before {
+    border-bottom: none;
 }
 
 /* =========================================
@@ -652,12 +655,12 @@ h2::after {
     z-index: 2;
 }
 
-/* Clean Footer - No top border */
+/* CLEAN FOOTER */
 .cyber-footer {
     padding: 40px 10%;
     background: #050505;
     border-top: none;
-    /* Removed line */
+    /* NO LINE */
     display: flex;
     justify-content: space-between;
     align-items: center;
