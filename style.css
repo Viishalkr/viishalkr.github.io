@@ -68,14 +68,14 @@ body.no-scroll {
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.6;
+    /* Increased opacity for visibility */
 }
 
-/* Hiding Retro Elements */
+/* Hiding Retro Elements but keeping Security Screen Structure */
 .scanlines,
 .noise,
 .glitch-overlay,
-#security-screen,
 .watermark {
     display: none !important;
 }
@@ -167,7 +167,7 @@ nav a.active {
     box-shadow: 0 0 15px rgba(244, 44, 29, 0.3);
 }
 
-/* SIDE HUD (NUMBERS FIXED) */
+/* SIDE HUD */
 .side-hud {
     position: fixed;
     right: 30px;
@@ -191,7 +191,6 @@ nav a.active {
     align-items: center;
 }
 
-/* The Label (About, Work, etc) */
 .hud-point::before {
     content: attr(data-label);
     opacity: 0;
@@ -216,7 +215,6 @@ nav a.active {
     transform: scale(1.1);
 }
 
-/* SCROLLBAR PROGRESS */
 #scroll-progress {
     position: fixed;
     top: 0;
@@ -326,7 +324,6 @@ nav a.active {
     margin: 0 auto;
 }
 
-/* HEADERS (CLEAN) */
 h2 {
     font-size: 3rem;
     margin-bottom: 60px;
@@ -356,7 +353,7 @@ h2::after {
     margin-bottom: 20px;
 }
 
-/* RED DIAGONAL LINES RESTORED */
+/* RED DIAGONAL LINES */
 .angled-section {
     position: relative;
     padding: 120px 10%;
@@ -373,19 +370,17 @@ h2::after {
     transform: skewY(-2deg);
     z-index: -1;
     border-top: 1px solid var(--primary-red);
-    /* Red Line Top */
     border-bottom: 1px solid var(--primary-red);
-    /* Red Line Bottom */
 }
 
 /* =========================================
-   6. SKILLS (HEXAGONS)
+   6. SKILLS
    ========================================= */
 .hex-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
     padding: 20px;
 }
 
@@ -460,7 +455,7 @@ h2::after {
 }
 
 /* =========================================
-   7. PROJECTS & CARDS
+   7. PROJECTS
    ========================================= */
 .project-grid {
     display: grid;
@@ -518,14 +513,6 @@ h2::after {
     font-weight: 800;
     color: #fff;
     line-height: 1;
-}
-
-.project-card::after {
-    display: none;
-}
-
-.project-card:hover .card-content {
-    text-shadow: none;
 }
 
 /* =========================================
@@ -631,7 +618,7 @@ h2::after {
 }
 
 /* =========================================
-   9. FOOTER, BUTTONS & TERMINAL
+   9. FOOTER & BUTTONS
    ========================================= */
 .cyber-btn {
     display: inline-flex;
@@ -665,10 +652,12 @@ h2::after {
     z-index: 2;
 }
 
+/* Clean Footer - No top border */
 .cyber-footer {
     padding: 40px 10%;
     background: #050505;
-    border-top: 1px solid #222;
+    border-top: none;
+    /* Removed line */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -861,6 +850,62 @@ h2::after {
 
 .close:hover {
     color: var(--primary-red);
+}
+
+/* SECURITY SCREEN (HIDDEN BY DEFAULT, SHOWN BY JS) */
+#security-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(174, 25, 24, 0.2);
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+#security-screen.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.security-msg {
+    background: #000;
+    border: 2px solid var(--primary-red);
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 50px var(--deep-red);
+    transform: scale(0.8);
+    transition: 0.3s;
+}
+
+#security-screen.active .security-msg {
+    transform: scale(1);
+}
+
+.alert-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    color: var(--primary-red);
+}
+
+.security-msg h1 {
+    color: var(--primary-red);
+    font-size: 2rem;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+}
+
+.security-msg p {
+    color: #fff;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
 }
 
 /* MOBILE */
