@@ -5,7 +5,7 @@ const preloader = document.getElementById('preloader');
 const bootText = document.getElementById('boot-text');
 const body = document.body;
 
-// 1. Text Shuffle Logic
+// Text Shuffle
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 function hackTextOnce(element) {
     if (!element) return;
@@ -17,11 +17,11 @@ function hackTextOnce(element) {
             return letters[Math.floor(Math.random() * 26)];
         }).join("");
         if (iterations >= originalText.length) clearInterval(interval);
-        iterations += 1 / 3; // Speed
+        iterations += 1 / 3;
     }, 30);
 }
 
-// 2. Typewriter Logic
+// Typewriter
 function startTypewriter() {
     const greeting = document.querySelector('.greeting');
     if (greeting) {
@@ -37,12 +37,11 @@ function startTypewriter() {
         }
         setTimeout(type, 500);
     }
-    // TRIGGER SHUFFLE ONLY ONCE
     const mainTitle = document.querySelector('.main-title');
     hackTextOnce(mainTitle);
 }
 
-// 3. Fast Boot
+// Fast Boot
 if (preloader && bootText) {
     const logs = ["SYSTEM BOOT...", "ACCESS GRANTED."];
     let i = 0;
@@ -52,7 +51,7 @@ if (preloader && bootText) {
             line.classList.add('log-line');
             line.innerText = `> ${logs[i]}`;
             bootText.appendChild(line);
-            setTimeout(typeLine, 400); // Fast log speed
+            setTimeout(typeLine, 400);
             i++;
         } else {
             setTimeout(() => {
@@ -70,7 +69,8 @@ if (preloader && bootText) {
    2. IMAGE LOADER (Fixes Thumbnails)
    ========================================= */
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.project-card').forEach(card => {
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach(card => {
         const imgPath = card.getAttribute('data-img');
         if (imgPath) {
             card.style.backgroundImage = `url('${imgPath}')`;
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   3. PARTICLES (Fast & Snappy)
+   3. PARTICLES (Reactive)
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -110,16 +110,18 @@ class Particle {
         if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
-        // Mouse Interaction
+        // Mouse Snap
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
-
         if (distance < mouse.radius) {
-            if (mouse.x < this.x && this.x < canvas.width - 10) this.x += 3;
-            if (mouse.x > this.x && this.x > 10) this.x -= 3;
-            if (mouse.y < this.y && this.y < canvas.height - 10) this.y += 3;
-            if (mouse.y > this.y && this.y > 10) this.y -= 3;
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            const force = (mouse.radius - distance) / mouse.radius;
+            const directionX = forceDirectionX * force * 3; // Magnet strength
+            const directionY = forceDirectionY * force * 3;
+            this.x += directionX;
+            this.y += directionY;
         }
 
         this.x += this.directionX;
@@ -131,25 +133,24 @@ class Particle {
 function initParticles() {
     if (!canvas || window.innerWidth < 768) return;
     particlesArray = [];
-    let numberOfParticles = (canvas.height * canvas.width) / 10000; // Increased density
+    let numberOfParticles = (canvas.height * canvas.width) / 9000;
     for (let i = 0; i < numberOfParticles; i++) {
         let size = (Math.random() * 2) + 1;
         let x = Math.random() * innerWidth;
         let y = Math.random() * innerHeight;
-        let directionX = (Math.random() * 2) - 1; // Faster speed
-        let directionY = (Math.random() * 2) - 1;
+        let directionX = (Math.random() * 1.5) - 0.75;
+        let directionY = (Math.random() * 1.5) - 0.75;
         particlesArray.push(new Particle(x, y, directionX, directionY, size));
     }
 }
 
 function connectParticles() {
-    let opacityValue = 1;
     for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
-            let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
-                ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+            let distance = ((particlesArray[a].x - particlesArray[b].x) ** 2) +
+                ((particlesArray[a].y - particlesArray[b].y) ** 2);
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-                opacityValue = 1 - (distance / 20000);
+                let opacityValue = 1 - (distance / 20000);
                 ctx.strokeStyle = 'rgba(244, 44, 29,' + opacityValue + ')';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -164,7 +165,7 @@ function connectParticles() {
 function animateParticles() {
     if (!canvas) return;
     if (document.body.classList.contains('low-power')) {
-        ctx.clearRect(0, 0, innerWidth, innerHeight); // Clear canvas in eco mode
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
         requestAnimationFrame(animateParticles);
         return;
     }
@@ -177,13 +178,12 @@ function animateParticles() {
 }
 
 if (canvas) {
-    window.addEventListener('resize', () => {
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
-        initParticles();
-    });
     initParticles();
     animateParticles();
+    window.addEventListener('resize', () => {
+        canvas.width = innerWidth; canvas.height = innerHeight;
+        initParticles();
+    });
 }
 
 /* =========================================
@@ -203,7 +203,7 @@ document.addEventListener('contextmenu', (e) => {
 /* =========================================
    5. ECO MODE TOGGLE
    ========================================= */
-window.togglePerformance = function () {
+document.getElementById('ecoBtn').addEventListener('click', function () {
     document.body.classList.toggle('low-power');
     const statusText = document.getElementById('perf-text');
     if (document.body.classList.contains('low-power')) {
@@ -213,10 +213,10 @@ window.togglePerformance = function () {
         statusText.innerText = "ONLINE";
         statusText.style.color = "#F42C1D";
     }
-};
+});
 
 /* =========================================
-   6. SCROLL & NAV
+   6. SCROLL REVEAL
    ========================================= */
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
@@ -225,7 +225,6 @@ function revealOnScroll() {
             reveal.classList.add('active');
         }
     });
-    // Progress Bar
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (scrollTop / scrollHeight) * 100;
@@ -233,7 +232,7 @@ function revealOnScroll() {
 }
 window.addEventListener('scroll', revealOnScroll);
 
-// HUD & Nav Click
+// HUD & Nav
 document.querySelectorAll('nav a, .hud-point').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -243,9 +242,8 @@ document.querySelectorAll('nav a, .hud-point').forEach(link => {
 });
 
 /* =========================================
-   7. MODAL (GALLERY)
+   7. MODAL LOGIC
    ========================================= */
-// Use simple single image logic for now
 const modal = document.getElementById("projectModal");
 const modalImg = document.getElementById("modalImg");
 const modalTitle = document.getElementById("modalTitle");

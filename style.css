@@ -58,7 +58,7 @@ body.no-scroll {
 }
 
 /* =========================================
-   2. UI OVERLAYS
+   2. UI OVERLAYS & BACKGROUND
    ========================================= */
 #neural-canvas {
     position: fixed;
@@ -69,8 +69,10 @@ body.no-scroll {
     z-index: -1;
     pointer-events: none;
     opacity: 0.6;
+    /* Visible particles */
 }
 
+/* Hide clutter */
 .scanlines,
 .noise,
 .glitch-overlay,
@@ -118,7 +120,7 @@ body.no-scroll {
     border-radius: 50%;
     z-index: 99998;
     pointer-events: none;
-    transition: width 0.2s, height 0.2s;
+    transition: width 0.1s, height 0.1s;
     opacity: 0.5;
 }
 
@@ -129,7 +131,7 @@ body:hover .cursor-outline.hovered {
 }
 
 /* =========================================
-   4. NAVIGATION
+   4. NAVIGATION & HUD
    ========================================= */
 .navbar {
     position: fixed;
@@ -162,10 +164,9 @@ nav a:hover,
 nav a.active {
     color: #fff;
     background-color: var(--primary-red);
-    box-shadow: 0 0 15px rgba(244, 44, 29, 0.3);
 }
 
-/* SIDE HUD */
+/* SIDE HUD - NUMBERS VISIBLE */
 .side-hud {
     position: fixed;
     right: 30px;
@@ -174,7 +175,7 @@ nav a.active {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 20px;
+    gap: 15px;
     z-index: 1000;
 }
 
@@ -184,7 +185,6 @@ nav a.active {
     color: #555;
     text-decoration: none;
     transition: 0.3s;
-    position: relative;
     display: flex;
     align-items: center;
 }
@@ -209,7 +209,6 @@ nav a.active {
 .hud-point:hover,
 .hud-point.active {
     color: var(--primary-red);
-    text-shadow: 0 0 10px var(--primary-red);
     transform: scale(1.1);
 }
 
@@ -221,7 +220,6 @@ nav a.active {
     height: 4px;
     background: var(--primary-red);
     z-index: 10000;
-    box-shadow: 0 0 10px var(--primary-red);
 }
 
 /* =========================================
@@ -334,15 +332,6 @@ h2 {
     display: inline-block;
 }
 
-h2::before,
-h2::after {
-    content: none !important;
-}
-
-.data-stamp {
-    display: none;
-}
-
 .text-content p {
     font-size: 1.2rem;
     line-height: 1.8;
@@ -351,7 +340,7 @@ h2::after {
     margin-bottom: 20px;
 }
 
-/* ANGLED SECTIONS (RED LINES) */
+/* RED DIAGONAL LINES */
 .angled-section {
     position: relative;
     padding: 120px 10%;
@@ -458,7 +447,7 @@ h2::after {
 }
 
 /* =========================================
-   7. PROJECTS
+   7. PROJECTS (THUMBNAILS FIX)
    ========================================= */
 .project-grid {
     display: grid;
@@ -477,11 +466,14 @@ h2::after {
     justify-content: flex-end;
     padding: 30px;
     transition: transform 0.1s;
-    background-size: cover;
-    background-position: center;
     overflow: hidden;
+
+    /* ESSENTIAL FOR THUMBNAILS */
+    background-size: cover !important;
+    background-position: center !important;
 }
 
+/* Overlay so text is readable */
 .project-card::before {
     content: '';
     position: absolute;
@@ -586,11 +578,6 @@ h2::after {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: none;
-}
-
-.holo-scanner {
-    display: none;
 }
 
 .about-grid {
@@ -598,26 +585,6 @@ h2::after {
     grid-template-columns: 1.5fr 1fr;
     gap: 50px;
     align-items: start;
-}
-
-.stat-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-}
-
-.stat-line {
-    width: 60%;
-    height: 4px;
-    background: #333;
-    margin-top: 6px;
-}
-
-.stat-line div {
-    height: 100%;
-    background: var(--primary-red);
 }
 
 /* =========================================
@@ -637,6 +604,7 @@ h2::after {
     border: 1px solid var(--primary-red);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .cyber-btn:hover {
@@ -644,18 +612,6 @@ h2::after {
     box-shadow: 0 0 20px rgba(244, 44, 29, 0.4);
 }
 
-.btn-tag,
-.btn-glitch {
-    display: none;
-}
-
-.btn-text {
-    font-size: 1rem;
-    position: relative;
-    z-index: 2;
-}
-
-/* CLEAN FOOTER */
 .cyber-footer {
     padding: 40px 10%;
     background: #050505;
@@ -855,7 +811,7 @@ h2::after {
     color: var(--primary-red);
 }
 
-/* SECURITY SCREEN (HIDDEN BY DEFAULT, SHOWN BY JS) */
+/* SECURITY SCREEN */
 #security-screen {
     position: fixed;
     top: 0;
@@ -911,7 +867,6 @@ h2::after {
     font-size: 1rem;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
     .main-title {
         font-size: 15vw;
