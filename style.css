@@ -1,8 +1,8 @@
 /* =========================================
    1. RESET, FONTS & VARIABLES
    ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Oswald:wght@500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+/* IMPORTING FUTURISTIC FONTS: Orbitron, Rajdhani, Share Tech Mono */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
 
 :root {
     /* CRIMSON & SHADOW PALETTE */
@@ -13,6 +13,14 @@
     --accent-brown: #824334;
     --text-white: #ffffff;
     --text-muted: #dcdcdc;
+
+    /* FONT VARIABLES */
+    --font-head: 'Orbitron', sans-serif;
+    /* Main Headings */
+    --font-body: 'Rajdhani', sans-serif;
+    /* Paragraphs & UI */
+    --font-tech: 'Share Tech Mono', monospace;
+    /* Numbers & Code */
 }
 
 ::selection {
@@ -38,7 +46,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
+    /* Default to Tech Body font */
 }
 
 html {
@@ -51,6 +60,8 @@ body {
     overflow-x: hidden;
     background-image: linear-gradient(to bottom, #070709 0%, #110202 100%);
     background-attachment: fixed;
+    font-size: 18px;
+    /* Slightly larger for Rajdhani legibility */
 }
 
 body.no-scroll {
@@ -58,7 +69,7 @@ body.no-scroll {
 }
 
 /* =========================================
-   2. UI OVERLAYS & BACKGROUND
+   2. UI OVERLAYS
    ========================================= */
 #neural-canvas {
     position: fixed;
@@ -69,10 +80,8 @@ body.no-scroll {
     z-index: -1;
     pointer-events: none;
     opacity: 0.6;
-    /* Visible particles */
 }
 
-/* Hide clutter */
 .scanlines,
 .noise,
 .glitch-overlay,
@@ -120,7 +129,7 @@ body.no-scroll {
     border-radius: 50%;
     z-index: 99998;
     pointer-events: none;
-    transition: width 0.1s, height 0.1s;
+    transition: width 0.2s, height 0.2s;
     opacity: 0.5;
 }
 
@@ -131,7 +140,7 @@ body:hover .cursor-outline.hovered {
 }
 
 /* =========================================
-   4. NAVIGATION & HUD
+   4. NAVIGATION
    ========================================= */
 .navbar {
     position: fixed;
@@ -150,23 +159,26 @@ body:hover .cursor-outline.hovered {
 nav a {
     color: var(--text-muted);
     text-decoration: none;
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 16px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     padding: 10px 20px;
     margin-left: 10px;
     border-radius: 4px;
     transition: 0.3s;
+    font-family: var(--font-head);
+    /* Orbitron for Nav */
 }
 
 nav a:hover,
 nav a.active {
     color: #fff;
     background-color: var(--primary-red);
+    box-shadow: 0 0 15px rgba(244, 44, 29, 0.3);
 }
 
-/* SIDE HUD - NUMBERS VISIBLE */
+/* SIDE HUD */
 .side-hud {
     position: fixed;
     right: 30px;
@@ -175,16 +187,18 @@ nav a.active {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 15px;
+    gap: 20px;
     z-index: 1000;
 }
 
 .hud-point {
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
+    font-family: var(--font-tech);
+    /* Tech Mono */
+    font-size: 16px;
     color: #555;
     text-decoration: none;
     transition: 0.3s;
+    position: relative;
     display: flex;
     align-items: center;
 }
@@ -195,9 +209,10 @@ nav a.active {
     margin-right: 15px;
     font-weight: bold;
     color: var(--primary-red);
-    font-size: 12px;
+    font-size: 14px;
     transform: translateX(10px);
     transition: 0.3s;
+    font-family: var(--font-head);
 }
 
 .hud-point:hover::before,
@@ -209,6 +224,7 @@ nav a.active {
 .hud-point:hover,
 .hud-point.active {
     color: var(--primary-red);
+    text-shadow: 0 0 10px var(--primary-red);
     transform: scale(1.1);
 }
 
@@ -220,6 +236,7 @@ nav a.active {
     height: 4px;
     background: var(--primary-red);
     z-index: 10000;
+    box-shadow: 0 0 10px var(--primary-red);
 }
 
 /* =========================================
@@ -236,22 +253,27 @@ nav a.active {
 }
 
 .greeting {
-    font-size: 1.2rem;
-    font-weight: 400;
+    font-size: 1.4rem;
+    font-weight: 500;
     margin-bottom: 20px;
     color: var(--primary-red);
-    letter-spacing: 2px;
+    letter-spacing: 4px;
     text-transform: uppercase;
+    font-family: var(--font-tech);
+    /* Tech Mono Greeting */
 }
 
 .main-title {
-    font-size: 8vw;
+    font-family: var(--font-head);
+    font-size: 7vw;
+    /* Adjusted for wider font */
     line-height: 1;
     font-weight: 900;
     text-transform: uppercase;
     color: #fff;
     margin-left: -5px;
     cursor: default;
+    letter-spacing: 5px;
 }
 
 .roles {
@@ -262,16 +284,17 @@ nav a.active {
 }
 
 .roles span {
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
     color: #ccc;
     text-transform: uppercase;
-    padding: 10px 20px;
+    padding: 10px 25px;
     border: 1px solid #333;
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
     transition: 0.3s;
     background: rgba(255, 255, 255, 0.05);
+    font-family: var(--font-head);
 }
 
 .roles span:hover {
@@ -289,6 +312,8 @@ nav a.active {
     color: #fff;
     opacity: 0.5;
     animation: bounce 2s infinite;
+    font-family: var(--font-tech);
+    letter-spacing: 3px;
 }
 
 @keyframes bounce {
@@ -321,23 +346,38 @@ nav a.active {
 }
 
 h2 {
-    font-size: 3rem;
+    font-family: var(--font-head);
+    font-size: 3.5rem;
     margin-bottom: 60px;
     text-transform: uppercase;
-    font-weight: 900;
+    font-weight: 800;
     color: #fff;
-    border-left: 5px solid var(--primary-red);
-    padding-left: 20px;
+    border-left: 6px solid var(--primary-red);
+    padding-left: 25px;
     line-height: 1;
     display: inline-block;
+    letter-spacing: 3px;
+}
+
+h2::before,
+h2::after {
+    content: none !important;
 }
 
 .text-content p {
-    font-size: 1.2rem;
-    line-height: 1.8;
+    font-size: 1.3rem;
+    line-height: 1.7;
     color: #ccc;
     max-width: 800px;
     margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* DECRYPT TEXT */
+.decrypt {
+    font-family: var(--font-tech);
+    color: var(--primary-red);
+    font-weight: bold;
 }
 
 /* RED DIAGONAL LINES */
@@ -360,7 +400,6 @@ h2 {
     border-bottom: 1px solid var(--primary-red);
 }
 
-/* *** FIX: REMOVE BOTTOM LINE FROM CONTACT SECTION *** */
 #contact.angled-section::before {
     border-bottom: none;
 }
@@ -377,8 +416,9 @@ h2 {
 }
 
 .hex-item {
-    width: 120px;
-    height: 135px;
+    width: 130px;
+    /* Slightly wider for new fonts */
+    height: 145px;
     position: relative;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     background: #111;
@@ -419,17 +459,20 @@ h2 {
 }
 
 .hex-icon {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 800;
     color: #fff;
     margin-bottom: 5px;
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-head);
+    /* Orbitron Icons */
 }
 
 .hex-label {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: #888;
-    font-weight: 500;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-family: var(--font-tech);
 }
 
 .hex-item:hover {
@@ -447,7 +490,7 @@ h2 {
 }
 
 /* =========================================
-   7. PROJECTS (THUMBNAILS FIX)
+   7. PROJECTS
    ========================================= */
 .project-grid {
     display: grid;
@@ -466,14 +509,11 @@ h2 {
     justify-content: flex-end;
     padding: 30px;
     transition: transform 0.1s;
-    overflow: hidden;
-
-    /* ESSENTIAL FOR THUMBNAILS */
     background-size: cover !important;
     background-position: center !important;
+    overflow: hidden;
 }
 
-/* Overlay so text is readable */
 .project-card::before {
     content: '';
     position: absolute;
@@ -501,13 +541,17 @@ h2 {
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 5px;
+    font-family: var(--font-tech);
+    letter-spacing: 2px;
 }
 
 .card-content {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 800;
     color: #fff;
     line-height: 1;
+    font-family: var(--font-head);
+    letter-spacing: 1px;
 }
 
 /* =========================================
@@ -551,20 +595,23 @@ h2 {
 }
 
 .edu-degree {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #fff;
     font-weight: 700;
     margin-bottom: 5px;
+    font-family: var(--font-head);
 }
 
 .edu-year {
     color: var(--primary-red);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-family: var(--font-tech);
 }
 
 .edu-place {
     color: #888;
+    font-weight: 500;
 }
 
 .holo-card {
@@ -574,10 +621,27 @@ h2 {
     clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
 }
 
+.holo-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-tech);
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
+
+.holo-status {
+    color: var(--primary-red);
+    text-shadow: 0 0 5px var(--deep-red);
+}
+
 .holo-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: none;
 }
 
 .about-grid {
@@ -594,17 +658,18 @@ h2 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 30px;
+    padding: 15px 35px;
     background: transparent;
     color: #fff;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     text-decoration: none;
     transition: 0.3s;
     border: 1px solid var(--primary-red);
     position: relative;
     overflow: hidden;
-    cursor: pointer;
+    font-family: var(--font-head);
+    letter-spacing: 2px;
 }
 
 .cyber-btn:hover {
@@ -612,16 +677,70 @@ h2 {
     box-shadow: 0 0 20px rgba(244, 44, 29, 0.4);
 }
 
+.btn-tag,
+.btn-glitch {
+    display: none;
+}
+
+.btn-text {
+    font-size: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* CLEAN FOOTER */
 .cyber-footer {
     padding: 40px 10%;
     background: #050505;
     border-top: none;
-    /* NO LINE */
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.9rem;
     color: #666;
+    font-family: var(--font-tech);
+}
+
+.sys-status {
+    color: var(--primary-red);
+    text-shadow: 0 0 5px var(--deep-red);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-red);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.perf-toggle-btn {
+    cursor: pointer;
+    color: #666;
+    transition: 0.3s;
+}
+
+.perf-toggle-btn:hover {
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
 }
 
 .back-to-top {
@@ -697,14 +816,14 @@ h2 {
     margin-left: auto;
     color: #888;
     font-size: 10px;
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-tech);
 }
 
 .terminal-body {
     flex: 1;
     padding: 15px;
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
+    font-family: var(--font-tech);
+    font-size: 14px;
     color: var(--primary-red);
     overflow-y: auto;
     text-align: left;
@@ -784,17 +903,49 @@ h2 {
 }
 
 #modalTitle {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 900;
     color: #fff;
     margin: 0;
     line-height: 1;
+    font-family: var(--font-head);
 }
 
 .modal-body p {
     color: #ccc;
     line-height: 1.6;
     margin-bottom: 30px;
+}
+
+.modal-id {
+    font-family: var(--font-tech);
+    color: #666;
+    font-size: 12px;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.modal-tools {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-left: 3px solid var(--primary-red);
+}
+
+.tool-label {
+    display: block;
+    font-size: 10px;
+    color: var(--primary-red);
+    font-weight: bold;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+    font-family: var(--font-head);
+}
+
+.tool-list {
+    font-family: var(--font-tech);
+    font-size: 14px;
+    color: #fff;
 }
 
 .close {
@@ -859,14 +1010,16 @@ h2 {
     font-size: 2rem;
     margin-bottom: 10px;
     letter-spacing: 3px;
+    font-family: var(--font-head);
 }
 
 .security-msg p {
     color: #fff;
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-tech);
     font-size: 1rem;
 }
 
+/* MOBILE */
 @media (max-width: 768px) {
     .main-title {
         font-size: 15vw;
