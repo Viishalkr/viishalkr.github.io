@@ -1,5 +1,5 @@
 /* =========================================
-   1. TERMINAL BOOT SEQUENCE (Simplified)
+   1. TERMINAL BOOT SEQUENCE
    ========================================= */
 const preloader = document.getElementById('preloader');
 const bootText = document.getElementById('boot-text');
@@ -8,8 +8,6 @@ const body = document.body;
 function startTypewriter() {
     const greeting = document.querySelector('.greeting');
     if (greeting) {
-        // Simple fade in or direct set, no typing loop if you want it super clean.
-        // But typing "Hii i'm VISHAL" is fine, just no random scrambling.
         const text = "hii i'm VISHAL";
         greeting.innerHTML = "";
         let i = 0;
@@ -25,9 +23,11 @@ function startTypewriter() {
 }
 
 if (preloader && bootText) {
-    // Faster, cleaner boot logs
     const logs = [
-        "SYSTEM READY...",
+        "INITIALIZING CORE...",
+        "LOADING VISHAL_OS...",
+        "CONNECTING TO SERVER...",
+        "ACCESS GRANTED.",
         "WELCOME, USER."
     ];
     let i = 0;
@@ -35,9 +35,9 @@ if (preloader && bootText) {
         if (i < logs.length) {
             const line = document.createElement('div');
             line.classList.add('log-line');
-            if (i === logs.length - 1) line.classList.add('success');
             line.innerText = `> ${logs[i]}`;
             bootText.appendChild(line);
+            bootText.scrollTop = bootText.scrollHeight; // Auto scroll
             setTimeout(typeLine, 300);
             i++;
         } else {
@@ -80,7 +80,7 @@ class Particle {
 function initParticles() {
     if (!canvas || window.innerWidth < 768) return;
     particlesArray = [];
-    let numberOfParticles = (canvas.height * canvas.width) / 15000; // Less particles for cleaner look
+    let numberOfParticles = (canvas.height * canvas.width) / 15000;
     for (let i = 0; i < numberOfParticles; i++) {
         let size = (Math.random() * 2) + 1;
         let x = Math.random() * innerWidth;
@@ -97,7 +97,7 @@ function connectParticles() {
             let distance = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                 let opacityValue = 1 - (distance / 20000);
-                ctx.strokeStyle = 'rgba(174, 25, 24,' + opacityValue + ')';
+                ctx.strokeStyle = 'rgba(244, 44, 29,' + opacityValue + ')';
                 ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
             }
         }
@@ -145,10 +145,10 @@ const observer = new IntersectionObserver((entries) => {
 sections.forEach(section => observer.observe(section));
 
 /* =========================================
-   4. MODAL LOGIC (Unchanged)
+   4. MODAL LOGIC (GALLERY)
    ========================================= */
 const galleryData = {
-    "PHOTOGRAPHY": ["assets/work/photo.jpg"],
+    "PHOTOGRAPHY": ["assets/work/photo.jpg", "assets/work/photo2.jpg"],
     "GRAPHIC DESIGN": ["assets/work/design.jpg"],
     "VIDEO EDITING": ["assets/work/video.jpg"]
 };
@@ -197,7 +197,7 @@ if (closeBtn) closeBtn.onclick = closeModal;
 window.onclick = (event) => { if (event.target == modal) closeModal(); };
 
 /* =========================================
-   5. SIMPLE REVEAL ANIMATION (No Text Shuffle)
+   5. ANIMATIONS (REVEAL & 3D TILT)
    ========================================= */
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
@@ -206,7 +206,7 @@ function revealOnScroll() {
             reveal.classList.add('active');
         }
     });
-    // Scroll Progress Bar
+    // Scroll Progress
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (scrollTop / scrollHeight) * 100;
@@ -216,7 +216,7 @@ function revealOnScroll() {
 window.addEventListener('scroll', revealOnScroll);
 window.onload = () => { revealOnScroll(); };
 
-// Cycle Hero Title (Clean, no glitch)
+// Cycle Hero Title
 const heroTitle = document.getElementById('hero-title');
 if (heroTitle) {
     const roles = ["DESIGNER", "DEVELOPER", "CREATOR", "ARCHITECT"];
@@ -227,14 +227,13 @@ if (heroTitle) {
     });
 }
 
-// Reveal Decrypt text immediately (No shuffling)
-const decryptNodes = document.querySelectorAll('.decrypt');
-decryptNodes.forEach(node => {
+// Reveal Decrypt text (Instant)
+document.querySelectorAll('.decrypt').forEach(node => {
     node.innerText = node.getAttribute('data-value');
     node.classList.add('revealed');
 });
 
-// Magnetic Buttons
+/* MAGNETIC BUTTONS */
 const magnets = document.querySelectorAll('.magnet-btn');
 magnets.forEach((magnet) => {
     magnet.addEventListener('mousemove', (e) => {
@@ -246,18 +245,43 @@ magnets.forEach((magnet) => {
     magnet.addEventListener('mouseleave', () => { magnet.style.transform = 'translate(0, 0)'; });
 });
 
-/* CURSOR & 3D TILT */
+/* CURSOR & 3D TILT (RESTORED) */
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
+
 if (cursorDot && cursorOutline) {
     window.addEventListener("mousemove", (e) => {
         const posX = e.clientX; const posY = e.clientY;
+        // Simple cursor follow
         cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
-        cursorOutline.style.left = `${posX}px`; cursorOutline.style.top = `${posY}px`;
+        cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
     });
-    const interactables = document.querySelectorAll('a, .project-card, .hex-item, button');
+
+    const interactables = document.querySelectorAll('a, .project-card, .hex-item, button, .magnet-btn');
     interactables.forEach(el => {
         el.addEventListener('mouseenter', () => cursorOutline.classList.add("hovered"));
         el.addEventListener('mouseleave', () => cursorOutline.classList.remove("hovered"));
     });
 }
+
+// 3D Card Tilt Logic
+const cards = document.querySelectorAll('.project-card, .holo-card');
+cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        if (window.innerWidth < 768) return;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        // Calculate rotation based on mouse position
+        const rotateX = ((y - centerY) / centerY) * -5; // Subtle tilt
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+    });
+});

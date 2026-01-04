@@ -5,15 +5,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
 
 :root {
-    /* --- CRIMSON & SHADOW PALETTE --- */
+    /* CRIMSON & SHADOW PALETTE */
     --bg-black: #070709;
     --card-bg: #0e0e11;
-    /* Solid dark grey, no transparency for cleaner look */
-
     --primary-red: #F42C1D;
     --deep-red: #AE1918;
     --accent-brown: #824334;
-
     --text-white: #ffffff;
     --text-muted: #dcdcdc;
 }
@@ -62,7 +59,7 @@ body.no-scroll {
 }
 
 /* =========================================
-   2. UI OVERLAYS (CLEANED)
+   2. UI OVERLAYS (CLEAN - NO GRAIN)
    ========================================= */
 #neural-canvas {
     position: fixed;
@@ -72,15 +69,15 @@ body.no-scroll {
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.3;
-    /* Subtle particles */
+    opacity: 0.4;
 }
 
-/* REMOVED GRAIN & SCANLINES */
+/* Hiding Retro Elements as requested */
 .scanlines,
 .noise,
 .glitch-overlay,
-#security-screen {
+#security-screen,
+.watermark {
     display: none !important;
 }
 
@@ -90,13 +87,11 @@ body.no-scroll {
     left: 0;
     width: 110%;
     height: 110%;
-    left: -5%;
-    top: -5%;
     z-index: -2;
     background-size: 50px 50px;
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     pointer-events: none;
-    opacity: 0.2;
+    opacity: 0.3;
 }
 
 /* =========================================
@@ -170,6 +165,7 @@ nav a:hover,
 nav a.active {
     color: #fff;
     background-color: var(--primary-red);
+    box-shadow: 0 0 15px rgba(244, 44, 29, 0.3);
 }
 
 /* SIDE HUD */
@@ -193,12 +189,14 @@ nav a.active {
     transition: 0.3s;
     position: relative;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .hud-point:hover,
 .hud-point.active {
     background: var(--primary-red);
     transform: scale(1.5);
+    box-shadow: 0 0 10px var(--primary-red);
 }
 
 /* SCROLLBAR PROGRESS */
@@ -210,6 +208,7 @@ nav a.active {
     height: 4px;
     background: var(--primary-red);
     z-index: 10000;
+    box-shadow: 0 0 10px var(--primary-red);
 }
 
 /* =========================================
@@ -223,10 +222,6 @@ nav a.active {
     flex-direction: column;
     justify-content: center;
     padding: 0 10%;
-}
-
-.watermark {
-    display: none;
 }
 
 .greeting {
@@ -245,6 +240,7 @@ nav a.active {
     text-transform: uppercase;
     color: #fff;
     margin-left: -5px;
+    cursor: default;
 }
 
 .roles {
@@ -262,15 +258,17 @@ nav a.active {
     text-transform: uppercase;
     padding: 10px 20px;
     border: 1px solid #333;
-    border-radius: 50px;
-    /* Modern rounded pills */
+    /* Clean "Tech" corners */
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
     transition: 0.3s;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .roles span:hover {
     border-color: var(--primary-red);
     color: #fff;
     background: var(--primary-red);
+    transform: translateY(-5px);
 }
 
 .scroll-indicator {
@@ -304,6 +302,7 @@ nav a.active {
 
 .section {
     padding: 120px 10%;
+    position: relative;
 }
 
 .container {
@@ -311,7 +310,7 @@ nav a.active {
     margin: 0 auto;
 }
 
-/* HEADERS (CLEAN - NO BRACKETS) */
+/* HEADERS (CLEAN) */
 h2 {
     font-size: 3rem;
     margin-bottom: 60px;
@@ -321,8 +320,10 @@ h2 {
     border-left: 5px solid var(--primary-red);
     padding-left: 20px;
     line-height: 1;
+    display: inline-block;
 }
 
+/* Remove bracket pseudo-elements */
 h2::before,
 h2::after {
     content: none !important;
@@ -332,8 +333,6 @@ h2::after {
     display: none;
 }
 
-/* Removed retro stamp */
-
 .text-content p {
     font-size: 1.2rem;
     line-height: 1.8;
@@ -342,43 +341,84 @@ h2::after {
     margin-bottom: 20px;
 }
 
+/* Angled Section Backgrounds - RESTORED */
 .angled-section {
     position: relative;
-    padding: 120px 0;
+}
+
+.angled-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(20, 20, 20, 0.4);
+    transform: skewY(-2deg);
+    z-index: -1;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
 }
 
 /* =========================================
-   6. SKILLS
+   6. SKILLS (HEXAGONS RESTORED)
    ========================================= */
 .hex-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
 }
 
 .hex-item {
-    width: 140px;
-    height: 140px;
-    background: #151515;
+    width: 120px;
+    height: 135px;
+    position: relative;
+    /* The proper hexagon shape */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: #111;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
-    /* Modern Soft Corners instead of Hexagon */
-    border: 1px solid #333;
+    margin-bottom: -30px;
+    /* Nesting effect */
+    transition: 0.3s;
+    cursor: default;
+}
+
+/* Inner border effect for Hexagon */
+.hex-item::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-black);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    z-index: 1;
+}
+
+.hex-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--primary-red);
+    z-index: 0;
+    opacity: 0.2;
+    /* Subtle red border */
     transition: 0.3s;
 }
 
-.hex-item:hover {
-    border-color: var(--primary-red);
-    transform: translateY(-5px);
-    background: #1a1a1a;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+.hex-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hex-icon {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: #fff;
     margin-bottom: 5px;
@@ -386,23 +426,27 @@ h2::after {
 }
 
 .hex-label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: #888;
     font-weight: 500;
+}
+
+.hex-item:hover {
+    transform: scale(1.1);
+    z-index: 10;
+}
+
+.hex-item:hover::after {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--primary-red);
 }
 
 .hex-item:hover .hex-icon {
     color: var(--primary-red);
 }
 
-/* Remove old hex clip-paths */
-.hex-item::before,
-.hex-item::after {
-    display: none;
-}
-
 /* =========================================
-   7. PROJECTS (CLEAN CARDS)
+   7. PROJECTS & CARDS (3D & CLEAN)
    ========================================= */
 .project-grid {
     display: grid;
@@ -414,19 +458,21 @@ h2::after {
     height: 400px;
     background-color: var(--card-bg);
     border: 1px solid #222;
-    border-radius: 12px;
-    overflow: hidden;
+    /* Clean Tech Cut Corner */
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 30px;
-    transition: 0.4s;
+    transition: transform 0.1s;
+    /* Fast transition for 3D tilt */
     background-size: cover;
     background-position: center;
+    overflow: hidden;
 }
 
-/* Clean overlay gradient for readability */
+/* Gradient Overlay */
 .project-card::before {
     content: '';
     position: absolute;
@@ -434,14 +480,12 @@ h2::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
     z-index: 1;
 }
 
 .project-card:hover {
-    transform: translateY(-10px);
     border-color: var(--primary-red);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 .project-card .card-content,
@@ -465,7 +509,7 @@ h2::after {
     line-height: 1;
 }
 
-/* REMOVE SCANLINES & GLITCH TEXT */
+/* REMOVE SCANLINES/GLITCH ON CARDS */
 .project-card::after {
     display: none;
 }
@@ -475,7 +519,7 @@ h2::after {
 }
 
 /* =========================================
-   8. EDUCATION & ABOUT IMAGES
+   8. EDUCATION & ABOUT
    ========================================= */
 .education-timeline {
     border-left: 2px solid #333;
@@ -483,6 +527,10 @@ h2::after {
     display: flex;
     flex-direction: column;
     gap: 40px;
+}
+
+.edu-item {
+    position: relative;
 }
 
 .timeline-marker {
@@ -494,6 +542,20 @@ h2::after {
     background: var(--primary-red);
     border-radius: 50%;
     border: 4px solid var(--bg-black);
+    box-shadow: 0 0 10px var(--primary-red);
+}
+
+.edu-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #222;
+    transition: 0.3s;
+}
+
+.edu-card:hover {
+    transform: translateX(10px);
+    border-color: var(--primary-red);
 }
 
 .edu-degree {
@@ -516,20 +578,20 @@ h2::after {
 .holo-card {
     padding: 20px;
     border: 1px solid #222;
-    border-radius: 12px;
     background: #111;
+    /* Restored tech corner */
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
 }
 
 .holo-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    /* Clean image - No Filters */
     filter: none;
+    /* Full color */
 }
 
-/* Remove Scanner Bar */
+/* Remove Scanner */
 .holo-scanner {
     display: none;
 }
@@ -541,28 +603,48 @@ h2::after {
     align-items: start;
 }
 
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+}
+
+.stat-line {
+    width: 60%;
+    height: 4px;
+    background: #333;
+    margin-top: 6px;
+}
+
+.stat-line div {
+    height: 100%;
+    background: var(--primary-red);
+}
+
 /* =========================================
-   9. FOOTER & BUTTONS
+   9. FOOTER, BUTTONS & TERMINAL
    ========================================= */
 .cyber-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 15px 30px;
-    background: #fff;
-    color: #000;
+    background: transparent;
+    color: #fff;
     font-weight: 800;
     text-transform: uppercase;
     text-decoration: none;
-    border-radius: 4px;
     transition: 0.3s;
-    border: none;
+    border: 1px solid var(--primary-red);
+    position: relative;
+    overflow: hidden;
 }
 
 .cyber-btn:hover {
     background: var(--primary-red);
-    color: #fff;
-    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(244, 44, 29, 0.4);
 }
 
 .btn-tag,
@@ -572,6 +654,8 @@ h2::after {
 
 .btn-text {
     font-size: 1rem;
+    position: relative;
+    z-index: 2;
 }
 
 .cyber-footer {
@@ -588,9 +672,187 @@ h2::after {
 .back-to-top {
     cursor: pointer;
     color: #fff;
+    transition: 0.3s;
 }
 
 .back-to-top:hover {
+    color: var(--primary-red);
+}
+
+/* BOOT TERMINAL (CLEANER) */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-black);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-out;
+}
+
+#preloader.loaded {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.terminal-container {
+    width: 400px;
+    height: 250px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #333;
+    border-radius: 6px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.terminal-header {
+    background: #1a1a1a;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.red {
+    background: #ff5f56;
+}
+
+.yellow {
+    background: #ffbd2e;
+}
+
+.green {
+    background: #27c93f;
+}
+
+.term-title {
+    margin-left: auto;
+    color: #888;
+    font-size: 10px;
+    font-family: 'Fira Code', monospace;
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 15px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--primary-red);
+    overflow-y: auto;
+    text-align: left;
+}
+
+.log-line {
+    margin-bottom: 4px;
+    opacity: 0.9;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.modal-container {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    margin: 5% auto;
+    width: 80%;
+    max-width: 900px;
+    display: flex;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: modalOpen 0.4s;
+}
+
+@keyframes modalOpen {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-left {
+    position: relative;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1.5;
+    border-right: 1px solid #333;
+}
+
+.modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-right {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--primary-red);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+#modalTitle {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    line-height: 1;
+}
+
+.modal-body p {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.close:hover {
     color: var(--primary-red);
 }
 
@@ -611,10 +873,31 @@ h2::after {
 
     .navbar {
         justify-content: center;
+        padding: 15px;
     }
 
     nav a {
-        padding: 8px 12px;
-        font-size: 12px;
+        padding: 5px 10px;
+        font-size: 11px;
+        margin-left: 5px;
+    }
+
+    .cursor-dot,
+    .cursor-outline,
+    .side-hud {
+        display: none;
+    }
+
+    .hex-grid {
+        gap: 5px;
+    }
+
+    .hex-item {
+        width: 100px;
+        height: 115px;
+    }
+
+    .terminal-container {
+        width: 90%;
     }
 }
