@@ -1,11 +1,9 @@
 /* =========================================
    1. RESET, FONTS & VARIABLES
    ========================================= */
-/* IMPORTING FUTURISTIC FONTS: Orbitron, Rajdhani, Share Tech Mono */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
 
 :root {
-    /* CRIMSON & SHADOW PALETTE */
     --bg-black: #070709;
     --card-bg: #0e0e11;
     --primary-red: #F42C1D;
@@ -14,13 +12,9 @@
     --text-white: #ffffff;
     --text-muted: #dcdcdc;
 
-    /* FONT VARIABLES */
     --font-head: 'Orbitron', sans-serif;
-    /* Main Headings */
     --font-body: 'Rajdhani', sans-serif;
-    /* Paragraphs & UI */
     --font-tech: 'Share Tech Mono', monospace;
-    /* Numbers & Code */
 }
 
 ::selection {
@@ -47,7 +41,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: var(--font-body);
-    /* Default to Tech Body font */
 }
 
 html {
@@ -61,7 +54,6 @@ body {
     background-image: linear-gradient(to bottom, #070709 0%, #110202 100%);
     background-attachment: fixed;
     font-size: 18px;
-    /* Slightly larger for Rajdhani legibility */
 }
 
 body.no-scroll {
@@ -129,7 +121,7 @@ body.no-scroll {
     border-radius: 50%;
     z-index: 99998;
     pointer-events: none;
-    transition: width 0.2s, height 0.2s;
+    transition: width 0.1s, height 0.1s;
     opacity: 0.5;
 }
 
@@ -168,7 +160,8 @@ nav a {
     border-radius: 4px;
     transition: 0.3s;
     font-family: var(--font-head);
-    /* Orbitron for Nav */
+    position: relative;
+    overflow: hidden;
 }
 
 nav a:hover,
@@ -193,12 +186,10 @@ nav a.active {
 
 .hud-point {
     font-family: var(--font-tech);
-    /* Tech Mono */
     font-size: 16px;
     color: #555;
     text-decoration: none;
     transition: 0.3s;
-    position: relative;
     display: flex;
     align-items: center;
 }
@@ -224,7 +215,6 @@ nav a.active {
 .hud-point:hover,
 .hud-point.active {
     color: var(--primary-red);
-    text-shadow: 0 0 10px var(--primary-red);
     transform: scale(1.1);
 }
 
@@ -240,7 +230,7 @@ nav a.active {
 }
 
 /* =========================================
-   5. HERO & SECTIONS
+   5. HERO & GLITCH EFFECTS
    ========================================= */
 .hero {
     height: 100vh;
@@ -260,13 +250,12 @@ nav a.active {
     letter-spacing: 4px;
     text-transform: uppercase;
     font-family: var(--font-tech);
-    /* Tech Mono Greeting */
 }
 
+/* GLITCH ANIMATION FOR TITLE */
 .main-title {
     font-family: var(--font-head);
     font-size: 7vw;
-    /* Adjusted for wider font */
     line-height: 1;
     font-weight: 900;
     text-transform: uppercase;
@@ -274,6 +263,93 @@ nav a.active {
     margin-left: -5px;
     cursor: default;
     letter-spacing: 5px;
+    position: relative;
+}
+
+.main-title::before,
+.main-title::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.main-title::before {
+    left: 2px;
+    text-shadow: -1px 0 #00ffff;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.main-title::after {
+    left: -2px;
+    text-shadow: -1px 0 #ff0051;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(11px, 9999px, 81px, 0);
+    }
+
+    5% {
+        clip: rect(63px, 9999px, 14px, 0);
+    }
+
+    10% {
+        clip: rect(98px, 9999px, 6px, 0);
+    }
+
+    15% {
+        clip: rect(21px, 9999px, 66px, 0);
+    }
+
+    20% {
+        clip: rect(4px, 9999px, 97px, 0);
+    }
+
+    25% {
+        clip: rect(0, 0, 0, 0);
+    }
+
+    /* Pause */
+    100% {
+        clip: rect(0, 0, 0, 0);
+    }
+}
+
+@keyframes glitch-anim2 {
+    0% {
+        clip: rect(65px, 9999px, 98px, 0);
+    }
+
+    5% {
+        clip: rect(10px, 9999px, 49px, 0);
+    }
+
+    10% {
+        clip: rect(2px, 9999px, 1px, 0);
+    }
+
+    15% {
+        clip: rect(54px, 9999px, 21px, 0);
+    }
+
+    20% {
+        clip: rect(23px, 9999px, 76px, 0);
+    }
+
+    25% {
+        clip: rect(0, 0, 0, 0);
+    }
+
+    /* Pause */
+    100% {
+        clip: rect(0, 0, 0, 0);
+    }
 }
 
 .roles {
@@ -359,11 +435,6 @@ h2 {
     letter-spacing: 3px;
 }
 
-h2::before,
-h2::after {
-    content: none !important;
-}
-
 .text-content p {
     font-size: 1.3rem;
     line-height: 1.7;
@@ -373,14 +444,12 @@ h2::after {
     font-weight: 500;
 }
 
-/* DECRYPT TEXT */
 .decrypt {
     font-family: var(--font-tech);
     color: var(--primary-red);
     font-weight: bold;
 }
 
-/* RED DIAGONAL LINES */
 .angled-section {
     position: relative;
     padding: 120px 10%;
@@ -417,7 +486,6 @@ h2::after {
 
 .hex-item {
     width: 130px;
-    /* Slightly wider for new fonts */
     height: 145px;
     position: relative;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
@@ -464,7 +532,6 @@ h2::after {
     color: #fff;
     margin-bottom: 5px;
     font-family: var(--font-head);
-    /* Orbitron Icons */
 }
 
 .hex-label {
@@ -555,7 +622,7 @@ h2::after {
 }
 
 /* =========================================
-   8. EDUCATION & ABOUT
+   8. EDUCATION & ABOUT (SCANNER ADDED)
    ========================================= */
 .education-timeline {
     border-left: 2px solid #333;
@@ -637,11 +704,44 @@ h2::after {
     text-shadow: 0 0 5px var(--deep-red);
 }
 
+/* SCANNER ANIMATION */
+.holo-img-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
 .holo-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: none;
+}
+
+.holo-img-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-red);
+    box-shadow: 0 0 10px var(--primary-red);
+    animation: scan 2s infinite linear;
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+
+    50% {
+        top: 100%;
+    }
+
+    100% {
+        top: 0;
+    }
 }
 
 .about-grid {
@@ -670,6 +770,7 @@ h2::after {
     overflow: hidden;
     font-family: var(--font-head);
     letter-spacing: 2px;
+    cursor: pointer;
 }
 
 .cyber-btn:hover {
@@ -677,18 +778,6 @@ h2::after {
     box-shadow: 0 0 20px rgba(244, 44, 29, 0.4);
 }
 
-.btn-tag,
-.btn-glitch {
-    display: none;
-}
-
-.btn-text {
-    font-size: 1rem;
-    position: relative;
-    z-index: 2;
-}
-
-/* CLEAN FOOTER */
 .cyber-footer {
     padding: 40px 10%;
     background: #050505;
@@ -834,7 +923,7 @@ h2::after {
     opacity: 0.9;
 }
 
-/* MODAL */
+/* MODAL & SECURITY */
 .modal {
     display: none;
     position: fixed;
@@ -962,7 +1051,6 @@ h2::after {
     color: var(--primary-red);
 }
 
-/* SECURITY SCREEN */
 #security-screen {
     position: fixed;
     top: 0;
@@ -1019,7 +1107,6 @@ h2::after {
     font-size: 1rem;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
     .main-title {
         font-size: 15vw;

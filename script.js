@@ -5,11 +5,15 @@ const preloader = document.getElementById('preloader');
 const bootText = document.getElementById('boot-text');
 const body = document.body;
 
-// Text Shuffle
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-function hackTextOnce(element) {
+
+// 1. SCRAMBLE TEXT FUNCTION (Used for Title & Nav)
+function scrambleText(element) {
     if (!element) return;
-    const originalText = element.innerText;
+    const originalText = element.dataset.value || element.innerText;
+    // Store original text in data-value if not present
+    if (!element.dataset.value) element.dataset.value = originalText;
+
     let iterations = 0;
     const interval = setInterval(() => {
         element.innerText = originalText.split("").map((letter, index) => {
@@ -21,7 +25,11 @@ function hackTextOnce(element) {
     }, 30);
 }
 
-// Typewriter
+// 2. MATRIX HOVER EFFECT FOR NAV
+document.querySelectorAll('.scramble-link').forEach(link => {
+    link.addEventListener('mouseover', () => scrambleText(link));
+});
+
 function startTypewriter() {
     const greeting = document.querySelector('.greeting');
     if (greeting) {
@@ -38,10 +46,10 @@ function startTypewriter() {
         setTimeout(type, 500);
     }
     const mainTitle = document.querySelector('.main-title');
-    hackTextOnce(mainTitle);
+    scrambleText(mainTitle);
 }
 
-// Fast Boot
+// 3. FAST BOOT
 if (preloader && bootText) {
     const logs = ["SYSTEM BOOT...", "ACCESS GRANTED."];
     let i = 0;
@@ -66,7 +74,7 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. IMAGE LOADER (Fixes Thumbnails)
+   2. IMAGE LOADER
    ========================================= */
 document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll('.project-card');
@@ -79,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   3. PARTICLES (Reactive)
+   3. PARTICLES
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -110,15 +118,15 @@ class Particle {
         if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
-        // Mouse Snap
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
+
         if (distance < mouse.radius) {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
-            const directionX = forceDirectionX * force * 3; // Magnet strength
+            const directionX = forceDirectionX * force * 3;
             const directionY = forceDirectionY * force * 3;
             this.x += directionX;
             this.y += directionY;
