@@ -5,16 +5,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
 
 :root {
-    --primary-red: #d00000;
+    /* COLOR THEME EXTRACTED FROM IMAGE */
+    --primary-red: #ff2a2a;
+    /* Bright Danger Red */
+    --accent-teal: #00f0ff;
+    /* New Cyber Teal for contrast */
     --text-white: #ffffff;
     --bg-black: #050505;
-    --card-bg: rgba(20, 20, 20, 0.6);
+    --card-bg: rgba(10, 10, 10, 0.85);
+    /* Slightly darker for contrast */
 }
 
 ::selection {
-    background: var(--primary-red);
-    color: #fff;
-    text-shadow: 0 0 10px #fff;
+    background: var(--accent-teal);
+    /* Teal selection matches the image vibe */
+    color: #000;
+    text-shadow: none;
 }
 
 ::-webkit-scrollbar {
@@ -29,7 +35,9 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #ff0000;
+    background: var(--accent-teal);
+    /* Hover turns Teal */
+    box-shadow: 0 0 10px var(--accent-teal);
 }
 
 * {
@@ -48,7 +56,8 @@ body {
     color: var(--text-white);
     overflow-x: hidden;
     cursor: none;
-    background-image: linear-gradient(to right, rgba(50, 0, 0, 0.9) 0%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 100%);
+    /* Updated Gradient to be subtler like the image */
+    background-image: linear-gradient(to right, rgba(20, 0, 0, 0.9) 0%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 100%);
     background-attachment: fixed;
 }
 
@@ -121,7 +130,8 @@ body.no-scroll {
 .cursor-dot {
     width: 10px;
     height: 10px;
-    background-color: #fff;
+    background-color: var(--primary-red);
+    /* Changed to Red */
     position: fixed;
     top: 0;
     left: 0;
@@ -129,13 +139,15 @@ body.no-scroll {
     border-radius: 50%;
     z-index: 99999;
     pointer-events: none;
-    mix-blend-mode: difference;
+    mix-blend-mode: normal;
+    box-shadow: 0 0 10px var(--primary-red);
 }
 
 .cursor-outline {
     width: 40px;
     height: 40px;
-    border: 2px solid #fff;
+    border: 1px solid var(--accent-teal);
+    /* Outline is Teal */
     position: fixed;
     top: 0;
     left: 0;
@@ -144,14 +156,15 @@ body.no-scroll {
     z-index: 99998;
     pointer-events: none;
     transition: width 0.2s, height 0.2s, background-color 0.2s;
-    mix-blend-mode: difference;
+    mix-blend-mode: normal;
+    opacity: 0.7;
 }
 
 body:hover .cursor-outline.hovered {
     width: 60px;
     height: 60px;
-    background-color: #fff;
-    border-color: #fff;
+    background-color: rgba(0, 240, 255, 0.1);
+    border-color: var(--accent-teal);
 }
 
 /* =========================================
@@ -166,7 +179,7 @@ body:hover .cursor-outline.hovered {
     justify-content: flex-end;
     align-items: center;
     z-index: 1000;
-    background: rgba(5, 5, 5, 0.7) !important;
+    background: rgba(5, 5, 5, 0.8) !important;
     backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -178,20 +191,22 @@ nav a {
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    /* Sharper corners */
     padding: 10px 25px;
     margin-left: 15px;
     background: rgba(0, 0, 0, 0.3);
     cursor: none;
     display: inline-block;
+    transition: 0.3s;
 }
 
 nav a:hover,
 nav a.active {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: #ffffff;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 42, 42, 0.1);
+    border-color: var(--primary-red);
+    box-shadow: 0 0 15px rgba(255, 42, 42, 0.3);
     color: #fff;
 }
 
@@ -224,7 +239,8 @@ nav a.active {
     opacity: 0;
     margin-right: 10px;
     font-weight: bold;
-    color: var(--primary-red);
+    color: var(--accent-teal);
+    /* Teal Labels */
     transform: translateX(10px);
     transition: 0.3s;
 }
@@ -287,9 +303,10 @@ nav a.active {
     left: 0;
     width: 0%;
     height: 3px;
-    background: var(--primary-red);
+    background: var(--accent-teal);
+    /* Teal Progress Bar */
     z-index: 10000;
-    box-shadow: 0 0 10px var(--primary-red), 0 0 20px var(--primary-red);
+    box-shadow: 0 0 10px var(--accent-teal), 0 0 20px var(--accent-teal);
     transition: width 0.1s ease-out;
     overflow: visible;
 }
@@ -303,7 +320,7 @@ nav a.active {
     width: 100px;
     height: 4px;
     background: linear-gradient(to right, transparent, #fff);
-    box-shadow: 0 0 15px #fff, 0 0 30px var(--primary-red);
+    box-shadow: 0 0 15px #fff, 0 0 30px var(--accent-teal);
     border-radius: 100%;
     z-index: 10001;
 }
@@ -331,7 +348,7 @@ nav a.active {
     letter-spacing: 10px;
     text-transform: uppercase;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
     opacity: 0.6;
     pointer-events: none;
     z-index: 1;
@@ -349,6 +366,8 @@ nav a.active {
     font-weight: 300;
     margin-bottom: 5px;
     opacity: 0.9;
+    color: var(--accent-teal);
+    /* Teal greeting */
     border-right: 2px solid var(--primary-red);
     display: inline-block;
     padding-right: 5px;
@@ -386,14 +405,15 @@ nav a.active {
     border-radius: 4px;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+    /* Cut corners */
 }
 
 .roles span:hover {
-    border-color: var(--primary-red);
-    box-shadow: 0 0 15px rgba(208, 0, 0, 0.3);
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
     transform: translateY(-2px);
-    color: #fff;
+    color: var(--accent-teal);
 }
 
 .main-title {
@@ -420,6 +440,7 @@ nav a.active {
     opacity: 0.7;
     animation: bounce 2s infinite;
     z-index: 5;
+    color: var(--primary-red);
 }
 
 .scroll-indicator span {
@@ -485,7 +506,7 @@ nav a.active {
     z-index: -1;
     border-top: 1px solid var(--primary-red);
     border-bottom: 1px solid var(--primary-red);
-    box-shadow: 0 0 15px rgba(208, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 42, 42, 0.2);
     backdrop-filter: blur(5px);
 }
 
@@ -504,7 +525,7 @@ nav a.active {
     background: transparent;
     color: var(--primary-red);
     font-weight: bold;
-    text-shadow: 0 0 5px rgba(208, 0, 0, 0.4);
+    text-shadow: 0 0 5px rgba(255, 42, 42, 0.4);
 }
 
 /* HEADERS */
@@ -523,13 +544,15 @@ h2 {
 
 h2::before {
     content: '[ ';
-    color: var(--primary-red);
+    color: var(--accent-teal);
+    /* Teal Brackets */
     margin-right: 10px;
 }
 
 h2::after {
     content: ' ]';
-    color: var(--primary-red);
+    color: var(--accent-teal);
+    /* Teal Brackets */
     margin-left: 10px;
 }
 
@@ -651,44 +674,10 @@ h2::after {
     animation: hexBreathe 4s infinite ease-in-out;
 }
 
-.hex-item:nth-child(1)::after {
-    animation-duration: 3.5s;
-    animation-delay: 0s;
-}
-
-.hex-item:nth-child(2)::after {
-    animation-duration: 4.2s;
-    animation-delay: 1.5s;
-}
-
-.hex-item:nth-child(3)::after {
-    animation-duration: 3.8s;
-    animation-delay: 0.5s;
-}
-
-.hex-item:nth-child(4)::after {
-    animation-duration: 4.5s;
-    animation-delay: 2.2s;
-}
-
-.hex-item:nth-child(5)::after {
-    animation-duration: 3.2s;
-    animation-delay: 1.1s;
-}
-
-.hex-item:nth-child(6)::after {
-    animation-duration: 4.0s;
-    animation-delay: 0.8s;
-}
-
-.hex-item:nth-child(7)::after {
-    animation-duration: 3.7s;
-    animation-delay: 2.5s;
-}
-
-.hex-item:nth-child(8)::after {
-    animation-duration: 4.1s;
-    animation-delay: 1.9s;
+.hex-item:nth-child(even)::after {
+    background: var(--accent-teal);
+    /* Alternate hexes are Teal */
+    box-shadow: 0 0 20px var(--accent-teal);
 }
 
 .hex-item:hover {
@@ -711,7 +700,7 @@ h2::after {
 .education-timeline {
     position: relative;
     padding-left: 30px;
-    border-left: 2px solid rgba(208, 0, 0, 0.3);
+    border-left: 2px solid rgba(255, 42, 42, 0.3);
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -728,9 +717,10 @@ h2::after {
     top: 25px;
     width: 10px;
     height: 10px;
-    background: var(--primary-red);
+    background: var(--accent-teal);
+    /* Teal markers */
     border-radius: 50%;
-    box-shadow: 0 0 10px var(--primary-red);
+    box-shadow: 0 0 10px var(--accent-teal);
     z-index: 2;
 }
 
@@ -741,7 +731,7 @@ h2::after {
     top: 4px;
     width: 25px;
     height: 2px;
-    background: rgba(208, 0, 0, 0.5);
+    background: rgba(0, 240, 255, 0.5);
 }
 
 /* =========================================
@@ -773,39 +763,17 @@ h2::after {
     transform: translateY(0);
 }
 
-.reveal.active .project-card:nth-child(1),
-.reveal.active .hex-item:nth-child(1) {
+/* Delays remain same... */
+.reveal.active .project-card:nth-child(1) {
     transition-delay: 0.1s;
 }
 
-.reveal.active .project-card:nth-child(2),
-.reveal.active .hex-item:nth-child(2) {
+.reveal.active .project-card:nth-child(2) {
     transition-delay: 0.2s;
 }
 
-.reveal.active .project-card:nth-child(3),
-.reveal.active .hex-item:nth-child(3) {
+.reveal.active .project-card:nth-child(3) {
     transition-delay: 0.3s;
-}
-
-.reveal.active .hex-item:nth-child(4) {
-    transition-delay: 0.4s;
-}
-
-.reveal.active .hex-item:nth-child(5) {
-    transition-delay: 0.5s;
-}
-
-.reveal.active .hex-item:nth-child(6) {
-    transition-delay: 0.6s;
-}
-
-.reveal.active .hex-item:nth-child(7) {
-    transition-delay: 0.7s;
-}
-
-.reveal.active .hex-item:nth-child(8) {
-    transition-delay: 0.8s;
 }
 
 /* Breathing Border Animation */
@@ -833,7 +801,8 @@ h2::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(45deg, var(--primary-red), transparent, var(--primary-red));
+    /* Gradient Border: Red to Teal to Red */
+    background: linear-gradient(45deg, var(--primary-red), var(--accent-teal), var(--primary-red));
     z-index: -1;
     clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
     padding: 1px;
@@ -905,11 +874,12 @@ h2::after {
 
 .project-card:hover .card-content {
     color: var(--primary-red);
-    text-shadow: 2px 0 #00ffff, -2px 0 #ff0000;
+    text-shadow: 2px 0 var(--accent-teal), -2px 0 var(--primary-red);
+    /* Glitch Red/Teal */
 }
 
 .edu-year {
-    color: var(--primary-red);
+    color: var(--accent-teal);
     font-weight: bold;
 }
 
@@ -931,7 +901,7 @@ h2::after {
 
 .card-sub {
     font-size: 1rem;
-    color: var(--primary-red);
+    color: var(--accent-teal);
     margin-bottom: 10px;
     text-transform: uppercase;
     font-weight: bold;
@@ -948,7 +918,7 @@ h2::after {
 
 .holo-card {
     padding: 20px;
-    box-shadow: 0 0 20px rgba(208, 0, 0, 0.2);
+    box-shadow: 0 0 20px rgba(255, 42, 42, 0.2);
 }
 
 .holo-header {
@@ -963,8 +933,8 @@ h2::after {
 }
 
 .holo-status {
-    color: #0f0;
-    text-shadow: 0 0 5px #0f0;
+    color: var(--accent-teal);
+    text-shadow: 0 0 5px var(--accent-teal);
 }
 
 .holo-img-box {
@@ -1088,7 +1058,7 @@ h2::after {
 
 .cyber-btn:hover {
     background: var(--primary-red);
-    box-shadow: 0 0 30px rgba(208, 0, 0, 0.4);
+    box-shadow: 0 0 30px rgba(255, 42, 42, 0.4);
     transform: translateY(-3px);
 }
 
@@ -1137,8 +1107,8 @@ h2::after {
 }
 
 .sys-status {
-    color: #0f0;
-    text-shadow: 0 0 5px #0f0;
+    color: var(--accent-teal);
+    text-shadow: 0 0 5px var(--accent-teal);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1147,9 +1117,9 @@ h2::after {
 .status-dot {
     width: 8px;
     height: 8px;
-    background: #0f0;
+    background: var(--accent-teal);
     border-radius: 50%;
-    box-shadow: 0 0 10px #0f0;
+    box-shadow: 0 0 10px var(--accent-teal);
     animation: pulse 2s infinite;
 }
 
@@ -1265,7 +1235,7 @@ h2::after {
     padding: 15px;
     font-family: 'Fira Code', monospace;
     font-size: 12px;
-    color: #0f0;
+    color: var(--accent-teal);
     overflow-y: auto;
     text-align: left;
 }
@@ -1300,7 +1270,7 @@ h2::after {
     width: 80%;
     max-width: 900px;
     display: flex;
-    box-shadow: 0 0 50px rgba(208, 0, 0, 0.3);
+    box-shadow: 0 0 50px rgba(255, 42, 42, 0.3);
     position: relative;
     animation: modalOpen 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -1788,15 +1758,12 @@ body.matrix-mode .hex-item:hover .hex-icon {
 
     .project-card {
         animation: none;
+        background-blend-mode: normal;
+        background-color: rgba(0, 0, 0, 0.4);
     }
 
     .data-stamp {
         display: none;
-    }
-
-    .project-card {
-        background-blend-mode: normal;
-        background-color: rgba(0, 0, 0, 0.4);
     }
 
     .slider-btn {
