@@ -15,8 +15,6 @@
     --font-head: 'Orbitron', sans-serif;
     --font-body: 'Rajdhani', sans-serif;
     --font-tech: 'Share Tech Mono', monospace;
-
-    /* Variables for Spotlight */
     --cursor-x: 50%;
     --cursor-y: 50%;
 }
@@ -65,7 +63,7 @@ body.no-scroll {
 }
 
 /* =========================================
-   2. UI OVERLAYS (UPDATED: SPOTLIGHT)
+   2. UI OVERLAYS (SPOTLIGHT)
    ========================================= */
 #neural-canvas {
     position: fixed;
@@ -85,7 +83,6 @@ body.no-scroll {
     display: none !important;
 }
 
-/* THE SPOTLIGHT EFFECT */
 .bg-grid {
     position: fixed;
     top: 0;
@@ -96,16 +93,12 @@ body.no-scroll {
     background-size: 50px 50px;
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     pointer-events: none;
-
-    /* Default visibility (Mobile) */
     opacity: 0.15;
 }
 
-/* Desktop Only: Spotlight Mask */
 @media (min-width: 768px) {
     .bg-grid {
         opacity: 1;
-        /* The mask reveals the grid only around the cursor */
         -webkit-mask-image: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), black 0%, transparent 80%);
         mask-image: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), black 0%, transparent 80%);
     }
@@ -246,7 +239,7 @@ nav a.active {
 }
 
 /* =========================================
-   5. HERO & SECTIONS
+   5. HERO & SECTIONS (WITH 3D CONTAINER)
    ========================================= */
 .hero {
     height: 100vh;
@@ -256,6 +249,27 @@ nav a.active {
     flex-direction: column;
     justify-content: center;
     padding: 0 10%;
+    overflow: hidden;
+    /* Keep 3D contained */
+}
+
+/* 3D CONTAINER STYLE */
+#hero-3d {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    /* Occupy right side */
+    height: 100%;
+    z-index: 0;
+    /* Behind content */
+    pointer-events: none;
+    /* Let clicks pass through */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
 }
 
 .greeting {
@@ -569,7 +583,7 @@ h2 {
 }
 
 /* =========================================
-   7. PROJECTS (3D TILT ENABLED)
+   7. PROJECTS (3D TILT)
    ========================================= */
 .project-grid {
     display: grid;
@@ -590,15 +604,11 @@ h2 {
     background-size: cover !important;
     background-position: center !important;
     overflow: hidden;
-
-    /* 3D TILT PROPERTIES */
     transform-style: preserve-3d;
     transform: perspective(1000px);
     transition: transform 0.1s;
-    /* Quick response for tilt, slow reset via JS */
 }
 
-/* Glare Effect Layer */
 .project-card::after {
     content: '';
     position: absolute;
@@ -606,7 +616,6 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Dynamic gradient tracked by JS variables */
     background: radial-gradient(circle at var(--card-x, 50%) var(--card-y, 50%), rgba(255, 255, 255, 0.15), transparent 60%);
     opacity: 0;
     transition: opacity 0.3s;
@@ -1197,5 +1206,10 @@ body.green-mode .terminal-body {
 
     .cyber-btn {
         width: 100%;
+    }
+
+    /* Hide 3D on mobile for performance */
+    #hero-3d {
+        display: none;
     }
 }
