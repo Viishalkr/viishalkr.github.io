@@ -73,21 +73,16 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. WHATSAPP REVEAL LOGIC (New!)
+   2. WHATSAPP REVEAL LOGIC
    ========================================= */
 const waBtn = document.getElementById('whatsappBtn');
 if (waBtn) {
     waBtn.addEventListener('click', (e) => {
-        // Prevent default jump for a second to show text change if needed, 
-        // but user wants "reveal". 
-        // We will just change text AND let it open the link? 
-        // User said "reveal my phone no". 
         e.preventDefault();
         const btnText = waBtn.querySelector('.btn-text');
         if (btnText.innerText === 'WHATSAPP') {
             btnText.innerText = "+91 62038 99720";
-            // Optional: Copy to clipboard?
-            // Open WhatsApp after small delay
+            // Optional delay before opening link
             setTimeout(() => {
                 window.open('https://wa.me/916203899720', '_blank');
             }, 500);
@@ -140,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   5. PARTICLES (Reactive)
+   5. PARTICLES (Reactive - Repulsion)
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -171,7 +166,7 @@ class Particle {
         if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
-        // Mouse Repulsion
+        // Mouse Repulsion (Move AWAY)
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -180,6 +175,7 @@ class Particle {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
+            // High multiplier for strong repulsion
             const directionX = forceDirectionX * force * 5;
             const directionY = forceDirectionY * force * 5;
             this.x -= directionX;

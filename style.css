@@ -684,7 +684,7 @@ h2 {
 }
 
 /* =========================================
-   9. FOOTER & BUTTONS
+   9. FOOTER & BUTTONS (UPDATED)
    ========================================= */
 .cyber-btn {
     display: inline-flex;
@@ -710,37 +710,26 @@ h2 {
     box-shadow: 0 0 20px rgba(244, 44, 29, 0.4);
 }
 
-.cyber-footer {
-    padding: 60px 10% 40px 10%;
-    /* More top padding */
-    background: #050505;
-    border-top: none;
+.contact-layout {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    align-items: flex-start;
+}
+
+.contact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.cyber-footer {
+    padding: 40px 10%;
+    background: #050505;
+    border-top: none;
     font-size: 0.9rem;
     color: #666;
     font-family: var(--font-tech);
-}
-
-.social-row {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 20px;
-}
-
-.social-icon {
-    color: #666;
-    width: 30px;
-    height: 30px;
-    transition: 0.3s;
-}
-
-.social-icon:hover {
-    color: var(--primary-red);
-    transform: translateY(-5px);
-    filter: drop-shadow(0 0 10px var(--primary-red));
 }
 
 .footer-bottom {
@@ -1156,5 +1145,13 @@ body.green-mode .terminal-body {
     .footer-bottom {
         flex-direction: column;
         gap: 15px;
+    }
+
+    .contact-buttons {
+        justify-content: flex-start;
+    }
+
+    .cyber-btn {
+        width: 100%;
     }
 }
