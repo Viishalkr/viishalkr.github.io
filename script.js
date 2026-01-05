@@ -47,9 +47,11 @@ if (preloader && bootText) {
 /* =========================================
    2. THREE.JS GLTF MODEL LOADER
    ========================================= */
-// Global variables for animation
 const clock = new THREE.Clock();
-const mixers = []; // Store animation mixers
+const mixers = [];
+// NEW: Array to store lights so we can change their color later
+const sceneLights = [];
+
 let mouseX = 0, mouseY = 0;
 const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
@@ -71,19 +73,21 @@ function load3DModel(containerId, modelUrl, scale, posY) {
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
-    // Enable shadow mapping for realism
     renderer.shadowMap.enabled = true;
     renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(renderer.domElement);
 
     // --- LIGHTING ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4); // Soft white light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(getThemeColorHex(), 1.5); // Theme colored light
+    const dirLight = new THREE.DirectionalLight(getThemeColorHex(), 1.5);
     dirLight.position.set(5, 10, 7.5);
     dirLight.castShadow = true;
     scene.add(dirLight);
+
+    // SAVE LIGHT REFERENCE FOR THEME SWITCHING
+    sceneLights.push(dirLight);
 
     // --- LOAD MODEL ---
     const loader = new THREE.GLTFLoader();
@@ -95,53 +99,37 @@ function load3DModel(containerId, modelUrl, scale, posY) {
         model.position.y = posY;
         scene.add(model);
 
-        // --- ANIMATION MIXER ---
         if (gltf.animations && gltf.animations.length) {
             const mixer = new THREE.AnimationMixer(model);
-            // Play the first animation found (usually idle)
             mixer.clipAction(gltf.animations[0]).play();
             mixers.push(mixer);
         }
+    }, undefined, (error) => { console.error(error); });
 
-    }, undefined, (error) => {
-        console.error('An error occurred loading the model:', error);
-    });
-
-    // --- ANIMATION LOOP ---
     function animate() {
         requestAnimationFrame(animate);
-
         const delta = clock.getDelta();
-        // Update animations
         mixers.forEach(mixer => mixer.update(delta));
-
-        // Subtle mouse look effect
         if (model) {
             model.rotation.y = mouseX * 0.0005;
             model.rotation.x = mouseY * 0.0005;
         }
-
         renderer.render(scene, camera);
     }
     animate();
 }
 
 function initAll3D() {
-    // IMPORTANT: Replace these URLs with your own .glb or .gltf file paths later.
-    // Examples: 'assets/models/myavatar.glb'
-
-    // About Section: Cyber Robot
+    // About: Cyber Robot
     load3DModel('about-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BrainStem/glTF-Binary/BrainStem.glb', 4, -4);
-
-    // Skills Section: Futuristic Drone
+    // Skills: Futuristic Drone
     load3DModel('skills-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumDrone/glTF-Binary/CesiumDrone.glb', 3, -1);
-
-    // Contact Section: Sci-Fi Helmet
+    // Contact: Sci-Fi Helmet
     load3DModel('contact-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb', 3.5, 0);
 }
 
 /* =========================================
-   3. THEME SWITCHER
+   3. THEME SWITCHER (INSTANT - NO RELOAD)
    ========================================= */
 document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
@@ -149,12 +137,18 @@ document.addEventListener('keydown', (e) => {
     else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); updateAllThemes(); }
     else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); updateAllThemes(); }
 });
+
 function updateAllThemes() {
+    // 1. Update 2D Particles
     initParticles();
-    // Need to reload page or write complex logic to update lights dynamically. 
-    // For simplicity with GLTF, a reload is easiest to apply theme lighting.
-    location.reload();
+
+    // 2. Update 3D Lights Instantly
+    const newColor = getThemeColorHex();
+    sceneLights.forEach(light => {
+        light.color.setHex(newColor);
+    });
 }
+
 function getThemeColor() {
     if (document.body.classList.contains('red-mode')) return '#F42C1D';
     if (document.body.classList.contains('green-mode')) return '#32CD32';
