@@ -49,8 +49,7 @@ if (preloader && bootText) {
    ========================================= */
 const clock = new THREE.Clock();
 const mixers = [];
-// NEW: Array to store lights so we can change their color later
-const sceneLights = [];
+const sceneLights = []; // Store lights to update color instantly
 
 let mouseX = 0, mouseY = 0;
 const windowHalfX = window.innerWidth / 2;
@@ -68,8 +67,10 @@ function load3DModel(containerId, modelUrl, scale, posY) {
     const width = container.clientWidth;
     const height = container.clientHeight;
     const scene = new THREE.Scene();
+
+    // Pulled camera back to 20 to ensure large models don't clip
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.z = 15;
+    camera.position.z = 20;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
@@ -86,7 +87,7 @@ function load3DModel(containerId, modelUrl, scale, posY) {
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    // SAVE LIGHT REFERENCE FOR THEME SWITCHING
+    // Store light reference for theme switching
     sceneLights.push(dirLight);
 
     // --- LOAD MODEL ---
@@ -104,13 +105,14 @@ function load3DModel(containerId, modelUrl, scale, posY) {
             mixer.clipAction(gltf.animations[0]).play();
             mixers.push(mixer);
         }
-    }, undefined, (error) => { console.error(error); });
+    }, undefined, (error) => { console.error('Error loading model:', error); });
 
     function animate() {
         requestAnimationFrame(animate);
         const delta = clock.getDelta();
         mixers.forEach(mixer => mixer.update(delta));
         if (model) {
+            // Subtle mouse look
             model.rotation.y = mouseX * 0.0005;
             model.rotation.x = mouseY * 0.0005;
         }
@@ -120,16 +122,18 @@ function load3DModel(containerId, modelUrl, scale, posY) {
 }
 
 function initAll3D() {
-    // About: Cyber Robot
-    load3DModel('about-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BrainStem/glTF-Binary/BrainStem.glb', 4, -4);
-    // Skills: Futuristic Drone
-    load3DModel('skills-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumDrone/glTF-Binary/CesiumDrone.glb', 3, -1);
-    // Contact: Sci-Fi Helmet
+    // 1. About Section: Cyber Robot
+    load3DModel('about-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BrainStem/glTF-Binary/BrainStem.glb', 2.5, -2.5);
+
+    // 2. Skills Section: Mech-Bot (Replaced Invisible Drone)
+    load3DModel('skills-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/RobotExpressive/glTF-Binary/RobotExpressive.glb', 0.5, -3.5);
+
+    // 3. Contact Section: Sci-Fi Helmet
     load3DModel('contact-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb', 3.5, 0);
 }
 
 /* =========================================
-   3. THEME SWITCHER (INSTANT - NO RELOAD)
+   3. THEME SWITCHER (INSTANT)
    ========================================= */
 document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
