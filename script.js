@@ -48,9 +48,9 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. THREE.JS COOL PARTICLE SHAPES (NEW!)
+   2. THREE.JS ADVANCED KINETIC SHAPES
    ========================================= */
-const meshes = []; // Store particle systems for animation/theme updates
+const meshes = [];
 
 function create3DScene(containerId, shapeType) {
     const container = document.getElementById(containerId);
@@ -59,95 +59,120 @@ function create3DScene(containerId, shapeType) {
     const width = container.clientWidth;
     const height = container.clientHeight;
     const scene = new THREE.Scene();
-    // Camera positioned further back for larger particle clouds
+
+    // Camera adjustments for specific shapes
+    let camZ = 40;
+    if (shapeType === 'lorenz') camZ = 60;
+    if (shapeType === 'tunnel') camZ = 10;
+
     const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-    camera.position.z = 40;
+    camera.position.z = camZ;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     container.appendChild(renderer.domElement);
 
-    // --- PARTICLE MATERIAL ---
     const particleMaterial = new THREE.PointsMaterial({
         color: getThemeColorHex(),
-        size: 0.3, // Size of each dot
+        size: shapeType === 'lorenz' ? 0.4 : 0.25,
         transparent: true,
         opacity: 0.8,
-        blending: THREE.AdditiveBlending // Makes them glow when overlapping
+        blending: THREE.AdditiveBlending
     });
 
-    let geometry, particles;
     const points = [];
+    let geometry, particles;
 
-    // --- SHAPE DEFINITIONS ---
-    if (shapeType === 'dna') {
-        // ABOUT: PARTICLE DNA HELIX
-        for (let i = 0; i < 3000; i++) {
-            const t = i * 0.01;
-            // Strand 1
-            points.push(new THREE.Vector3(Math.cos(t) * 8, t * 2 - 30, Math.sin(t) * 8));
-            // Strand 2 (offset)
-            points.push(new THREE.Vector3(Math.cos(t + Math.PI) * 8, t * 2 - 30, Math.sin(t + Math.PI) * 8));
-            // Random scatter around strands
-            if (i % 5 === 0) {
-                points.push(new THREE.Vector3((Math.random() - 0.5) * 20, (Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20));
-            }
-        }
-    }
-    else if (shapeType === 'atom') {
-        // SKILLS: ATOMIC CORE + RINGS
-        // Core sphere cloud
-        for (let i = 0; i < 2000; i++) {
-            const u = Math.random(); const v = Math.random();
-            const theta = 2 * Math.PI * u; const phi = Math.acos(2 * v - 1);
-            const r = 6 + Math.random() * 2; // Radius variation
-            points.push(new THREE.Vector3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)));
-        }
-        // Orbital Rings (handled as separate meshes below)
-    }
-    else if (shapeType === 'vortex') {
-        // CONTACT: PARTICLE VORTEX/WORMHOLE
+    // --- 1. THE LIVING SPHERE (NOISE) ---
+    if (shapeType === 'noiseSphere') {
         for (let i = 0; i < 4000; i++) {
-            const t = i * 0.005; // spiral tightness
-            const r = t * 3;     // radius increases with t
-            const x = r * Math.cos(t * 10);
-            const y = r * Math.sin(t * 10);
-            const z = t * 5 - 20; // pull deeper into Z depth
+            // Base Sphere
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            const r = 10;
+
+            // Store original coordinates for animation
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.sin(phi) * Math.sin(theta);
+            const z = r * Math.cos(phi);
             points.push(new THREE.Vector3(x, y, z));
         }
     }
 
-    // Create main particle system
+    // --- 2. THE CHAOS ENGINE (LORENZ ATTRACTOR) ---
+    else if (shapeType === 'lorenz') {
+        let x = 0.1, y = 0, z = 0;
+        const sigma = 10, rho = 28, beta = 8 / 3;
+        const dt = 0.01;
+
+        for (let i = 0; i < 5000; i++) {
+            const dx = sigma * (y - x) * dt;
+            const dy = (x * (rho - z) - y) * dt;
+            const dz = (x * y - beta * z) * dt;
+            x += dx; y += dy; z += dz;
+            points.push(new THREE.Vector3(x, y, z - 25)); // Center it
+        }
+    }
+
+    // --- 3. THE HYPERSPACE TUNNEL ---
+    else if (shapeType === 'tunnel') {
+        for (let i = 0; i < 2000; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const r = 5 + Math.random() * 10; // Tunnel width
+            const z = (Math.random() * 100) - 50; // Deep tunnel
+            points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), z));
+        }
+    }
+
     geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+    // Store original positions for Noise Sphere animation
+    if (shapeType === 'noiseSphere') {
+        geometry.userData = { originalPositions: JSON.parse(JSON.stringify(points)) };
+    }
+
     particles = new THREE.Points(geometry, particleMaterial);
     scene.add(particles);
     meshes.push(particles);
 
-    // --- EXTRA ELEMENTS FOR SKILLS (RINGS) ---
-    let ring1, ring2;
-    if (shapeType === 'atom') {
-        const ringMat = new THREE.MeshBasicMaterial({ color: getThemeColorHex(), wireframe: true, transparent: true, opacity: 0.2 });
-        ring1 = new THREE.Mesh(new THREE.TorusGeometry(12, 0.2, 16, 100), ringMat);
-        ring2 = new THREE.Mesh(new THREE.TorusGeometry(15, 0.2, 16, 100), ringMat);
-        ring1.rotation.x = Math.PI / 2; ring2.rotation.x = Math.PI / 3;
-        scene.add(ring1); scene.add(ring2);
-        meshes.push(ring1); meshes.push(ring2);
-    }
-
     // --- ANIMATION LOOP ---
+    let time = 0;
     function animate() {
         requestAnimationFrame(animate);
+        time += 0.01;
 
-        // Rotate main cloud based on type
-        if (shapeType === 'dna') {
+        if (shapeType === 'noiseSphere') {
+            // Ripple Effect Math
+            const positions = particles.geometry.attributes.position.array;
+            const originals = particles.geometry.userData.originalPositions;
+
+            for (let i = 0; i < originals.length; i++) {
+                const orig = originals[i];
+                // Sine wave ripple based on Y position and Time
+                const pulse = Math.sin((orig.y * 0.5) + (time * 2)) * 1.5;
+                const scale = 1 + (pulse * 0.1);
+
+                positions[i * 3] = orig.x * scale;
+                positions[i * 3 + 1] = orig.y * scale;
+                positions[i * 3 + 2] = orig.z * scale;
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.rotation.y += 0.002;
+        }
+
+        else if (shapeType === 'lorenz') {
+            particles.rotation.z += 0.005; // Slow spin to show complexity
             particles.rotation.y += 0.005;
-            particles.rotation.z += 0.001;
-        } else if (shapeType === 'atom') {
-            particles.rotation.y -= 0.003;
-            if (ring1) { ring1.rotation.z += 0.01; ring1.rotation.y += 0.005; }
-            if (ring2) { ring2.rotation.z -= 0.015; ring2.rotation.x += 0.005; }
-        } else if (shapeType === 'vortex') {
-            particles.rotation.z -= 0.02; // Fast spin
+        }
+
+        else if (shapeType === 'tunnel') {
+            const positions = particles.geometry.attributes.position.array;
+            for (let i = 2; i < positions.length; i += 3) {
+                positions[i] += 0.5; // Move towards camera
+                if (positions[i] > 30) positions[i] = -50; // Reset to back
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.rotation.z -= 0.002; // Slight spiral
         }
 
         renderer.render(scene, camera);
@@ -156,34 +181,30 @@ function create3DScene(containerId, shapeType) {
 }
 
 function initAll3D() {
-    // Call with new shape types
-    create3DScene('about-3d', 'dna');     // About: DNA Helix
-    create3DScene('skills-3d', 'atom');   // Skills: Atomic Core
-    create3DScene('contact-3d', 'vortex'); // Contact: Vortex
+    create3DScene('about-3d', 'noiseSphere'); // About: Living Sphere
+    create3DScene('skills-3d', 'lorenz');     // Skills: Chaos Theory
+    create3DScene('contact-3d', 'tunnel');    // Contact: Warp Drive
 }
 
 /* =========================================
-   3. THEME SWITCHER (DEFAULT = PURPLE)
+   3. THEME SWITCHER
    ========================================= */
 document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
-    // R = RED
     if (key === 'r') { document.body.classList.remove('green-mode'); document.body.classList.toggle('red-mode'); updateAllThemes(); }
-    // G = GREEN
     else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); updateAllThemes(); }
-    // N = PURPLE (Default Reset)
     else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); updateAllThemes(); }
 });
 
 function updateAllThemes() {
-    initParticles(); // Update 2D canvas
-    update3DTheme(); // Update 3D meshes
+    initParticles();
+    update3DTheme();
 }
 
 function getThemeColor() {
     if (document.body.classList.contains('red-mode')) return '#F42C1D';
     if (document.body.classList.contains('green-mode')) return '#32CD32';
-    return '#F1B7EA'; // Default Purple
+    return '#F1B7EA';
 }
 
 function getThemeRGBA(opacity) {
@@ -200,7 +221,6 @@ function getThemeColorHex() {
 
 function update3DTheme() {
     const color = getThemeColorHex();
-    // Update points and wireframe materials
     meshes.forEach(mesh => {
         if (mesh.material.color) mesh.material.color.setHex(color);
     });
