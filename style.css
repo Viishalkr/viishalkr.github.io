@@ -1154,3 +1154,65 @@ body.purple-mode .holo-status {
 body.purple-mode .terminal-body {
     color: var(--primary-red);
 }
+
+/* =========================================
+   11. TOXIC GREEN THEME (PRESS 'G')
+   ========================================= */
+body.green-mode {
+    /* Palette from Image */
+    --bg-black: #00000E;
+    /* Deepest Blue-Black */
+    --card-bg: rgba(0, 20, 0, 0.85);
+    /* Dark Green Tint */
+
+    --primary-red: #32CD32;
+    /* Lime Green (Replaces Red) */
+    --deep-red: #1f7a1f;
+    /* Forest Green (Replaces Deep Red) */
+    --accent-brown: #E1EBC8;
+    /* Pale Matcha (Replaces Brown) */
+    --text-muted: #ccffcc;
+    /* Green-tinted white */
+
+    /* Matrix-like Gradient */
+    background-image: linear-gradient(to bottom, #00000E 0%, #001a00 100%);
+}
+
+/* Overrides for Green Mode */
+body.green-mode ::selection {
+    background: var(--primary-red);
+    color: #000;
+}
+
+body.green-mode .angled-section::before {
+    background-color: rgba(0, 15, 0, 0.9);
+    border-top: 1px solid var(--primary-red);
+    border-bottom: 1px solid var(--primary-red);
+}
+
+body.green-mode nav a {
+    border-color: rgba(50, 205, 50, 0.3);
+}
+
+body.green-mode .project-card:hover .card-content {
+    text-shadow: 2px 0 #fff, -2px 0 var(--primary-red);
+}
+
+body.green-mode .holo-status {
+    color: var(--primary-red);
+    text-shadow: 0 0 10px var(--primary-red);
+}
+
+/* Green Terminal Text */
+body.green-mode .terminal-body {
+    color: var(--primary-red);
+}
+
+/* Cursor Update */
+body.green-mode .cursor-outline {
+    border-color: var(--primary-red);
+}
+
+body.green-mode .cursor-dot {
+    background-color: var(--primary-red);
+}

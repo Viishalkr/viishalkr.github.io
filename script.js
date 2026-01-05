@@ -73,27 +73,35 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. THEME SWITCHER (PRESS 'N')
+   2. MULTI-THEME SWITCHER (N = Purple, G = Green)
    ========================================= */
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'n' || e.key === 'N') {
-        document.body.classList.toggle('purple-mode');
+    const key = e.key.toLowerCase();
 
-        // Force particle color update immediately
-        // We do this by clearing the array so they redraw with new colors
-        initParticles();
+    if (key === 'n') {
+        // Toggle Purple
+        document.body.classList.remove('green-mode'); // Turn off Green
+        document.body.classList.toggle('purple-mode'); // Toggle Purple
+        initParticles(); // Refresh particles
+    }
+    else if (key === 'g') {
+        // Toggle Green
+        document.body.classList.remove('purple-mode'); // Turn off Purple
+        document.body.classList.toggle('green-mode'); // Toggle Green
+        initParticles(); // Refresh particles
     }
 });
 
 function getThemeColor() {
-    // Returns Neon Pink if purple mode is on, otherwise Crimson Red
-    return document.body.classList.contains('purple-mode') ? '#F1B7EA' : '#F42C1D';
+    if (document.body.classList.contains('purple-mode')) return '#F1B7EA'; // Neon Pink
+    if (document.body.classList.contains('green-mode')) return '#32CD32';  // Lime Green
+    return '#F42C1D'; // Default Red
 }
 
 function getThemeRGBA(opacity) {
-    return document.body.classList.contains('purple-mode')
-        ? `rgba(241, 183, 234, ${opacity})` // Pink RGBA
-        : `rgba(244, 44, 29, ${opacity})`;  // Red RGBA
+    if (document.body.classList.contains('purple-mode')) return `rgba(241, 183, 234, ${opacity})`;
+    if (document.body.classList.contains('green-mode')) return `rgba(50, 205, 50, ${opacity})`;
+    return `rgba(244, 44, 29, ${opacity})`;
 }
 
 /* =========================================
@@ -134,7 +142,7 @@ class Particle {
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = getThemeColor(); // Dynamic Color
+        ctx.fillStyle = getThemeColor(); // Gets Red, Purple, or Green
         ctx.fill();
     }
     update() {
