@@ -73,7 +73,31 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. IMAGE LOADER
+   2. THEME SWITCHER (PRESS 'N')
+   ========================================= */
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'n' || e.key === 'N') {
+        document.body.classList.toggle('purple-mode');
+
+        // Force particle color update immediately
+        // We do this by clearing the array so they redraw with new colors
+        initParticles();
+    }
+});
+
+function getThemeColor() {
+    // Returns Neon Pink if purple mode is on, otherwise Crimson Red
+    return document.body.classList.contains('purple-mode') ? '#F1B7EA' : '#F42C1D';
+}
+
+function getThemeRGBA(opacity) {
+    return document.body.classList.contains('purple-mode')
+        ? `rgba(241, 183, 234, ${opacity})` // Pink RGBA
+        : `rgba(244, 44, 29, ${opacity})`;  // Red RGBA
+}
+
+/* =========================================
+   3. IMAGE LOADER
    ========================================= */
 document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll('.project-card');
@@ -86,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   3. PARTICLES (REPULSION MODE)
+   4. PARTICLES (Reactive & Themed)
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -110,15 +134,14 @@ class Particle {
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = '#F42C1D';
+        ctx.fillStyle = getThemeColor(); // Dynamic Color
         ctx.fill();
     }
     update() {
-        // Wall Bounce
         if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
-        // MOUSE REPULSION LOGIC
+        // Mouse Repulsion
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -127,17 +150,12 @@ class Particle {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
-
-            // Increased force multiplier for stronger repulsion
             const directionX = forceDirectionX * force * 5;
             const directionY = forceDirectionY * force * 5;
-
-            // SUBTRACT to move AWAY (Repulse)
             this.x -= directionX;
             this.y -= directionY;
         }
 
-        // Standard movement
         this.x += this.directionX;
         this.y += this.directionY;
         this.draw();
@@ -165,7 +183,8 @@ function connectParticles() {
                 ((particlesArray[a].y - particlesArray[b].y) ** 2);
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                 let opacityValue = 1 - (distance / 20000);
-                ctx.strokeStyle = 'rgba(244, 44, 29,' + opacityValue + ')';
+                // Dynamic Line Color
+                ctx.strokeStyle = getThemeRGBA(opacityValue);
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
@@ -201,7 +220,7 @@ if (canvas) {
 }
 
 /* =========================================
-   4. RIGHT CLICK SECURITY
+   5. RIGHT CLICK SECURITY
    ========================================= */
 document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
@@ -215,7 +234,7 @@ document.addEventListener('contextmenu', (e) => {
 });
 
 /* =========================================
-   5. ECO MODE TOGGLE
+   6. ECO MODE TOGGLE
    ========================================= */
 document.getElementById('ecoBtn').addEventListener('click', function () {
     document.body.classList.toggle('low-power');
@@ -225,12 +244,12 @@ document.getElementById('ecoBtn').addEventListener('click', function () {
         statusText.style.color = "yellow";
     } else {
         statusText.innerText = "ONLINE";
-        statusText.style.color = "#F42C1D";
+        statusText.style.color = getThemeColor(); // Dynamic text color
     }
 });
 
 /* =========================================
-   6. SCROLL REVEAL
+   7. SCROLL REVEAL
    ========================================= */
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
@@ -242,7 +261,8 @@ function revealOnScroll() {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (scrollTop / scrollHeight) * 100;
-    document.getElementById("scroll-progress").style.width = `${scrolled}%`;
+    const pBar = document.getElementById("scroll-progress");
+    if (pBar) pBar.style.width = `${scrolled}%`;
 }
 window.addEventListener('scroll', revealOnScroll);
 
@@ -256,7 +276,7 @@ document.querySelectorAll('nav a, .hud-point').forEach(link => {
 });
 
 /* =========================================
-   7. MODAL LOGIC
+   8. MODAL LOGIC
    ========================================= */
 const modal = document.getElementById("projectModal");
 const modalImg = document.getElementById("modalImg");

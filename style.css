@@ -1101,3 +1101,56 @@ h2 {
         width: 90%;
     }
 }
+
+/* =========================================
+   10. PURPLE NEON THEME (PRESS 'N')
+   ========================================= */
+body.purple-mode {
+    /* New Color Palette from Image */
+    --bg-black: #1A1347;
+    /* Deep Indigo Background */
+    --card-bg: rgba(26, 19, 71, 0.8);
+    /* Semi-transparent purple */
+    --primary-red: #F1B7EA;
+    /* Neon Pink/Lavender (Replaces Red) */
+    --deep-red: #5D479A;
+    /* Deep Purple (Replaces Deep Red) */
+    --accent-brown: #A486B0;
+    /* Soft Lilac (Replaces Brown) */
+    --text-muted: #dcdcdc;
+
+    /* Update Background Gradient */
+    background-image: linear-gradient(to bottom, #1A1347 0%, #0d0926 100%);
+}
+
+/* Specific Overrides for Purple Mode */
+body.purple-mode ::selection {
+    background: var(--primary-red);
+    color: #1A1347;
+}
+
+body.purple-mode .angled-section::before {
+    background-color: rgba(26, 19, 71, 0.85);
+    /* Matches new dark bg */
+    border-top: 1px solid var(--primary-red);
+    border-bottom: 1px solid var(--primary-red);
+}
+
+body.purple-mode nav a {
+    border-color: rgba(241, 183, 234, 0.3);
+    /* Subtle pink border */
+}
+
+body.purple-mode .project-card:hover .card-content {
+    text-shadow: 2px 0 #fff, -2px 0 var(--primary-red);
+}
+
+body.purple-mode .holo-status {
+    color: var(--primary-red);
+    text-shadow: 0 0 10px var(--primary-red);
+}
+
+/* Adjust Terminal Colors for Purple */
+body.purple-mode .terminal-body {
+    color: var(--primary-red);
+}
