@@ -68,7 +68,7 @@ function load3DModel(containerId, modelUrl, scale, posY) {
     const height = container.clientHeight;
     const scene = new THREE.Scene();
 
-    // Pulled camera back to 20 to ensure large models don't clip
+    // Camera settings
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.z = 20;
 
@@ -79,10 +79,11 @@ function load3DModel(containerId, modelUrl, scale, posY) {
     container.appendChild(renderer.domElement);
 
     // --- LIGHTING ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); // Brighter ambient
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(getThemeColorHex(), 1.5);
+    // Main Directional Light (Theme Colored)
+    const dirLight = new THREE.DirectionalLight(getThemeColorHex(), 2.5); // Intensity 2.5 for anime style
     dirLight.position.set(5, 10, 7.5);
     dirLight.castShadow = true;
     scene.add(dirLight);
@@ -122,14 +123,14 @@ function load3DModel(containerId, modelUrl, scale, posY) {
 }
 
 function initAll3D() {
-    // 1. About Section: Cyber Robot
-    load3DModel('about-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BrainStem/glTF-Binary/BrainStem.glb', 2.5, -2.5);
+    // 1. About Section: The Wizard (Creativity)
+    load3DModel('about-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/wizard/model.gltf', 3.5, -3);
 
-    // 2. Skills Section: Mech-Bot (Replaced Invisible Drone)
-    load3DModel('skills-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/RobotExpressive/glTF-Binary/RobotExpressive.glb', 0.5, -3.5);
+    // 2. Skills Section: The Ninja (Speed/Precision)
+    load3DModel('skills-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/ninja/model.gltf', 4, -3.5);
 
-    // 3. Contact Section: Sci-Fi Helmet
-    load3DModel('contact-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb', 3.5, 0);
+    // 3. Contact Section: The Demon/Spirit (Boldness)
+    load3DModel('contact-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/demon/model.gltf', 3.5, -3);
 }
 
 /* =========================================
