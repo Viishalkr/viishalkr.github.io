@@ -81,9 +81,8 @@ function create3DScene(containerId, geometryType) {
 
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
-    meshes.push(mesh); // Add to global array for animation/theme updates
+    meshes.push(mesh);
 
-    // Inner shape for extra cool factor
     const mat2 = new THREE.MeshBasicMaterial({ color: getThemeColorHex(), wireframe: true, transparent: true, opacity: 0.3 });
     const geo2 = new THREE.IcosahedronGeometry(4, 0);
     const mesh2 = new THREE.Mesh(geo2, mat2);
@@ -92,54 +91,66 @@ function create3DScene(containerId, geometryType) {
 
     function animate() {
         requestAnimationFrame(animate);
-        mesh.rotation.x += 0.005;
-        mesh.rotation.y += 0.005;
-        mesh2.rotation.x -= 0.01;
-        mesh2.rotation.y -= 0.01;
+        mesh.rotation.x += 0.005; mesh.rotation.y += 0.005;
+        mesh2.rotation.x -= 0.01; mesh2.rotation.y -= 0.01;
         renderer.render(scene, camera);
     }
     animate();
 }
 
 function initAll3D() {
-    create3DScene('about-3d', 'knot');     // About: Cyber Knot
-    create3DScene('skills-3d', 'sphere');  // Skills: Icosahedron
-    create3DScene('contact-3d', 'ring');   // Contact: Ring
+    create3DScene('about-3d', 'knot');
+    create3DScene('skills-3d', 'sphere');
+    create3DScene('contact-3d', 'ring');
+}
+
+/* =========================================
+   3. THEME SWITCHER (DEFAULT = PURPLE)
+   ========================================= */
+document.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+
+    // Press 'R' for RED Mode
+    if (key === 'r') {
+        document.body.classList.remove('green-mode');
+        document.body.classList.toggle('red-mode');
+        initParticles(); update3DTheme();
+    }
+    // Press 'G' for GREEN Mode
+    else if (key === 'g') {
+        document.body.classList.remove('red-mode');
+        document.body.classList.toggle('green-mode');
+        initParticles(); update3DTheme();
+    }
+    // Press 'N' (Optional Reset to Default Purple if you want)
+    else if (key === 'n') {
+        document.body.classList.remove('red-mode');
+        document.body.classList.remove('green-mode');
+        initParticles(); update3DTheme();
+    }
+});
+
+function getThemeColor() {
+    if (document.body.classList.contains('red-mode')) return '#F42C1D'; // Crimson
+    if (document.body.classList.contains('green-mode')) return '#32CD32'; // Green
+    return '#F1B7EA'; // Default Purple
+}
+
+function getThemeRGBA(opacity) {
+    if (document.body.classList.contains('red-mode')) return `rgba(244, 44, 29, ${opacity})`;
+    if (document.body.classList.contains('green-mode')) return `rgba(50, 205, 50, ${opacity})`;
+    return `rgba(241, 183, 234, ${opacity})`; // Default Purple
 }
 
 function getThemeColorHex() {
-    if (document.body.classList.contains('purple-mode')) return 0xF1B7EA;
+    if (document.body.classList.contains('red-mode')) return 0xF42C1D;
     if (document.body.classList.contains('green-mode')) return 0x32CD32;
-    return 0xF42C1D;
+    return 0xF1B7EA; // Default Purple
 }
 
 function update3DTheme() {
     const color = getThemeColorHex();
     meshes.forEach(mesh => mesh.material.color.setHex(color));
-}
-
-/* =========================================
-   3. THEME SWITCHER
-   ========================================= */
-document.addEventListener('keydown', (e) => {
-    const key = e.key.toLowerCase();
-    if (key === 'n') {
-        document.body.classList.remove('green-mode'); document.body.classList.toggle('purple-mode');
-        initParticles(); update3DTheme();
-    } else if (key === 'g') {
-        document.body.classList.remove('purple-mode'); document.body.classList.toggle('green-mode');
-        initParticles(); update3DTheme();
-    }
-});
-function getThemeColor() {
-    if (document.body.classList.contains('purple-mode')) return '#F1B7EA';
-    if (document.body.classList.contains('green-mode')) return '#32CD32';
-    return '#F42C1D';
-}
-function getThemeRGBA(opacity) {
-    if (document.body.classList.contains('purple-mode')) return `rgba(241, 183, 234, ${opacity})`;
-    if (document.body.classList.contains('green-mode')) return `rgba(50, 205, 50, ${opacity})`;
-    return `rgba(244, 44, 29, ${opacity})`;
 }
 
 /* =========================================
@@ -150,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (c.getAttribute('data-img')) c.style.backgroundImage = `url('${c.getAttribute('data-img')}')`;
     });
     initTiltCards();
-    initAll3D(); // Start 3D
+    initAll3D();
 });
 
 const canvas = document.getElementById('neural-canvas');

@@ -1,16 +1,20 @@
 /* =========================================
-   1. RESET & VARIABLES
+   1. RESET & VARIABLES (DEFAULT = PURPLE)
    ========================================= */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
 
 :root {
-    --bg-black: #070709;
-    --card-bg: #0e0e11;
-    --primary-red: #F42C1D;
-    --deep-red: #AE1918;
-    --accent-brown: #824334;
+    /* DEFAULT THEME: NEON PURPLE */
+    --bg-black: #1A1347;
+    --card-bg: rgba(26, 19, 71, 0.8);
+    --primary-red: #F1B7EA;
+    /* Neon Pink */
+    --deep-red: #5D479A;
+    /* Deep Purple */
+    --accent-brown: #A486B0;
     --text-white: #ffffff;
     --text-muted: #dcdcdc;
+
     --font-head: 'Orbitron', sans-serif;
     --font-body: 'Rajdhani', sans-serif;
     --font-tech: 'Share Tech Mono', monospace;
@@ -44,7 +48,8 @@ body {
     background-color: var(--bg-black);
     color: var(--text-white);
     overflow-x: hidden;
-    background-image: linear-gradient(to bottom, #070709 0%, #110202 100%);
+    /* Default Purple Gradient */
+    background-image: linear-gradient(to bottom, #1A1347 0%, #0d0926 100%);
     background-attachment: fixed;
     font-size: 18px;
 }
@@ -65,6 +70,30 @@ body.no-scroll {
     z-index: -1;
     pointer-events: none;
     opacity: 0.6;
+}
+
+/* Default Angled Section (Purple Style) */
+.angled-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 19, 71, 0.85);
+    /* Purple Tint */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+    transform: skewY(-2deg);
+    z-index: -1;
+    border-top: 1px solid var(--primary-red);
+    border-bottom: 1px solid var(--primary-red);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
+}
+
+#contact.angled-section::before {
+    border-bottom: none;
 }
 
 .bg-grid {
@@ -252,7 +281,7 @@ h2 {
     letter-spacing: 3px;
 }
 
-/* NEW SPLIT LAYOUT (TEXT LEFT / 3D RIGHT) */
+/* SPLIT LAYOUT */
 .split-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -264,38 +293,13 @@ h2 {
 .three-container {
     width: 100%;
     height: 400px;
-    /* Fixed height for 3D canvas */
     position: relative;
-    /* Optional: background: rgba(0,0,0,0.2) to see where it is */
 }
 
-/* FROSTED SECTIONS */
 .angled-section {
     position: relative;
     padding: 120px 10%;
     z-index: 1;
-}
-
-.angled-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(10, 10, 12, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-    transform: skewY(-2deg);
-    z-index: -1;
-    border-top: 1px solid var(--primary-red);
-    border-bottom: 1px solid var(--primary-red);
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
-}
-
-#contact.angled-section::before {
-    border-bottom: none;
 }
 
 /* =========================================
@@ -610,22 +614,31 @@ h2 {
     pointer-events: all;
 }
 
-/* THEMES */
-body.purple-mode {
-    --bg-black: #1A1347;
-    --primary-red: #F1B7EA;
-    --deep-red: #5D479A;
-    background-image: linear-gradient(to bottom, #1A1347 0%, #0d0926 100%);
+/* =========================================
+   9. THEME OVERRIDES (RED & GREEN)
+   ========================================= */
+
+/* RED MODE (Press 'R') */
+body.red-mode {
+    --bg-black: #070709;
+    --card-bg: #0e0e11;
+    --primary-red: #F42C1D;
+    /* Crimson Red */
+    --deep-red: #AE1918;
+    background-image: linear-gradient(to bottom, #070709 0%, #110202 100%);
 }
 
-body.purple-mode .angled-section::before {
-    background-color: rgba(26, 19, 71, 0.85);
+body.red-mode .angled-section::before {
+    background-color: rgba(10, 10, 12, 0.85);
     border-color: var(--primary-red);
 }
 
+/* GREEN MODE (Press 'G') */
 body.green-mode {
     --bg-black: #00000E;
+    --card-bg: rgba(0, 20, 0, 0.85);
     --primary-red: #32CD32;
+    /* Lime Green */
     --deep-red: #1f7a1f;
     background-image: linear-gradient(to bottom, #00000E 0%, #001a00 100%);
 }
@@ -642,7 +655,6 @@ body.green-mode .angled-section::before {
 
     .three-container {
         display: none;
-        /* Hide 3D on mobile */
     }
 
     .navbar {
