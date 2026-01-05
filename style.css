@@ -230,7 +230,7 @@ nav a.active {
 }
 
 /* =========================================
-   5. HERO & GLITCH EFFECTS
+   5. HERO & SECTIONS
    ========================================= */
 .hero {
     height: 100vh;
@@ -252,7 +252,7 @@ nav a.active {
     font-family: var(--font-tech);
 }
 
-/* GLITCH ANIMATION FOR TITLE */
+/* GLITCH TITLE */
 .main-title {
     font-family: var(--font-head);
     font-size: 7vw;
@@ -291,8 +291,11 @@ nav a.active {
 }
 
 @keyframes glitch-anim {
-    0% {
-        clip: rect(11px, 9999px, 81px, 0);
+
+    0%,
+    25%,
+    100% {
+        clip: rect(0, 0, 0, 0);
     }
 
     5% {
@@ -310,20 +313,14 @@ nav a.active {
     20% {
         clip: rect(4px, 9999px, 97px, 0);
     }
-
-    25% {
-        clip: rect(0, 0, 0, 0);
-    }
-
-    /* Pause */
-    100% {
-        clip: rect(0, 0, 0, 0);
-    }
 }
 
 @keyframes glitch-anim2 {
-    0% {
-        clip: rect(65px, 9999px, 98px, 0);
+
+    0%,
+    25%,
+    100% {
+        clip: rect(0, 0, 0, 0);
     }
 
     5% {
@@ -340,15 +337,6 @@ nav a.active {
 
     20% {
         clip: rect(23px, 9999px, 76px, 0);
-    }
-
-    25% {
-        clip: rect(0, 0, 0, 0);
-    }
-
-    /* Pause */
-    100% {
-        clip: rect(0, 0, 0, 0);
     }
 }
 
@@ -444,10 +432,14 @@ h2 {
     font-weight: 500;
 }
 
+/* FIXED DECRYPT CLASS (Clean) */
 .decrypt {
     font-family: var(--font-tech);
     color: var(--primary-red);
     font-weight: bold;
+    background: transparent;
+    padding: 0 5px;
+    letter-spacing: 1px;
 }
 
 .angled-section {
@@ -622,7 +614,7 @@ h2 {
 }
 
 /* =========================================
-   8. EDUCATION & ABOUT (SCANNER ADDED)
+   8. EDUCATION & ABOUT
    ========================================= */
 .education-timeline {
     border-left: 2px solid #333;
@@ -679,69 +671,6 @@ h2 {
 .edu-place {
     color: #888;
     font-weight: 500;
-}
-
-.holo-card {
-    padding: 20px;
-    border: 1px solid #222;
-    background: #111;
-    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
-}
-
-.holo-header {
-    display: flex;
-    justify-content: space-between;
-    font-family: var(--font-tech);
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 5px;
-}
-
-.holo-status {
-    color: var(--primary-red);
-    text-shadow: 0 0 5px var(--deep-red);
-}
-
-/* SCANNER ANIMATION */
-.holo-img-box {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.holo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.holo-img-box::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--primary-red);
-    box-shadow: 0 0 10px var(--primary-red);
-    animation: scan 2s infinite linear;
-}
-
-@keyframes scan {
-    0% {
-        top: 0;
-    }
-
-    50% {
-        top: 100%;
-    }
-
-    100% {
-        top: 0;
-    }
 }
 
 .about-grid {
@@ -923,7 +852,7 @@ h2 {
     opacity: 0.9;
 }
 
-/* MODAL & SECURITY */
+/* MODAL */
 .modal {
     display: none;
     position: fixed;
@@ -1051,6 +980,7 @@ h2 {
     color: var(--primary-red);
 }
 
+/* SECURITY SCREEN */
 #security-screen {
     position: fixed;
     top: 0;

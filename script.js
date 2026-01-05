@@ -7,11 +7,10 @@ const body = document.body;
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// 1. SCRAMBLE TEXT FUNCTION (Used for Title & Nav)
+// 1. SCRAMBLE TEXT FUNCTION
 function scrambleText(element) {
     if (!element) return;
     const originalText = element.dataset.value || element.innerText;
-    // Store original text in data-value if not present
     if (!element.dataset.value) element.dataset.value = originalText;
 
     let iterations = 0;
@@ -25,7 +24,7 @@ function scrambleText(element) {
     }, 30);
 }
 
-// 2. MATRIX HOVER EFFECT FOR NAV
+// 2. NAV HOVER SCRAMBLE
 document.querySelectorAll('.scramble-link').forEach(link => {
     link.addEventListener('mouseover', () => scrambleText(link));
 });
