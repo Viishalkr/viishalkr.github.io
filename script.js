@@ -45,14 +45,97 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. THEME SWITCHER
+   2. THREE.JS GLTF MODEL LOADER
+   ========================================= */
+const clock = new THREE.Clock();
+const mixers = [];
+const sceneLights = [];
+
+let mouseX = 0, mouseY = 0;
+const windowHalfX = window.innerWidth / 2;
+const windowHalfY = window.innerHeight / 2;
+
+document.addEventListener('mousemove', (event) => {
+    mouseX = (event.clientX - windowHalfX);
+    mouseY = (event.clientY - windowHalfY);
+});
+
+function load3DModel(containerId, modelUrl, scale, posY) {
+    const container = document.getElementById(containerId);
+    if (!container || window.innerWidth < 900) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 20;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.shadowMap.enabled = true;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(getThemeColorHex(), 2.5);
+    dirLight.position.set(5, 10, 7.5);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+    sceneLights.push(dirLight);
+
+    const loader = new THREE.GLTFLoader();
+    let model;
+    loader.load(modelUrl, (gltf) => {
+        model = gltf.scene;
+        model.scale.set(scale, scale, scale);
+        model.position.y = posY;
+        scene.add(model);
+        if (gltf.animations && gltf.animations.length) {
+            const mixer = new THREE.AnimationMixer(model);
+            mixer.clipAction(gltf.animations[0]).play();
+            mixers.push(mixer);
+        }
+    }, undefined, (error) => { console.error('Error loading model:', error); });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const delta = clock.getDelta();
+        mixers.forEach(mixer => mixer.update(delta));
+        if (model) {
+            model.rotation.y = mouseX * 0.0005;
+            model.rotation.x = mouseY * 0.0005;
+        }
+        renderer.render(scene, camera);
+    }
+    animate();
+}
+
+function initAll3D() {
+    // 1. Wizard
+    load3DModel('about-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/wizard/model.gltf', 3.5, -3);
+    // 2. Ninja
+    load3DModel('skills-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/ninja/model.gltf', 4, -3.5);
+    // 3. Demon
+    load3DModel('contact-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/demon/model.gltf', 3.5, -3);
+}
+
+/* =========================================
+   3. THEME SWITCHER
    ========================================= */
 document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
-    if (key === 'r') { document.body.classList.remove('green-mode'); document.body.classList.toggle('red-mode'); initParticles(); }
-    else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); initParticles(); }
-    else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); initParticles(); }
+    if (key === 'r') { document.body.classList.remove('green-mode'); document.body.classList.toggle('red-mode'); updateAllThemes(); }
+    else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); updateAllThemes(); }
+    else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); updateAllThemes(); }
 });
+
+function updateAllThemes() {
+    initParticles();
+    const newColor = getThemeColorHex();
+    sceneLights.forEach(light => { light.color.setHex(newColor); });
+}
 
 function getThemeColor() {
     if (document.body.classList.contains('red-mode')) return '#F42C1D';
@@ -64,15 +147,21 @@ function getThemeRGBA(opacity) {
     if (document.body.classList.contains('green-mode')) return `rgba(50, 205, 50, ${opacity})`;
     return `rgba(241, 183, 234, ${opacity})`;
 }
+function getThemeColorHex() {
+    if (document.body.classList.contains('red-mode')) return 0xF42C1D;
+    if (document.body.classList.contains('green-mode')) return 0x32CD32;
+    return 0xF1B7EA;
+}
 
 /* =========================================
-   3. INIT & PARTICLES
+   4. INIT & PARTICLES
    ========================================= */
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.project-card').forEach(c => {
         if (c.getAttribute('data-img')) c.style.backgroundImage = `url('${c.getAttribute('data-img')}')`;
     });
     initTiltCards();
+    initAll3D();
 });
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;

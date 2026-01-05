@@ -252,6 +252,21 @@ h2 {
     letter-spacing: 3px;
 }
 
+/* SPLIT LAYOUT */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    position: relative;
+}
+
+.three-container {
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+
 .angled-section {
     position: relative;
     padding: 120px 10%;
@@ -411,65 +426,103 @@ h2 {
 }
 
 /* =========================================
-   7. SKILLS & PROJECTS
+   7. SKILLS (HUD GRID)
    ========================================= */
-.hex-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
+.hud-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
 }
 
-.hex-item {
-    width: 100px;
-    height: 115px;
+.hud-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px;
     position: relative;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    background: #111;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: -20px;
     transition: 0.3s;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
 }
 
-.hex-item::before {
+.hud-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--primary-red);
+    transform: translateY(-5px);
+}
+
+.hud-card::after {
     content: '';
     position: absolute;
-    inset: 1px;
-    background: var(--bg-black);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    z-index: 1;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-bottom: 2px solid var(--primary-red);
+    border-right: 2px solid var(--primary-red);
 }
 
-.hex-item:hover {
-    transform: scale(1.1);
-    z-index: 10;
+.hud-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-.hex-item:hover .hex-icon {
-    color: var(--primary-red);
-}
-
-.hex-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-}
-
-.hex-icon {
-    font-size: 1.5rem;
-    font-weight: 800;
+.hud-header h3 {
+    font-family: var(--font-head);
+    font-size: 1.1rem;
     color: #fff;
-    display: block;
+    margin: 0;
+    letter-spacing: 1px;
 }
 
-.hex-label {
-    font-size: 0.7rem;
-    color: #888;
+.hud-icon {
+    font-size: 1.3rem;
+    filter: drop-shadow(0 0 5px var(--primary-red));
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-pill {
     font-family: var(--font-tech);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    transition: 0.2s;
+    cursor: default;
 }
 
+.hud-card:hover .skill-pill {
+    border-color: var(--primary-red);
+    color: #fff;
+}
+
+.skill-pill:hover {
+    background: var(--primary-red);
+    color: #000;
+    box-shadow: 0 0 10px var(--primary-red);
+}
+
+.hud-footer {
+    margin-top: 20px;
+    font-family: var(--font-tech);
+    font-size: 0.7rem;
+    color: var(--primary-red);
+    text-align: right;
+    opacity: 0.7;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   8. PROJECTS
+   ========================================= */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -509,30 +562,8 @@ h2 {
 }
 
 /* =========================================
-   8. FOOTER & CONTACT
+   9. CONTACT & FOOTER
    ========================================= */
-.cyber-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 35px;
-    background: transparent;
-    color: #fff;
-    font-weight: 700;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: 0.3s;
-    border: 1px solid var(--primary-red);
-    font-family: var(--font-head);
-    letter-spacing: 2px;
-    cursor: pointer;
-}
-
-.cyber-btn:hover {
-    background: var(--primary-red);
-    box-shadow: 0 0 20px rgba(244, 44, 29, 0.4);
-}
-
 .contact-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -558,7 +589,7 @@ h2 {
 }
 
 /* =========================================
-   9. MISC
+   10. MISC
    ========================================= */
 #preloader {
     position: fixed;
@@ -653,9 +684,8 @@ h2 {
 }
 
 /* =========================================
-   10. THEME MODES
+   11. THEME MODES
    ========================================= */
-/* RED MODE (R) */
 body.red-mode {
     --bg-black: #070709;
     --card-bg: #0e0e11;
@@ -669,7 +699,6 @@ body.red-mode .angled-section::before {
     border-color: var(--primary-red);
 }
 
-/* GREEN MODE (G) */
 body.green-mode {
     --bg-black: #00000E;
     --card-bg: rgba(0, 20, 0, 0.85);
@@ -684,6 +713,14 @@ body.green-mode .angled-section::before {
 }
 
 @media (max-width: 900px) {
+    .split-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .three-container {
+        display: none;
+    }
+
     .navbar {
         justify-content: center;
         padding: 15px;

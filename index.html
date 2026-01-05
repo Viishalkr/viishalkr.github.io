@@ -9,6 +9,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 
 <body class="no-scroll">
@@ -74,17 +77,21 @@
     <section class="section about reveal angled-section" id="about">
         <div class="container">
             <h2>ABOUT ME</h2>
-            <div class="text-content" style="max-width: 900px; margin: 0 auto; text-align: left;">
-                <p>
-                    I’m Vishal, a <span class="decrypt">CREATIVE DESIGNER</span> focused on
-                    <span class="decrypt">UI/UX ARCHITECTURE</span>, photography, and videography.
-                </p>
-                <br>
-                <p>
-                    My journey started with a curiosity for how things look, which quickly evolved into an obsession
-                    with <span class="decrypt">VISUAL STORYTELLING</span>. From crafting brand identities to capturing
-                    cinematic moments, I thrive at the intersection of <span class="decrypt">ART & TECH</span>.
-                </p>
+            <div class="split-layout">
+                <div class="text-content">
+                    <p>
+                        I’m Vishal, a <span class="decrypt">CREATIVE DESIGNER</span> focused on
+                        <span class="decrypt">UI/UX ARCHITECTURE</span>, photography, and videography.
+                    </p>
+                    <br>
+                    <p>
+                        My journey started with a curiosity for how things look, which quickly evolved into an obsession
+                        with <span class="decrypt">VISUAL STORYTELLING</span>. From crafting brand identities to
+                        capturing cinematic moments, I thrive at the intersection of <span class="decrypt">ART &
+                            TECH</span>.
+                    </p>
+                </div>
+                <div id="about-3d" class="three-container"></div>
             </div>
         </div>
     </section>
@@ -115,42 +122,53 @@
 
     <section class="section skills reveal angled-section" id="skills">
         <div class="container">
-            <h2>SKILLS</h2>
-            <div class="hex-grid-wrapper" style="display: flex; justify-content: center;">
-                <div class="hex-grid">
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">Ps</span><span
-                                class="hex-label">PHOTOSHOP</span></div>
-                    </div>
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">Lr</span><span
-                                class="hex-label">LIGHTROOM</span></div>
-                    </div>
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">Ai</span><span
-                                class="hex-label">ILLUSTRATOR</span></div>
-                    </div>
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">Pr</span><span class="hex-label">PREMIERE</span>
+            <h2>SKILLS & ARSENAL</h2>
+            <div class="split-layout">
+                <div class="hud-grid">
+                    <div class="hud-card">
+                        <div class="hud-header">
+                            <span class="hud-icon">⚡</span>
+                            <h3>VISUAL_DESIGN.EXE</h3>
                         </div>
-                    </div>
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">Ca</span><span class="hex-label">CANVA</span>
+                        <div class="skill-tags">
+                            <div class="skill-pill">Photoshop</div>
+                            <div class="skill-pill">Lightroom</div>
+                            <div class="skill-pill">Illustrator</div>
+                            <div class="skill-pill">Canva</div>
                         </div>
+                        <div class="hud-footer">SYS_READY</div>
                     </div>
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">📷</span><span class="hex-label">PHOTO</span>
+
+                    <div class="hud-card">
+                        <div class="hud-header">
+                            <span class="hud-icon">🎬</span>
+                            <h3>MOTION_LAB.DAT</h3>
                         </div>
+                        <div class="skill-tags">
+                            <div class="skill-pill">Premiere Pro</div>
+                            <div class="skill-pill">After Effects</div>
+                            <div class="skill-pill">DaVinci</div>
+                            <div class="skill-pill">CapCut</div>
+                        </div>
+                        <div class="hud-footer">RENDERING...</div>
                     </div>
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">FIG</span><span class="hex-label">FIGMA</span>
+
+                    <div class="hud-card">
+                        <div class="hud-header">
+                            <span class="hud-icon">🧬</span>
+                            <h3>ARCHITECTURE.SYS</h3>
                         </div>
-                    </div>
-                    <div class="hex-item">
-                        <div class="hex-content"><span class="hex-icon">AE</span><span class="hex-label">MOTION</span>
+                        <div class="skill-tags">
+                            <div class="skill-pill">Figma</div>
+                            <div class="skill-pill">VS Code</div>
+                            <div class="skill-pill">HTML/CSS</div>
+                            <div class="skill-pill">Shopify</div>
                         </div>
+                        <div class="hud-footer">ONLINE</div>
                     </div>
                 </div>
+
+                <div id="skills-3d" class="three-container"></div>
             </div>
         </div>
     </section>
@@ -181,21 +199,24 @@
     <section class="section contact reveal angled-section" id="contact">
         <div class="container">
             <h2>CONTACT</h2>
-            <div class="contact-layout" style="align-items: flex-start; max-width: 800px;">
-                <p style="color: #ccc; margin-bottom: 40px;">
-                    Ready to create something amazing? Connect with me.
-                </p>
-                <div class="contact-buttons">
-                    <a href="mailto:kumarvishal1627@gmail.com" class="cyber-btn"><span class="btn-text">SEND
-                            MAIL</span></a>
-                    <a href="#" id="whatsappBtn" class="cyber-btn"><span class="btn-text">WHATSAPP</span></a>
-                    <a href="https://www.linkedin.com/in/vishal-kumar-3a81271a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
-                        target="_blank" class="cyber-btn"><span class="btn-text">LINKEDIN</span></a>
-                    <a href="https://www.instagram.com/viishal.kr?igsh=MTYxeWozMTQ5Mm9jcg%3D%3D&utm_source=qr"
-                        target="_blank" class="cyber-btn"><span class="btn-text">INSTAGRAM</span></a>
-                    <a href="https://www.behance.net/vishalkumar240" target="_blank" class="cyber-btn"><span
-                            class="btn-text">BEHANCE</span></a>
+            <div class="split-layout">
+                <div class="contact-layout">
+                    <p style="color: #ccc; margin-bottom: 40px; max-width: 600px;">
+                        Ready to create something amazing? Connect with me.
+                    </p>
+                    <div class="contact-buttons">
+                        <a href="mailto:kumarvishal1627@gmail.com" class="cyber-btn"><span class="btn-text">SEND
+                                MAIL</span></a>
+                        <a href="#" id="whatsappBtn" class="cyber-btn"><span class="btn-text">WHATSAPP</span></a>
+                        <a href="https://www.linkedin.com/in/vishal-kumar-3a81271a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+                            target="_blank" class="cyber-btn"><span class="btn-text">LINKEDIN</span></a>
+                        <a href="https://www.instagram.com/viishal.kr?igsh=MTYxeWozMTQ5Mm9jcg%3D%3D&utm_source=qr"
+                            target="_blank" class="cyber-btn"><span class="btn-text">INSTAGRAM</span></a>
+                        <a href="https://www.behance.net/vishalkumar240" target="_blank" class="cyber-btn"><span
+                                class="btn-text">BEHANCE</span></a>
+                    </div>
                 </div>
+                <div id="contact-3d" class="three-container"></div>
             </div>
         </div>
     </section>
