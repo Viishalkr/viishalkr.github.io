@@ -217,7 +217,7 @@ nav a.active {
 }
 
 /* =========================================
-   4. LAYOUT & SECTIONS (RESTORED SPLIT)
+   4. LAYOUT & SECTIONS
    ========================================= */
 .hero {
     height: 100vh;
@@ -252,7 +252,7 @@ h2 {
     letter-spacing: 3px;
 }
 
-/* STANDARD SPLIT LAYOUT */
+/* SPLIT LAYOUT */
 .split-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -265,7 +265,6 @@ h2 {
     width: 100%;
     height: 400px;
     position: relative;
-    /* Removed mask and absolute positioning */
 }
 
 .angled-section {
@@ -367,7 +366,67 @@ h2 {
 }
 
 /* =========================================
-   6. SKILLS & PROJECTS
+   6. EDUCATION SECTION (RESTORED!)
+   ========================================= */
+.education-timeline {
+    border-left: 2px solid #333;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.edu-item {
+    position: relative;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -37px;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    border: 4px solid var(--bg-black);
+    box-shadow: 0 0 10px var(--primary-red);
+}
+
+.edu-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #222;
+    transition: 0.3s;
+}
+
+.edu-card:hover {
+    transform: translateX(10px);
+    border-color: var(--primary-red);
+}
+
+.edu-degree {
+    font-size: 1.6rem;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 5px;
+    font-family: var(--font-head);
+}
+
+.edu-year {
+    color: var(--primary-red);
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: var(--font-tech);
+}
+
+.edu-place {
+    color: #888;
+    font-weight: 500;
+}
+
+/* =========================================
+   7. SKILLS & PROJECTS
    ========================================= */
 .hex-grid {
     display: flex;
@@ -465,7 +524,7 @@ h2 {
 }
 
 /* =========================================
-   7. FOOTER & CONTACT
+   8. FOOTER & CONTACT
    ========================================= */
 .cyber-btn {
     display: inline-flex;
@@ -514,7 +573,7 @@ h2 {
 }
 
 /* =========================================
-   8. MISC
+   9. MISC
    ========================================= */
 #preloader {
     position: fixed;
@@ -609,7 +668,7 @@ h2 {
 }
 
 /* =========================================
-   9. THEME MODES
+   10. THEME MODES
    ========================================= */
 /* RED MODE (R) */
 body.red-mode {
