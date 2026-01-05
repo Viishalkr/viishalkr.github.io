@@ -132,10 +132,42 @@ document.addEventListener("DOMContentLoaded", () => {
             card.style.backgroundImage = `url('${imgPath}')`;
         }
     });
+
+    // Init 3D Tilt Logic
+    initTiltCards();
 });
 
 /* =========================================
-   5. PARTICLES (Reactive - Repulsion)
+   5. 3D TILT CARD LOGIC
+   ========================================= */
+function initTiltCards() {
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // For Glare Positioning
+            card.style.setProperty('--card-x', `${x}px`);
+            card.style.setProperty('--card-y', `${y}px`);
+
+            // For Rotation
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -10; // Max -10 to 10 deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+    });
+}
+
+/* =========================================
+   6. PARTICLES (Reactive - Repulsion)
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -148,6 +180,10 @@ let mouse = { x: null, y: null, radius: 150 };
 window.addEventListener('mousemove', (event) => {
     mouse.x = event.x;
     mouse.y = event.y;
+
+    // Update Spotlight CSS Variables globally
+    document.documentElement.style.setProperty('--cursor-x', event.clientX + 'px');
+    document.documentElement.style.setProperty('--cursor-y', event.clientY + 'px');
 });
 
 class Particle {
@@ -166,7 +202,7 @@ class Particle {
         if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
-        // Mouse Repulsion (Move AWAY)
+        // Mouse Repulsion
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -175,7 +211,6 @@ class Particle {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
-            // High multiplier for strong repulsion
             const directionX = forceDirectionX * force * 5;
             const directionY = forceDirectionY * force * 5;
             this.x -= directionX;
@@ -245,7 +280,7 @@ if (canvas) {
 }
 
 /* =========================================
-   6. RIGHT CLICK SECURITY
+   7. RIGHT CLICK SECURITY
    ========================================= */
 document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
@@ -259,7 +294,7 @@ document.addEventListener('contextmenu', (e) => {
 });
 
 /* =========================================
-   7. ECO MODE TOGGLE
+   8. ECO MODE TOGGLE
    ========================================= */
 document.getElementById('ecoBtn').addEventListener('click', function () {
     document.body.classList.toggle('low-power');
@@ -274,7 +309,7 @@ document.getElementById('ecoBtn').addEventListener('click', function () {
 });
 
 /* =========================================
-   8. SCROLL REVEAL
+   9. SCROLL REVEAL
    ========================================= */
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
@@ -301,7 +336,7 @@ document.querySelectorAll('nav a, .hud-point').forEach(link => {
 });
 
 /* =========================================
-   9. MODAL LOGIC
+   10. MODAL LOGIC
    ========================================= */
 const modal = document.getElementById("projectModal");
 const modalImg = document.getElementById("modalImg");

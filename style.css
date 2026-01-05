@@ -15,6 +15,10 @@
     --font-head: 'Orbitron', sans-serif;
     --font-body: 'Rajdhani', sans-serif;
     --font-tech: 'Share Tech Mono', monospace;
+
+    /* Variables for Spotlight */
+    --cursor-x: 50%;
+    --cursor-y: 50%;
 }
 
 ::selection {
@@ -61,7 +65,7 @@ body.no-scroll {
 }
 
 /* =========================================
-   2. UI OVERLAYS
+   2. UI OVERLAYS (UPDATED: SPOTLIGHT)
    ========================================= */
 #neural-canvas {
     position: fixed;
@@ -81,6 +85,7 @@ body.no-scroll {
     display: none !important;
 }
 
+/* THE SPOTLIGHT EFFECT */
 .bg-grid {
     position: fixed;
     top: 0;
@@ -89,9 +94,21 @@ body.no-scroll {
     height: 110%;
     z-index: -2;
     background-size: 50px 50px;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     pointer-events: none;
-    opacity: 0.3;
+
+    /* Default visibility (Mobile) */
+    opacity: 0.15;
+}
+
+/* Desktop Only: Spotlight Mask */
+@media (min-width: 768px) {
+    .bg-grid {
+        opacity: 1;
+        /* The mask reveals the grid only around the cursor */
+        -webkit-mask-image: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), black 0%, transparent 80%);
+        mask-image: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), black 0%, transparent 80%);
+    }
 }
 
 /* =========================================
@@ -552,7 +569,7 @@ h2 {
 }
 
 /* =========================================
-   7. PROJECTS
+   7. PROJECTS (3D TILT ENABLED)
    ========================================= */
 .project-grid {
     display: grid;
@@ -570,10 +587,40 @@ h2 {
     flex-direction: column;
     justify-content: flex-end;
     padding: 30px;
-    transition: transform 0.1s;
     background-size: cover !important;
     background-position: center !important;
     overflow: hidden;
+
+    /* 3D TILT PROPERTIES */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    transition: transform 0.1s;
+    /* Quick response for tilt, slow reset via JS */
+}
+
+/* Glare Effect Layer */
+.project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Dynamic gradient tracked by JS variables */
+    background: radial-gradient(circle at var(--card-x, 50%) var(--card-y, 50%), rgba(255, 255, 255, 0.15), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 3;
+}
+
+.project-card:hover::after {
+    opacity: 1;
+}
+
+.project-card:hover {
+    border-color: var(--primary-red);
 }
 
 .project-card::before {
@@ -587,14 +634,11 @@ h2 {
     z-index: 1;
 }
 
-.project-card:hover {
-    border-color: var(--primary-red);
-}
-
 .project-card .card-content,
 .project-card .card-sub {
     position: relative;
-    z-index: 2;
+    z-index: 5;
+    transform: translateZ(20px);
 }
 
 .card-sub {
@@ -684,7 +728,7 @@ h2 {
 }
 
 /* =========================================
-   9. FOOTER & BUTTONS (UPDATED)
+   9. FOOTER & BUTTONS
    ========================================= */
 .cyber-btn {
     display: inline-flex;
