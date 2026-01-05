@@ -45,7 +45,7 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. THREE.JS MASSIVE KINETIC SHAPES
+   2. THREE.JS PARTICLE SHAPES (RESTORED)
    ========================================= */
 const meshes = [];
 
@@ -53,14 +53,13 @@ function create3DScene(containerId, shapeType) {
     const container = document.getElementById(containerId);
     if (!container || window.innerWidth < 900) return;
 
-    // Use full container size now
     const width = container.clientWidth;
     const height = container.clientHeight;
     const scene = new THREE.Scene();
 
-    // Zoom out camera significantly to handle "Massive" scale
+    // RESTORED CAMERA DISTANCE
     const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-    camera.position.z = 50;
+    camera.position.z = 40;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
@@ -68,107 +67,71 @@ function create3DScene(containerId, shapeType) {
 
     const particleMaterial = new THREE.PointsMaterial({
         color: getThemeColorHex(),
-        size: 0.35, // Big visible dots
+        size: 0.3,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.8,
         blending: THREE.AdditiveBlending
     });
 
-    const points = [];
     let geometry, particles;
+    const points = [];
 
-    // --- 1. THE CYBER-GYRO (ABOUT) ---
-    if (shapeType === 'gyro') {
-        // Create 3 concentric rings of particles
-        for (let r = 15; r <= 35; r += 10) {
-            for (let i = 0; i < 600; i++) {
-                const theta = (i / 600) * Math.PI * 2;
-                // Add jitter for "Data" look
-                const jitter = Math.random() * 0.5;
-                points.push(new THREE.Vector3(
-                    (r + jitter) * Math.cos(theta),
-                    (r + jitter) * Math.sin(theta),
-                    (Math.random() - 0.5) * 2 // Flat ring
-                ));
-            }
-        }
-        // Core sphere
-        for (let i = 0; i < 500; i++) {
-            const u = Math.random(); const v = Math.random();
-            const theta = 2 * Math.PI * u; const phi = Math.acos(2 * v - 1);
-            const r = 8;
-            points.push(new THREE.Vector3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)));
-        }
-    }
-
-    // --- 2. THE DATA WAVE (SKILLS) ---
-    else if (shapeType === 'wave') {
-        // Create a grid plane
-        const size = 60; const segments = 40;
-        for (let i = 0; i <= segments; i++) {
-            for (let j = 0; j <= segments; j++) {
-                const x = (i / segments) * size - size / 2;
-                const z = (j / segments) * size - size / 2;
-                // We will animate Y in the loop
-                points.push(new THREE.Vector3(x, 0, z));
-            }
-        }
-        camera.position.y = 20; // Look down at it
-        camera.lookAt(0, 0, 0);
-    }
-
-    // --- 3. THE CONNECTION ORB (CONTACT) ---
-    else if (shapeType === 'orb') {
-        // Dense sphere
+    // --- RESTORED SHAPES ---
+    if (shapeType === 'dna') {
         for (let i = 0; i < 3000; i++) {
+            const t = i * 0.01;
+            points.push(new THREE.Vector3(Math.cos(t) * 8, t * 2 - 30, Math.sin(t) * 8));
+            points.push(new THREE.Vector3(Math.cos(t + Math.PI) * 8, t * 2 - 30, Math.sin(t + Math.PI) * 8));
+            if (i % 5 === 0) {
+                points.push(new THREE.Vector3((Math.random() - 0.5) * 20, (Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20));
+            }
+        }
+    }
+    else if (shapeType === 'atom') {
+        for (let i = 0; i < 2000; i++) {
             const u = Math.random(); const v = Math.random();
             const theta = 2 * Math.PI * u; const phi = Math.acos(2 * v - 1);
-            const r = 18; // Huge sphere
+            const r = 6 + Math.random() * 2;
             points.push(new THREE.Vector3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)));
         }
-        // Floating satellites
-        for (let i = 0; i < 100; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const r = 25 + Math.random() * 5;
-            points.push(new THREE.Vector3(r * Math.cos(theta), Math.random() * 10 - 5, r * Math.sin(theta)));
+    }
+    else if (shapeType === 'vortex') {
+        for (let i = 0; i < 4000; i++) {
+            const t = i * 0.005;
+            const r = t * 3;
+            const x = r * Math.cos(t * 10);
+            const y = r * Math.sin(t * 10);
+            const z = t * 5 - 20;
+            points.push(new THREE.Vector3(x, y, z));
         }
     }
 
     geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-    // Save original positions for Wave animation
-    if (shapeType === 'wave') {
-        geometry.userData = { originalPositions: JSON.parse(JSON.stringify(points)) };
-    }
-
     particles = new THREE.Points(geometry, particleMaterial);
     scene.add(particles);
     meshes.push(particles);
 
-    // --- ANIMATION ---
-    let time = 0;
+    let ring1, ring2;
+    if (shapeType === 'atom') {
+        const ringMat = new THREE.MeshBasicMaterial({ color: getThemeColorHex(), wireframe: true, transparent: true, opacity: 0.2 });
+        ring1 = new THREE.Mesh(new THREE.TorusGeometry(12, 0.2, 16, 100), ringMat);
+        ring2 = new THREE.Mesh(new THREE.TorusGeometry(15, 0.2, 16, 100), ringMat);
+        ring1.rotation.x = Math.PI / 2; ring2.rotation.x = Math.PI / 3;
+        scene.add(ring1); scene.add(ring2);
+        meshes.push(ring1); meshes.push(ring2);
+    }
+
     function animate() {
         requestAnimationFrame(animate);
-        time += 0.02;
 
-        if (shapeType === 'gyro') {
-            particles.rotation.x += 0.005;
-            particles.rotation.y += 0.008;
-            // The rings naturally form a gyro shape when rotated on multiple axes
-        }
-        else if (shapeType === 'wave') {
-            const positions = particles.geometry.attributes.position.array;
-            const originals = particles.geometry.userData.originalPositions;
-            for (let i = 0; i < originals.length; i++) {
-                const orig = originals[i];
-                // Sine wave math based on X position and Time
-                const y = Math.sin(orig.x * 0.2 + time) * 4 + Math.cos(orig.z * 0.2 + time) * 4;
-                positions[i * 3 + 1] = y;
-            }
-            particles.geometry.attributes.position.needsUpdate = true;
-        }
-        else if (shapeType === 'orb') {
-            particles.rotation.y -= 0.003; // Slow rotation
+        if (shapeType === 'dna') {
+            particles.rotation.y += 0.005; particles.rotation.z += 0.001;
+        } else if (shapeType === 'atom') {
+            particles.rotation.y -= 0.003;
+            if (ring1) { ring1.rotation.z += 0.01; ring1.rotation.y += 0.005; }
+            if (ring2) { ring2.rotation.z -= 0.015; ring2.rotation.x += 0.005; }
+        } else if (shapeType === 'vortex') {
+            particles.rotation.z -= 0.02;
         }
 
         renderer.render(scene, camera);
@@ -177,9 +140,9 @@ function create3DScene(containerId, shapeType) {
 }
 
 function initAll3D() {
-    create3DScene('about-3d', 'gyro');   // About: Gyroscope
-    create3DScene('skills-3d', 'wave');  // Skills: Data Wave
-    create3DScene('contact-3d', 'orb');  // Contact: Connection Orb
+    create3DScene('about-3d', 'dna');
+    create3DScene('skills-3d', 'atom');
+    create3DScene('contact-3d', 'vortex');
 }
 
 /* =========================================

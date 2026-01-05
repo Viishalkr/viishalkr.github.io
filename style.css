@@ -64,7 +64,7 @@ body.no-scroll {
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.6;
 }
 
 .bg-grid {
@@ -217,7 +217,7 @@ nav a.active {
 }
 
 /* =========================================
-   4. LAYOUT & SECTIONS (BLENDED 3D)
+   4. LAYOUT & SECTIONS (RESTORED SPLIT)
    ========================================= */
 .hero {
     height: 100vh;
@@ -232,16 +232,11 @@ nav a.active {
 .section {
     padding: 120px 10%;
     position: relative;
-    overflow: hidden;
-    /* Keep 3D inside */
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    position: relative;
-    z-index: 2;
-    /* Text above 3D */
 }
 
 h2 {
@@ -257,29 +252,20 @@ h2 {
     letter-spacing: 3px;
 }
 
-/* THE MAGIC BLEND */
+/* STANDARD SPLIT LAYOUT */
 .split-layout {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    /* More space for text */
-    gap: 0px;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
     align-items: center;
     position: relative;
 }
 
 .three-container {
-    position: absolute;
-    top: 0;
-    right: -10%;
-    /* Bleed off screen slightly */
-    width: 70%;
-    /* Cover right side */
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    /* Fade the left edge so text is readable */
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
-    mask-image: linear-gradient(to right, transparent 0%, black 40%);
+    width: 100%;
+    height: 400px;
+    position: relative;
+    /* Removed mask and absolute positioning */
 }
 
 .angled-section {
@@ -388,7 +374,6 @@ h2 {
     flex-wrap: wrap;
     gap: 15px;
     justify-content: flex-start;
-    max-width: 600px;
 }
 
 .hex-item {
@@ -663,7 +648,6 @@ body.green-mode .angled-section::before {
         display: none;
     }
 
-    /* Hide heavy 3D on mobile */
     .navbar {
         justify-content: center;
         padding: 15px;
