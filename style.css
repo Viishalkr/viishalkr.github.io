@@ -171,7 +171,6 @@ nav a.active {
     box-shadow: 0 0 15px rgba(244, 44, 29, 0.3);
 }
 
-/* SIDE HUD */
 .side-hud {
     position: fixed;
     right: 30px;
@@ -252,7 +251,6 @@ nav a.active {
     font-family: var(--font-tech);
 }
 
-/* GLITCH TITLE */
 .main-title {
     font-family: var(--font-head);
     font-size: 7vw;
@@ -432,7 +430,6 @@ h2 {
     font-weight: 500;
 }
 
-/* FIXED DECRYPT CLASS (Clean) */
 .decrypt {
     font-family: var(--font-tech);
     color: var(--primary-red);
@@ -442,14 +439,11 @@ h2 {
     letter-spacing: 1px;
 }
 
-/* =========================================
-   ANGLED SECTIONS (FROSTED & GRAINY)
-   ========================================= */
+/* FROSTED GRAIN SECTIONS */
 .angled-section {
     position: relative;
     padding: 120px 10%;
     z-index: 1;
-    /* Ensure it sits above particles */
 }
 
 .angled-section::before {
@@ -459,28 +453,17 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-
-    /* 1. Darker Background for contrast */
     background-color: rgba(10, 10, 12, 0.85);
-
-    /* 2. Heavy Blur (Frosted Glass Effect) */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-
-    /* 3. Grain Texture (SVG Noise) */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-
-    /* Shape & Borders */
     transform: skewY(-2deg);
     z-index: -1;
     border-top: 1px solid var(--primary-red);
     border-bottom: 1px solid var(--primary-red);
-
-    /* Shadow to lift it off the background */
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
 }
 
-/* Remove bottom line specifically for Contact section */
 #contact.angled-section::before {
     border-bottom: none;
 }
@@ -728,15 +711,45 @@ h2 {
 }
 
 .cyber-footer {
-    padding: 40px 10%;
+    padding: 60px 10% 40px 10%;
+    /* More top padding */
     background: #050505;
     border-top: none;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 30px;
     font-size: 0.9rem;
     color: #666;
     font-family: var(--font-tech);
+}
+
+.social-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.social-icon {
+    color: #666;
+    width: 30px;
+    height: 30px;
+    transition: 0.3s;
+}
+
+.social-icon:hover {
+    color: var(--primary-red);
+    transform: translateY(-5px);
+    filter: drop-shadow(0 0 10px var(--primary-red));
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-top: 1px solid #222;
+    padding-top: 20px;
 }
 
 .sys-status {
@@ -1057,6 +1070,45 @@ h2 {
     font-size: 1rem;
 }
 
+/* =========================================
+   10. THEME MODES (PURPLE & GREEN)
+   ========================================= */
+body.purple-mode {
+    --bg-black: #1A1347;
+    --card-bg: rgba(26, 19, 71, 0.8);
+    --primary-red: #F1B7EA;
+    --deep-red: #5D479A;
+    --accent-brown: #A486B0;
+    background-image: linear-gradient(to bottom, #1A1347 0%, #0d0926 100%);
+}
+
+body.purple-mode .angled-section::before {
+    background-color: rgba(26, 19, 71, 0.85);
+    border-color: var(--primary-red);
+}
+
+body.purple-mode .terminal-body {
+    color: var(--primary-red);
+}
+
+body.green-mode {
+    --bg-black: #00000E;
+    --card-bg: rgba(0, 20, 0, 0.85);
+    --primary-red: #32CD32;
+    --deep-red: #1f7a1f;
+    --accent-brown: #E1EBC8;
+    background-image: linear-gradient(to bottom, #00000E 0%, #001a00 100%);
+}
+
+body.green-mode .angled-section::before {
+    background-color: rgba(0, 15, 0, 0.9);
+    border-color: var(--primary-red);
+}
+
+body.green-mode .terminal-body {
+    color: var(--primary-red);
+}
+
 @media (max-width: 768px) {
     .main-title {
         font-size: 15vw;
@@ -1100,119 +1152,9 @@ h2 {
     .terminal-container {
         width: 90%;
     }
-}
 
-/* =========================================
-   10. PURPLE NEON THEME (PRESS 'N')
-   ========================================= */
-body.purple-mode {
-    /* New Color Palette from Image */
-    --bg-black: #1A1347;
-    /* Deep Indigo Background */
-    --card-bg: rgba(26, 19, 71, 0.8);
-    /* Semi-transparent purple */
-    --primary-red: #F1B7EA;
-    /* Neon Pink/Lavender (Replaces Red) */
-    --deep-red: #5D479A;
-    /* Deep Purple (Replaces Deep Red) */
-    --accent-brown: #A486B0;
-    /* Soft Lilac (Replaces Brown) */
-    --text-muted: #dcdcdc;
-
-    /* Update Background Gradient */
-    background-image: linear-gradient(to bottom, #1A1347 0%, #0d0926 100%);
-}
-
-/* Specific Overrides for Purple Mode */
-body.purple-mode ::selection {
-    background: var(--primary-red);
-    color: #1A1347;
-}
-
-body.purple-mode .angled-section::before {
-    background-color: rgba(26, 19, 71, 0.85);
-    /* Matches new dark bg */
-    border-top: 1px solid var(--primary-red);
-    border-bottom: 1px solid var(--primary-red);
-}
-
-body.purple-mode nav a {
-    border-color: rgba(241, 183, 234, 0.3);
-    /* Subtle pink border */
-}
-
-body.purple-mode .project-card:hover .card-content {
-    text-shadow: 2px 0 #fff, -2px 0 var(--primary-red);
-}
-
-body.purple-mode .holo-status {
-    color: var(--primary-red);
-    text-shadow: 0 0 10px var(--primary-red);
-}
-
-/* Adjust Terminal Colors for Purple */
-body.purple-mode .terminal-body {
-    color: var(--primary-red);
-}
-
-/* =========================================
-   11. TOXIC GREEN THEME (PRESS 'G')
-   ========================================= */
-body.green-mode {
-    /* Palette from Image */
-    --bg-black: #00000E;
-    /* Deepest Blue-Black */
-    --card-bg: rgba(0, 20, 0, 0.85);
-    /* Dark Green Tint */
-
-    --primary-red: #32CD32;
-    /* Lime Green (Replaces Red) */
-    --deep-red: #1f7a1f;
-    /* Forest Green (Replaces Deep Red) */
-    --accent-brown: #E1EBC8;
-    /* Pale Matcha (Replaces Brown) */
-    --text-muted: #ccffcc;
-    /* Green-tinted white */
-
-    /* Matrix-like Gradient */
-    background-image: linear-gradient(to bottom, #00000E 0%, #001a00 100%);
-}
-
-/* Overrides for Green Mode */
-body.green-mode ::selection {
-    background: var(--primary-red);
-    color: #000;
-}
-
-body.green-mode .angled-section::before {
-    background-color: rgba(0, 15, 0, 0.9);
-    border-top: 1px solid var(--primary-red);
-    border-bottom: 1px solid var(--primary-red);
-}
-
-body.green-mode nav a {
-    border-color: rgba(50, 205, 50, 0.3);
-}
-
-body.green-mode .project-card:hover .card-content {
-    text-shadow: 2px 0 #fff, -2px 0 var(--primary-red);
-}
-
-body.green-mode .holo-status {
-    color: var(--primary-red);
-    text-shadow: 0 0 10px var(--primary-red);
-}
-
-/* Green Terminal Text */
-body.green-mode .terminal-body {
-    color: var(--primary-red);
-}
-
-/* Cursor Update */
-body.green-mode .cursor-outline {
-    border-color: var(--primary-red);
-}
-
-body.green-mode .cursor-dot {
-    background-color: var(--primary-red);
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+    }
 }

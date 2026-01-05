@@ -73,29 +73,51 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. MULTI-THEME SWITCHER (N = Purple, G = Green)
+   2. WHATSAPP REVEAL LOGIC (New!)
+   ========================================= */
+const waBtn = document.getElementById('whatsappBtn');
+if (waBtn) {
+    waBtn.addEventListener('click', (e) => {
+        // Prevent default jump for a second to show text change if needed, 
+        // but user wants "reveal". 
+        // We will just change text AND let it open the link? 
+        // User said "reveal my phone no". 
+        e.preventDefault();
+        const btnText = waBtn.querySelector('.btn-text');
+        if (btnText.innerText === 'WHATSAPP') {
+            btnText.innerText = "+91 62038 99720";
+            // Optional: Copy to clipboard?
+            // Open WhatsApp after small delay
+            setTimeout(() => {
+                window.open('https://wa.me/916203899720', '_blank');
+            }, 500);
+        } else {
+            window.open('https://wa.me/916203899720', '_blank');
+        }
+    });
+}
+
+/* =========================================
+   3. MULTI-THEME SWITCHER
    ========================================= */
 document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
-
     if (key === 'n') {
-        // Toggle Purple
-        document.body.classList.remove('green-mode'); // Turn off Green
-        document.body.classList.toggle('purple-mode'); // Toggle Purple
-        initParticles(); // Refresh particles
+        document.body.classList.remove('green-mode');
+        document.body.classList.toggle('purple-mode');
+        initParticles();
     }
     else if (key === 'g') {
-        // Toggle Green
-        document.body.classList.remove('purple-mode'); // Turn off Purple
-        document.body.classList.toggle('green-mode'); // Toggle Green
-        initParticles(); // Refresh particles
+        document.body.classList.remove('purple-mode');
+        document.body.classList.toggle('green-mode');
+        initParticles();
     }
 });
 
 function getThemeColor() {
-    if (document.body.classList.contains('purple-mode')) return '#F1B7EA'; // Neon Pink
-    if (document.body.classList.contains('green-mode')) return '#32CD32';  // Lime Green
-    return '#F42C1D'; // Default Red
+    if (document.body.classList.contains('purple-mode')) return '#F1B7EA';
+    if (document.body.classList.contains('green-mode')) return '#32CD32';
+    return '#F42C1D';
 }
 
 function getThemeRGBA(opacity) {
@@ -105,7 +127,7 @@ function getThemeRGBA(opacity) {
 }
 
 /* =========================================
-   3. IMAGE LOADER
+   4. IMAGE LOADER
    ========================================= */
 document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll('.project-card');
@@ -118,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   4. PARTICLES (Reactive & Themed)
+   5. PARTICLES (Reactive)
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -142,7 +164,7 @@ class Particle {
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = getThemeColor(); // Gets Red, Purple, or Green
+        ctx.fillStyle = getThemeColor();
         ctx.fill();
     }
     update() {
@@ -191,7 +213,6 @@ function connectParticles() {
                 ((particlesArray[a].y - particlesArray[b].y) ** 2);
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                 let opacityValue = 1 - (distance / 20000);
-                // Dynamic Line Color
                 ctx.strokeStyle = getThemeRGBA(opacityValue);
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -228,7 +249,7 @@ if (canvas) {
 }
 
 /* =========================================
-   5. RIGHT CLICK SECURITY
+   6. RIGHT CLICK SECURITY
    ========================================= */
 document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
@@ -242,7 +263,7 @@ document.addEventListener('contextmenu', (e) => {
 });
 
 /* =========================================
-   6. ECO MODE TOGGLE
+   7. ECO MODE TOGGLE
    ========================================= */
 document.getElementById('ecoBtn').addEventListener('click', function () {
     document.body.classList.toggle('low-power');
@@ -252,12 +273,12 @@ document.getElementById('ecoBtn').addEventListener('click', function () {
         statusText.style.color = "yellow";
     } else {
         statusText.innerText = "ONLINE";
-        statusText.style.color = getThemeColor(); // Dynamic text color
+        statusText.style.color = getThemeColor();
     }
 });
 
 /* =========================================
-   7. SCROLL REVEAL
+   8. SCROLL REVEAL
    ========================================= */
 function revealOnScroll() {
     const reveals = document.querySelectorAll('.reveal');
@@ -284,7 +305,7 @@ document.querySelectorAll('nav a, .hud-point').forEach(link => {
 });
 
 /* =========================================
-   8. MODAL LOGIC
+   9. MODAL LOGIC
    ========================================= */
 const modal = document.getElementById("projectModal");
 const modalImg = document.getElementById("modalImg");
