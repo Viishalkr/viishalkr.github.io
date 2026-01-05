@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   3. PARTICLES
+   3. PARTICLES (REPULSION MODE)
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -114,9 +114,11 @@ class Particle {
         ctx.fill();
     }
     update() {
+        // Wall Bounce
         if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
         if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
+        // MOUSE REPULSION LOGIC
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -125,12 +127,17 @@ class Particle {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
-            const directionX = forceDirectionX * force * 3;
-            const directionY = forceDirectionY * force * 3;
-            this.x += directionX;
-            this.y += directionY;
+
+            // Increased force multiplier for stronger repulsion
+            const directionX = forceDirectionX * force * 5;
+            const directionY = forceDirectionY * force * 5;
+
+            // SUBTRACT to move AWAY (Repulse)
+            this.x -= directionX;
+            this.y -= directionY;
         }
 
+        // Standard movement
         this.x += this.directionX;
         this.y += this.directionY;
         this.draw();
