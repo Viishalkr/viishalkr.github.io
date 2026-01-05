@@ -19,7 +19,9 @@ function scrambleText(element) {
         iterations += 1 / 3;
     }, 30);
 }
+
 document.querySelectorAll('.scramble-link').forEach(link => link.addEventListener('mouseover', () => scrambleText(link)));
+
 function startTypewriter() {
     const greeting = document.querySelector('.greeting');
     if (greeting) {
@@ -31,6 +33,7 @@ function startTypewriter() {
     }
     scrambleText(document.querySelector('.main-title'));
 }
+
 if (preloader && bootText) {
     const logs = ["SYSTEM BOOT...", "ACCESS GRANTED."];
     let i = 0;
@@ -45,9 +48,23 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. THREE.JS PARTICLE SHAPES (RESTORED)
+   2. THREE.JS RESPONSIVE CYBER STRUCTURES
    ========================================= */
-const meshes = [];
+const meshes = []; // Store meshes for theme updates
+// Mouse tracking for 3D
+let mouseX = 0;
+let mouseY = 0;
+let targetX = 0;
+let targetY = 0;
+
+// Window center
+const windowHalfX = window.innerWidth / 2;
+const windowHalfY = window.innerHeight / 2;
+
+document.addEventListener('mousemove', (event) => {
+    mouseX = (event.clientX - windowHalfX);
+    mouseY = (event.clientY - windowHalfY);
+});
 
 function create3DScene(containerId, shapeType) {
     const container = document.getElementById(containerId);
@@ -57,81 +74,119 @@ function create3DScene(containerId, shapeType) {
     const height = container.clientHeight;
     const scene = new THREE.Scene();
 
-    // RESTORED CAMERA DISTANCE
+    // Zoom camera out for "Bigger" feel
     const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-    camera.position.z = 40;
+    camera.position.z = 45;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     container.appendChild(renderer.domElement);
 
-    const particleMaterial = new THREE.PointsMaterial({
+    // High-Tech Wireframe Material
+    const material = new THREE.MeshBasicMaterial({
         color: getThemeColorHex(),
-        size: 0.3,
+        wireframe: true,
         transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
+        opacity: 0.6 // Slightly subtle so it doesn't distract
     });
 
-    let geometry, particles;
-    const points = [];
+    const coreMaterial = new THREE.MeshBasicMaterial({
+        color: getThemeColorHex(),
+        wireframe: true,
+        transparent: true,
+        opacity: 0.9 // Brighter core
+    });
 
-    // --- RESTORED SHAPES ---
-    if (shapeType === 'dna') {
-        for (let i = 0; i < 3000; i++) {
-            const t = i * 0.01;
-            points.push(new THREE.Vector3(Math.cos(t) * 8, t * 2 - 30, Math.sin(t) * 8));
-            points.push(new THREE.Vector3(Math.cos(t + Math.PI) * 8, t * 2 - 30, Math.sin(t + Math.PI) * 8));
-            if (i % 5 === 0) {
-                points.push(new THREE.Vector3((Math.random() - 0.5) * 20, (Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20));
-            }
-        }
-    }
-    else if (shapeType === 'atom') {
-        for (let i = 0; i < 2000; i++) {
-            const u = Math.random(); const v = Math.random();
-            const theta = 2 * Math.PI * u; const phi = Math.acos(2 * v - 1);
-            const r = 6 + Math.random() * 2;
-            points.push(new THREE.Vector3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)));
-        }
-    }
-    else if (shapeType === 'vortex') {
-        for (let i = 0; i < 4000; i++) {
-            const t = i * 0.005;
-            const r = t * 3;
-            const x = r * Math.cos(t * 10);
-            const y = r * Math.sin(t * 10);
-            const z = t * 5 - 20;
-            points.push(new THREE.Vector3(x, y, z));
-        }
+    let mainMesh, innerMesh, ringMesh;
+
+    // --- 1. THE NEURAL LATTICE (About) ---
+    // A complex Geodesic Sphere (Icosahedron with detail)
+    if (shapeType === 'lattice') {
+        // High detail Icosahedron (2 subdivisions)
+        const geometry = new THREE.IcosahedronGeometry(13, 1);
+        mainMesh = new THREE.Mesh(geometry, material);
+
+        const innerGeo = new THREE.IcosahedronGeometry(6, 0);
+        innerMesh = new THREE.Mesh(innerGeo, coreMaterial);
+
+        mainMesh.add(innerMesh); // Group them
+        scene.add(mainMesh);
+        meshes.push(mainMesh); meshes.push(innerMesh);
     }
 
-    geometry = new THREE.BufferGeometry().setFromPoints(points);
-    particles = new THREE.Points(geometry, particleMaterial);
-    scene.add(particles);
-    meshes.push(particles);
+    // --- 2. THE ORBITAL ENGINE (Skills) ---
+    // Multiple Torus rings spinning on different axes
+    else if (shapeType === 'engine') {
+        // Ring 1
+        mainMesh = new THREE.Mesh(new THREE.TorusGeometry(10, 0.5, 16, 100), coreMaterial);
 
-    let ring1, ring2;
-    if (shapeType === 'atom') {
-        const ringMat = new THREE.MeshBasicMaterial({ color: getThemeColorHex(), wireframe: true, transparent: true, opacity: 0.2 });
-        ring1 = new THREE.Mesh(new THREE.TorusGeometry(12, 0.2, 16, 100), ringMat);
-        ring2 = new THREE.Mesh(new THREE.TorusGeometry(15, 0.2, 16, 100), ringMat);
-        ring1.rotation.x = Math.PI / 2; ring2.rotation.x = Math.PI / 3;
-        scene.add(ring1); scene.add(ring2);
-        meshes.push(ring1); meshes.push(ring2);
+        // Ring 2 (Larger)
+        innerMesh = new THREE.Mesh(new THREE.TorusGeometry(14, 0.2, 16, 100), material);
+
+        // Ring 3 (Largest)
+        ringMesh = new THREE.Mesh(new THREE.TorusGeometry(18, 0.2, 16, 100), material);
+
+        scene.add(mainMesh);
+        scene.add(innerMesh);
+        scene.add(ringMesh);
+
+        meshes.push(mainMesh); meshes.push(innerMesh); meshes.push(ringMesh);
     }
 
+    // --- 3. THE VOID GATEWAY (Contact) ---
+    // A dense Torus Knot
+    else if (shapeType === 'gateway') {
+        const geometry = new THREE.TorusKnotGeometry(9, 3, 150, 20); // High segments for smoothness
+        mainMesh = new THREE.Mesh(geometry, material);
+
+        // Inner core
+        const innerGeo = new THREE.SphereGeometry(4, 16, 16);
+        innerMesh = new THREE.Mesh(innerGeo, coreMaterial);
+
+        scene.add(mainMesh);
+        scene.add(innerMesh);
+        meshes.push(mainMesh); meshes.push(innerMesh);
+    }
+
+    // --- RESPONSIVE ANIMATION LOOP ---
     function animate() {
         requestAnimationFrame(animate);
 
-        if (shapeType === 'dna') {
-            particles.rotation.y += 0.005; particles.rotation.z += 0.001;
-        } else if (shapeType === 'atom') {
-            particles.rotation.y -= 0.003;
-            if (ring1) { ring1.rotation.z += 0.01; ring1.rotation.y += 0.005; }
-            if (ring2) { ring2.rotation.z -= 0.015; ring2.rotation.x += 0.005; }
-        } else if (shapeType === 'vortex') {
-            particles.rotation.z -= 0.02;
+        // Smooth Mouse Follow Logic
+        targetX = mouseX * 0.001;
+        targetY = mouseY * 0.001;
+
+        if (shapeType === 'lattice') {
+            // Rotates slowly automatically
+            mainMesh.rotation.y += 0.002;
+            // TILTS towards mouse
+            mainMesh.rotation.x += 0.05 * (targetY - mainMesh.rotation.x);
+            mainMesh.rotation.z += 0.05 * (targetX - mainMesh.rotation.z);
+
+            // Inner mesh spins opposite
+            innerMesh.rotation.y -= 0.01;
+        }
+        else if (shapeType === 'engine') {
+            // Rings spin on different axes
+            mainMesh.rotation.x += 0.01;
+            mainMesh.rotation.y += 0.05 * (targetX - mainMesh.rotation.y); // Mouse control Y axis
+
+            innerMesh.rotation.y += 0.005;
+            innerMesh.rotation.x += 0.05 * (targetY - innerMesh.rotation.x); // Mouse control X axis
+
+            ringMesh.rotation.x -= 0.002;
+            ringMesh.rotation.z -= 0.002;
+        }
+        else if (shapeType === 'gateway') {
+            // Complex knot rotation
+            mainMesh.rotation.z += 0.005;
+            // The knot "looks" at the mouse
+            mainMesh.rotation.x += 0.05 * (targetY - mainMesh.rotation.x);
+            mainMesh.rotation.y += 0.05 * (targetX - mainMesh.rotation.y);
+
+            // Pulse effect scale
+            const time = Date.now() * 0.001;
+            innerMesh.scale.setScalar(1 + Math.sin(time) * 0.2);
         }
 
         renderer.render(scene, camera);
@@ -140,9 +195,9 @@ function create3DScene(containerId, shapeType) {
 }
 
 function initAll3D() {
-    create3DScene('about-3d', 'dna');
-    create3DScene('skills-3d', 'atom');
-    create3DScene('contact-3d', 'vortex');
+    create3DScene('about-3d', 'lattice');   // About: Geodesic Sphere
+    create3DScene('skills-3d', 'engine');   // Skills: Gyro Engine
+    create3DScene('contact-3d', 'gateway'); // Contact: Torus Knot
 }
 
 /* =========================================
@@ -172,7 +227,7 @@ function getThemeColorHex() {
 }
 function update3DTheme() {
     const color = getThemeColorHex();
-    meshes.forEach(mesh => { if (mesh.material.color) mesh.material.color.setHex(color); });
+    meshes.forEach(mesh => { if (mesh.material && mesh.material.color) mesh.material.color.setHex(color); });
 }
 
 /* =========================================
