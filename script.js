@@ -19,9 +19,7 @@ function scrambleText(element) {
         iterations += 1 / 3;
     }, 30);
 }
-
 document.querySelectorAll('.scramble-link').forEach(link => link.addEventListener('mouseover', () => scrambleText(link)));
-
 function startTypewriter() {
     const greeting = document.querySelector('.greeting');
     if (greeting) {
@@ -33,7 +31,6 @@ function startTypewriter() {
     }
     scrambleText(document.querySelector('.main-title'));
 }
-
 if (preloader && bootText) {
     const logs = ["SYSTEM BOOT...", "ACCESS GRANTED."];
     let i = 0;
@@ -48,7 +45,7 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. THREE.JS ADVANCED KINETIC SHAPES
+   2. THREE.JS MASSIVE KINETIC SHAPES
    ========================================= */
 const meshes = [];
 
@@ -56,17 +53,14 @@ function create3DScene(containerId, shapeType) {
     const container = document.getElementById(containerId);
     if (!container || window.innerWidth < 900) return;
 
+    // Use full container size now
     const width = container.clientWidth;
     const height = container.clientHeight;
     const scene = new THREE.Scene();
 
-    // Camera adjustments for specific shapes
-    let camZ = 40;
-    if (shapeType === 'lorenz') camZ = 60;
-    if (shapeType === 'tunnel') camZ = 10;
-
+    // Zoom out camera significantly to handle "Massive" scale
     const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-    camera.position.z = camZ;
+    camera.position.z = 50;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
@@ -74,60 +68,76 @@ function create3DScene(containerId, shapeType) {
 
     const particleMaterial = new THREE.PointsMaterial({
         color: getThemeColorHex(),
-        size: shapeType === 'lorenz' ? 0.4 : 0.25,
+        size: 0.35, // Big visible dots
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.9,
         blending: THREE.AdditiveBlending
     });
 
     const points = [];
     let geometry, particles;
 
-    // --- 1. THE LIVING SPHERE (NOISE) ---
-    if (shapeType === 'noiseSphere') {
-        for (let i = 0; i < 4000; i++) {
-            // Base Sphere
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            const r = 10;
-
-            // Store original coordinates for animation
-            const x = r * Math.sin(phi) * Math.cos(theta);
-            const y = r * Math.sin(phi) * Math.sin(theta);
-            const z = r * Math.cos(phi);
-            points.push(new THREE.Vector3(x, y, z));
+    // --- 1. THE CYBER-GYRO (ABOUT) ---
+    if (shapeType === 'gyro') {
+        // Create 3 concentric rings of particles
+        for (let r = 15; r <= 35; r += 10) {
+            for (let i = 0; i < 600; i++) {
+                const theta = (i / 600) * Math.PI * 2;
+                // Add jitter for "Data" look
+                const jitter = Math.random() * 0.5;
+                points.push(new THREE.Vector3(
+                    (r + jitter) * Math.cos(theta),
+                    (r + jitter) * Math.sin(theta),
+                    (Math.random() - 0.5) * 2 // Flat ring
+                ));
+            }
+        }
+        // Core sphere
+        for (let i = 0; i < 500; i++) {
+            const u = Math.random(); const v = Math.random();
+            const theta = 2 * Math.PI * u; const phi = Math.acos(2 * v - 1);
+            const r = 8;
+            points.push(new THREE.Vector3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)));
         }
     }
 
-    // --- 2. THE CHAOS ENGINE (LORENZ ATTRACTOR) ---
-    else if (shapeType === 'lorenz') {
-        let x = 0.1, y = 0, z = 0;
-        const sigma = 10, rho = 28, beta = 8 / 3;
-        const dt = 0.01;
-
-        for (let i = 0; i < 5000; i++) {
-            const dx = sigma * (y - x) * dt;
-            const dy = (x * (rho - z) - y) * dt;
-            const dz = (x * y - beta * z) * dt;
-            x += dx; y += dy; z += dz;
-            points.push(new THREE.Vector3(x, y, z - 25)); // Center it
+    // --- 2. THE DATA WAVE (SKILLS) ---
+    else if (shapeType === 'wave') {
+        // Create a grid plane
+        const size = 60; const segments = 40;
+        for (let i = 0; i <= segments; i++) {
+            for (let j = 0; j <= segments; j++) {
+                const x = (i / segments) * size - size / 2;
+                const z = (j / segments) * size - size / 2;
+                // We will animate Y in the loop
+                points.push(new THREE.Vector3(x, 0, z));
+            }
         }
+        camera.position.y = 20; // Look down at it
+        camera.lookAt(0, 0, 0);
     }
 
-    // --- 3. THE HYPERSPACE TUNNEL ---
-    else if (shapeType === 'tunnel') {
-        for (let i = 0; i < 2000; i++) {
+    // --- 3. THE CONNECTION ORB (CONTACT) ---
+    else if (shapeType === 'orb') {
+        // Dense sphere
+        for (let i = 0; i < 3000; i++) {
+            const u = Math.random(); const v = Math.random();
+            const theta = 2 * Math.PI * u; const phi = Math.acos(2 * v - 1);
+            const r = 18; // Huge sphere
+            points.push(new THREE.Vector3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)));
+        }
+        // Floating satellites
+        for (let i = 0; i < 100; i++) {
             const theta = Math.random() * Math.PI * 2;
-            const r = 5 + Math.random() * 10; // Tunnel width
-            const z = (Math.random() * 100) - 50; // Deep tunnel
-            points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), z));
+            const r = 25 + Math.random() * 5;
+            points.push(new THREE.Vector3(r * Math.cos(theta), Math.random() * 10 - 5, r * Math.sin(theta)));
         }
     }
 
     geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-    // Store original positions for Noise Sphere animation
-    if (shapeType === 'noiseSphere') {
+    // Save original positions for Wave animation
+    if (shapeType === 'wave') {
         geometry.userData = { originalPositions: JSON.parse(JSON.stringify(points)) };
     }
 
@@ -135,44 +145,30 @@ function create3DScene(containerId, shapeType) {
     scene.add(particles);
     meshes.push(particles);
 
-    // --- ANIMATION LOOP ---
+    // --- ANIMATION ---
     let time = 0;
     function animate() {
         requestAnimationFrame(animate);
-        time += 0.01;
+        time += 0.02;
 
-        if (shapeType === 'noiseSphere') {
-            // Ripple Effect Math
+        if (shapeType === 'gyro') {
+            particles.rotation.x += 0.005;
+            particles.rotation.y += 0.008;
+            // The rings naturally form a gyro shape when rotated on multiple axes
+        }
+        else if (shapeType === 'wave') {
             const positions = particles.geometry.attributes.position.array;
             const originals = particles.geometry.userData.originalPositions;
-
             for (let i = 0; i < originals.length; i++) {
                 const orig = originals[i];
-                // Sine wave ripple based on Y position and Time
-                const pulse = Math.sin((orig.y * 0.5) + (time * 2)) * 1.5;
-                const scale = 1 + (pulse * 0.1);
-
-                positions[i * 3] = orig.x * scale;
-                positions[i * 3 + 1] = orig.y * scale;
-                positions[i * 3 + 2] = orig.z * scale;
+                // Sine wave math based on X position and Time
+                const y = Math.sin(orig.x * 0.2 + time) * 4 + Math.cos(orig.z * 0.2 + time) * 4;
+                positions[i * 3 + 1] = y;
             }
             particles.geometry.attributes.position.needsUpdate = true;
-            particles.rotation.y += 0.002;
         }
-
-        else if (shapeType === 'lorenz') {
-            particles.rotation.z += 0.005; // Slow spin to show complexity
-            particles.rotation.y += 0.005;
-        }
-
-        else if (shapeType === 'tunnel') {
-            const positions = particles.geometry.attributes.position.array;
-            for (let i = 2; i < positions.length; i += 3) {
-                positions[i] += 0.5; // Move towards camera
-                if (positions[i] > 30) positions[i] = -50; // Reset to back
-            }
-            particles.geometry.attributes.position.needsUpdate = true;
-            particles.rotation.z -= 0.002; // Slight spiral
+        else if (shapeType === 'orb') {
+            particles.rotation.y -= 0.003; // Slow rotation
         }
 
         renderer.render(scene, camera);
@@ -181,9 +177,9 @@ function create3DScene(containerId, shapeType) {
 }
 
 function initAll3D() {
-    create3DScene('about-3d', 'noiseSphere'); // About: Living Sphere
-    create3DScene('skills-3d', 'lorenz');     // Skills: Chaos Theory
-    create3DScene('contact-3d', 'tunnel');    // Contact: Warp Drive
+    create3DScene('about-3d', 'gyro');   // About: Gyroscope
+    create3DScene('skills-3d', 'wave');  // Skills: Data Wave
+    create3DScene('contact-3d', 'orb');  // Contact: Connection Orb
 }
 
 /* =========================================
@@ -195,35 +191,25 @@ document.addEventListener('keydown', (e) => {
     else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); updateAllThemes(); }
     else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); updateAllThemes(); }
 });
-
-function updateAllThemes() {
-    initParticles();
-    update3DTheme();
-}
-
+function updateAllThemes() { initParticles(); update3DTheme(); }
 function getThemeColor() {
     if (document.body.classList.contains('red-mode')) return '#F42C1D';
     if (document.body.classList.contains('green-mode')) return '#32CD32';
     return '#F1B7EA';
 }
-
 function getThemeRGBA(opacity) {
     if (document.body.classList.contains('red-mode')) return `rgba(244, 44, 29, ${opacity})`;
     if (document.body.classList.contains('green-mode')) return `rgba(50, 205, 50, ${opacity})`;
     return `rgba(241, 183, 234, ${opacity})`;
 }
-
 function getThemeColorHex() {
     if (document.body.classList.contains('red-mode')) return 0xF42C1D;
     if (document.body.classList.contains('green-mode')) return 0x32CD32;
     return 0xF1B7EA;
 }
-
 function update3DTheme() {
     const color = getThemeColorHex();
-    meshes.forEach(mesh => {
-        if (mesh.material.color) mesh.material.color.setHex(color);
-    });
+    meshes.forEach(mesh => { if (mesh.material.color) mesh.material.color.setHex(color); });
 }
 
 /* =========================================
@@ -236,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initTiltCards();
     initAll3D();
 });
-
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 let particlesArray;
@@ -247,7 +232,6 @@ window.addEventListener('mousemove', (e) => {
     document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
     document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
 });
-
 class Particle {
     constructor(x, y, dx, dy, size) { this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.size = size; }
     draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = getThemeColor(); ctx.fill(); }
