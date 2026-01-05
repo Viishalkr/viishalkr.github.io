@@ -19,9 +19,7 @@ function scrambleText(element) {
         iterations += 1 / 3;
     }, 30);
 }
-
 document.querySelectorAll('.scramble-link').forEach(link => link.addEventListener('mouseover', () => scrambleText(link)));
-
 function startTypewriter() {
     const greeting = document.querySelector('.greeting');
     if (greeting) {
@@ -33,7 +31,6 @@ function startTypewriter() {
     }
     scrambleText(document.querySelector('.main-title'));
 }
-
 if (preloader && bootText) {
     const logs = ["SYSTEM BOOT...", "ACCESS GRANTED."];
     let i = 0;
@@ -48,16 +45,12 @@ if (preloader && bootText) {
 }
 
 /* =========================================
-   2. THREE.JS RESPONSIVE CYBER STRUCTURES
+   2. THREE.JS GLTF MODEL LOADER
    ========================================= */
-const meshes = []; // Store meshes for theme updates
-// Mouse tracking for 3D
-let mouseX = 0;
-let mouseY = 0;
-let targetX = 0;
-let targetY = 0;
-
-// Window center
+// Global variables for animation
+const clock = new THREE.Clock();
+const mixers = []; // Store animation mixers
+let mouseX = 0, mouseY = 0;
 const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
@@ -66,127 +59,66 @@ document.addEventListener('mousemove', (event) => {
     mouseY = (event.clientY - windowHalfY);
 });
 
-function create3DScene(containerId, shapeType) {
+function load3DModel(containerId, modelUrl, scale, posY) {
     const container = document.getElementById(containerId);
     if (!container || window.innerWidth < 900) return;
 
     const width = container.clientWidth;
     const height = container.clientHeight;
     const scene = new THREE.Scene();
-
-    // Zoom camera out for "Bigger" feel
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-    camera.position.z = 45;
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 15;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
+    // Enable shadow mapping for realism
+    renderer.shadowMap.enabled = true;
+    renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(renderer.domElement);
 
-    // High-Tech Wireframe Material
-    const material = new THREE.MeshBasicMaterial({
-        color: getThemeColorHex(),
-        wireframe: true,
-        transparent: true,
-        opacity: 0.6 // Slightly subtle so it doesn't distract
+    // --- LIGHTING ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4); // Soft white light
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(getThemeColorHex(), 1.5); // Theme colored light
+    dirLight.position.set(5, 10, 7.5);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    // --- LOAD MODEL ---
+    const loader = new THREE.GLTFLoader();
+    let model;
+
+    loader.load(modelUrl, (gltf) => {
+        model = gltf.scene;
+        model.scale.set(scale, scale, scale);
+        model.position.y = posY;
+        scene.add(model);
+
+        // --- ANIMATION MIXER ---
+        if (gltf.animations && gltf.animations.length) {
+            const mixer = new THREE.AnimationMixer(model);
+            // Play the first animation found (usually idle)
+            mixer.clipAction(gltf.animations[0]).play();
+            mixers.push(mixer);
+        }
+
+    }, undefined, (error) => {
+        console.error('An error occurred loading the model:', error);
     });
 
-    const coreMaterial = new THREE.MeshBasicMaterial({
-        color: getThemeColorHex(),
-        wireframe: true,
-        transparent: true,
-        opacity: 0.9 // Brighter core
-    });
-
-    let mainMesh, innerMesh, ringMesh;
-
-    // --- 1. THE NEURAL LATTICE (About) ---
-    // A complex Geodesic Sphere (Icosahedron with detail)
-    if (shapeType === 'lattice') {
-        // High detail Icosahedron (2 subdivisions)
-        const geometry = new THREE.IcosahedronGeometry(13, 1);
-        mainMesh = new THREE.Mesh(geometry, material);
-
-        const innerGeo = new THREE.IcosahedronGeometry(6, 0);
-        innerMesh = new THREE.Mesh(innerGeo, coreMaterial);
-
-        mainMesh.add(innerMesh); // Group them
-        scene.add(mainMesh);
-        meshes.push(mainMesh); meshes.push(innerMesh);
-    }
-
-    // --- 2. THE ORBITAL ENGINE (Skills) ---
-    // Multiple Torus rings spinning on different axes
-    else if (shapeType === 'engine') {
-        // Ring 1
-        mainMesh = new THREE.Mesh(new THREE.TorusGeometry(10, 0.5, 16, 100), coreMaterial);
-
-        // Ring 2 (Larger)
-        innerMesh = new THREE.Mesh(new THREE.TorusGeometry(14, 0.2, 16, 100), material);
-
-        // Ring 3 (Largest)
-        ringMesh = new THREE.Mesh(new THREE.TorusGeometry(18, 0.2, 16, 100), material);
-
-        scene.add(mainMesh);
-        scene.add(innerMesh);
-        scene.add(ringMesh);
-
-        meshes.push(mainMesh); meshes.push(innerMesh); meshes.push(ringMesh);
-    }
-
-    // --- 3. THE VOID GATEWAY (Contact) ---
-    // A dense Torus Knot
-    else if (shapeType === 'gateway') {
-        const geometry = new THREE.TorusKnotGeometry(9, 3, 150, 20); // High segments for smoothness
-        mainMesh = new THREE.Mesh(geometry, material);
-
-        // Inner core
-        const innerGeo = new THREE.SphereGeometry(4, 16, 16);
-        innerMesh = new THREE.Mesh(innerGeo, coreMaterial);
-
-        scene.add(mainMesh);
-        scene.add(innerMesh);
-        meshes.push(mainMesh); meshes.push(innerMesh);
-    }
-
-    // --- RESPONSIVE ANIMATION LOOP ---
+    // --- ANIMATION LOOP ---
     function animate() {
         requestAnimationFrame(animate);
 
-        // Smooth Mouse Follow Logic
-        targetX = mouseX * 0.001;
-        targetY = mouseY * 0.001;
+        const delta = clock.getDelta();
+        // Update animations
+        mixers.forEach(mixer => mixer.update(delta));
 
-        if (shapeType === 'lattice') {
-            // Rotates slowly automatically
-            mainMesh.rotation.y += 0.002;
-            // TILTS towards mouse
-            mainMesh.rotation.x += 0.05 * (targetY - mainMesh.rotation.x);
-            mainMesh.rotation.z += 0.05 * (targetX - mainMesh.rotation.z);
-
-            // Inner mesh spins opposite
-            innerMesh.rotation.y -= 0.01;
-        }
-        else if (shapeType === 'engine') {
-            // Rings spin on different axes
-            mainMesh.rotation.x += 0.01;
-            mainMesh.rotation.y += 0.05 * (targetX - mainMesh.rotation.y); // Mouse control Y axis
-
-            innerMesh.rotation.y += 0.005;
-            innerMesh.rotation.x += 0.05 * (targetY - innerMesh.rotation.x); // Mouse control X axis
-
-            ringMesh.rotation.x -= 0.002;
-            ringMesh.rotation.z -= 0.002;
-        }
-        else if (shapeType === 'gateway') {
-            // Complex knot rotation
-            mainMesh.rotation.z += 0.005;
-            // The knot "looks" at the mouse
-            mainMesh.rotation.x += 0.05 * (targetY - mainMesh.rotation.x);
-            mainMesh.rotation.y += 0.05 * (targetX - mainMesh.rotation.y);
-
-            // Pulse effect scale
-            const time = Date.now() * 0.001;
-            innerMesh.scale.setScalar(1 + Math.sin(time) * 0.2);
+        // Subtle mouse look effect
+        if (model) {
+            model.rotation.y = mouseX * 0.0005;
+            model.rotation.x = mouseY * 0.0005;
         }
 
         renderer.render(scene, camera);
@@ -195,9 +127,17 @@ function create3DScene(containerId, shapeType) {
 }
 
 function initAll3D() {
-    create3DScene('about-3d', 'lattice');   // About: Geodesic Sphere
-    create3DScene('skills-3d', 'engine');   // Skills: Gyro Engine
-    create3DScene('contact-3d', 'gateway'); // Contact: Torus Knot
+    // IMPORTANT: Replace these URLs with your own .glb or .gltf file paths later.
+    // Examples: 'assets/models/myavatar.glb'
+
+    // About Section: Cyber Robot
+    load3DModel('about-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BrainStem/glTF-Binary/BrainStem.glb', 4, -4);
+
+    // Skills Section: Futuristic Drone
+    load3DModel('skills-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumDrone/glTF-Binary/CesiumDrone.glb', 3, -1);
+
+    // Contact Section: Sci-Fi Helmet
+    load3DModel('contact-3d', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb', 3.5, 0);
 }
 
 /* =========================================
@@ -209,7 +149,12 @@ document.addEventListener('keydown', (e) => {
     else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); updateAllThemes(); }
     else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); updateAllThemes(); }
 });
-function updateAllThemes() { initParticles(); update3DTheme(); }
+function updateAllThemes() {
+    initParticles();
+    // Need to reload page or write complex logic to update lights dynamically. 
+    // For simplicity with GLTF, a reload is easiest to apply theme lighting.
+    location.reload();
+}
 function getThemeColor() {
     if (document.body.classList.contains('red-mode')) return '#F42C1D';
     if (document.body.classList.contains('green-mode')) return '#32CD32';
@@ -224,10 +169,6 @@ function getThemeColorHex() {
     if (document.body.classList.contains('red-mode')) return 0xF42C1D;
     if (document.body.classList.contains('green-mode')) return 0x32CD32;
     return 0xF1B7EA;
-}
-function update3DTheme() {
-    const color = getThemeColorHex();
-    meshes.forEach(mesh => { if (mesh.material && mesh.material.color) mesh.material.color.setHex(color); });
 }
 
 /* =========================================
