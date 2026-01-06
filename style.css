@@ -18,19 +18,32 @@
     --cursor-y: 50%;
 }
 
+/* NEW: Custom Text Selection Color */
 ::selection {
     background: var(--primary-red);
-    color: #fff;
+    color: #000;
+    text-shadow: none;
 }
 
+::-moz-selection {
+    background: var(--primary-red);
+    color: #000;
+    text-shadow: none;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
-    background: var(--bg-black);
+    background: #050505;
 }
 
 ::-webkit-scrollbar-thumb {
     background: var(--deep-red);
     border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-red);
 }
 
 * {
@@ -47,7 +60,6 @@ body {
     background-image: linear-gradient(to bottom, #1A1347 0%, #0d0926 100%);
     background-attachment: fixed;
     font-size: 18px;
-    /* Counter reset for the numbered headers */
     counter-reset: section-counter;
 }
 
@@ -144,7 +156,7 @@ body.hovering .cursor-dot {
 }
 
 /* =========================================
-   3. NAVIGATION
+   3. NAVIGATION (NEW ANIMATION)
    ========================================= */
 .navbar {
     position: fixed;
@@ -167,18 +179,32 @@ nav a {
     font-size: 16px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    padding: 10px 20px;
+    padding: 5px 10px;
     margin-left: 10px;
-    border-radius: 4px;
     transition: 0.3s;
     font-family: var(--font-head);
+    position: relative;
 }
 
-nav a:hover,
-nav a.active {
-    color: #fff;
+/* Sliding Underline Animation */
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
     background-color: var(--primary-red);
-    box-shadow: 0 0 15px rgba(244, 44, 29, 0.3);
+    transition: width 0.3s ease-out;
+    box-shadow: 0 0 10px var(--primary-red);
+}
+
+nav a:hover {
+    color: #fff;
+}
+
+nav a:hover::after {
+    width: 100%;
 }
 
 .side-hud {
@@ -262,7 +288,7 @@ nav a.active {
     z-index: 10;
 }
 
-/* NEW: Numbered Headers (01 // ABOUT) */
+/* Numbered Headers */
 h2 {
     font-family: var(--font-head);
     font-size: 3.5rem;
@@ -317,7 +343,7 @@ h2::before {
     border-bottom: none;
 }
 
-/* NEW: Bouncing Scroll Indicator */
+/* Bouncing Scroll Indicator */
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
@@ -414,7 +440,7 @@ h2::before {
 }
 
 /* =========================================
-   6. TEXT & ELEMENTS
+   6. TEXT & ELEMENTS (NEW PULSE)
    ========================================= */
 .greeting {
     font-size: 1.4rem;
@@ -475,6 +501,7 @@ h2::before {
     font-weight: 500;
 }
 
+/* Decrypt Pulse Animation */
 .decrypt {
     font-family: var(--font-tech);
     color: var(--primary-red);
@@ -482,6 +509,19 @@ h2::before {
     background: transparent;
     padding: 0 5px;
     letter-spacing: 1px;
+    animation: textPulse 3s infinite alternate;
+}
+
+@keyframes textPulse {
+    0% {
+        text-shadow: 0 0 5px transparent;
+        opacity: 0.8;
+    }
+
+    100% {
+        text-shadow: 0 0 15px var(--primary-red);
+        opacity: 1;
+    }
 }
 
 /* =========================================
@@ -545,7 +585,7 @@ h2::before {
 }
 
 /* =========================================
-   8. SKILLS (HUD GRID)
+   8. SKILLS (HUD GRID - FROSTED)
    ========================================= */
 .hud-grid {
     display: grid;
@@ -662,20 +702,17 @@ h2::before {
     justify-content: flex-end;
     padding: 30px;
     background-size: 100% !important;
-    /* Start Size */
     background-position: center !important;
     transform-style: preserve-3d;
     transform: perspective(1000px);
     transition: transform 0.1s, background-size 0.8s ease;
-    /* Smooth Zoom */
     overflow: hidden;
 }
 
-/* NEW: Zoom Effect on Hover */
 .project-card:hover {
     border-color: var(--primary-red);
     background-size: 110% !important;
-    /* End Size */
+    /* Zoom Effect */
 }
 
 .project-card .card-content {
@@ -746,6 +783,31 @@ h2::before {
     width: 100%;
     border-top: 1px solid #222;
     padding-top: 20px;
+}
+
+/* Footer Status Dot Blink */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 /* =========================================
