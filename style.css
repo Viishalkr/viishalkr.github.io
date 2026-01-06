@@ -174,7 +174,7 @@ body.hovering .cursor-dot {
 }
 
 /* =========================================
-   3. NAVIGATION
+   3. NAVIGATION (SLIDING ANIMATION)
    ========================================= */
 .navbar {
     position: fixed;
@@ -305,6 +305,7 @@ nav a:hover::after {
     z-index: 10;
 }
 
+/* Numbered Headers */
 h2 {
     font-family: var(--font-head);
     font-size: 3.5rem;
@@ -332,22 +333,6 @@ h2::before {
     vertical-align: middle;
     margin-right: 15px;
     opacity: 0.8;
-}
-
-/* Split Layout */
-.split-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-    position: relative;
-}
-
-.three-container {
-    width: 100%;
-    height: 400px;
-    position: relative;
-    z-index: 5;
 }
 
 /* Angled Backgrounds */
@@ -378,6 +363,22 @@ h2::before {
 
 #contact.angled-section::before {
     border-bottom: none;
+}
+
+/* Split Layout */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    position: relative;
+}
+
+.three-container {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    z-index: 5;
 }
 
 /* Bouncing Scroll Indicator */
@@ -489,7 +490,6 @@ h2::before {
     font-family: var(--font-tech);
 }
 
-/* Blinking Cursor for Typewriter */
 .greeting::after {
     content: '█';
     margin-left: 5px;
@@ -518,10 +518,8 @@ h2::before {
     cursor: default;
     letter-spacing: 5px;
     position: relative;
-    /* Subtle Metallic Shimmer */
     background: linear-gradient(to right, #fff 0%, #fff 40%, var(--primary-red) 50%, #fff 60%, #fff 100%);
     background-size: 200% auto;
-    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shimmer 5s linear infinite;
@@ -568,7 +566,6 @@ h2::before {
     font-weight: 500;
 }
 
-/* Decrypt Pulse Animation */
 .decrypt {
     font-family: var(--font-tech);
     color: var(--primary-red);
@@ -1068,11 +1065,11 @@ body.green-mode .angled-section::before {
 }
 
 /* =========================================
-   14. MOBILE OPTIMIZATIONS (CRITICAL FIXES)
+   14. MOBILE OPTIMIZATIONS (ADDED HERE)
    ========================================= */
 @media (max-width: 768px) {
 
-    /* 1. Reset Cursor for Touch */
+    /* RESET CURSOR FOR TOUCH */
     .cursor-dot,
     .cursor-outline {
         display: none !important;
@@ -1085,7 +1082,7 @@ body.green-mode .angled-section::before {
         cursor: auto !important;
     }
 
-    /* 2. Resize Fonts */
+    /* FONT & PADDING SIZING */
     h2 {
         font-size: 2.2rem;
         margin-bottom: 30px;
@@ -1101,7 +1098,6 @@ body.green-mode .angled-section::before {
         font-size: 1rem;
     }
 
-    /* 3. Adjust Padding */
     .section {
         padding: 60px 5%;
     }
@@ -1110,7 +1106,7 @@ body.green-mode .angled-section::before {
         padding: 0 5%;
     }
 
-    /* 4. Layout Stacking */
+    /* LAYOUT STACKING */
     .split-layout {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -1121,7 +1117,7 @@ body.green-mode .angled-section::before {
         /* Hide heavy 3D on mobile */
     }
 
-    /* 5. Navbar Adjustments */
+    /* NAVBAR ADJUSTMENTS */
     .navbar {
         justify-content: flex-start;
         overflow-x: auto;
@@ -1136,7 +1132,7 @@ body.green-mode .angled-section::before {
         margin-left: 5px;
     }
 
-    /* 6. Hide Complex Elements */
+    /* ELEMENT VISIBILITY */
     .side-hud {
         display: none;
     }
@@ -1145,7 +1141,7 @@ body.green-mode .angled-section::before {
         opacity: 0.05;
     }
 
-    /* 7. Card Adjustments */
+    /* CARD SIZING */
     .project-card {
         height: 300px;
         margin-bottom: 20px;
@@ -1156,7 +1152,7 @@ body.green-mode .angled-section::before {
         transform: scale(0.98);
     }
 
-    /* 8. Fix Background Attachment Bug on iOS */
+    /* iOS FIX */
     body {
         background-attachment: scroll;
     }
