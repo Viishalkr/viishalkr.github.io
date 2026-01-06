@@ -18,7 +18,7 @@
     --cursor-y: 50%;
 }
 
-/* NEW: Custom Text Selection Color */
+/* Custom Text Selection */
 ::selection {
     background: var(--primary-red);
     color: #000;
@@ -44,6 +44,11 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-red);
+}
+
+/* NEW: Global Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
 }
 
 * {
@@ -156,7 +161,7 @@ body.hovering .cursor-dot {
 }
 
 /* =========================================
-   3. NAVIGATION (NEW ANIMATION)
+   3. NAVIGATION (SLIDING ANIMATION)
    ========================================= */
 .navbar {
     position: fixed;
@@ -186,7 +191,6 @@ nav a {
     position: relative;
 }
 
-/* Sliding Underline Animation */
 nav a::after {
     content: '';
     position: absolute;
@@ -288,7 +292,7 @@ nav a:hover::after {
     z-index: 10;
 }
 
-/* Numbered Headers */
+/* NEW: Numbered Headers with Neon Glow */
 h2 {
     font-family: var(--font-head);
     font-size: 3.5rem;
@@ -300,6 +304,13 @@ h2 {
     padding-left: 25px;
     line-height: 1;
     letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    /* Base shadow */
+}
+
+/* Neon Glow Effect on Hover */
+h2:hover {
+    text-shadow: 0 0 10px var(--primary-red);
 }
 
 h2::before {
@@ -440,7 +451,7 @@ h2::before {
 }
 
 /* =========================================
-   6. TEXT & ELEMENTS (NEW PULSE)
+   6. TEXT & ELEMENTS (NEW BLINKING CURSOR)
    ========================================= */
 .greeting {
     font-size: 1.4rem;
@@ -450,6 +461,25 @@ h2::before {
     letter-spacing: 4px;
     text-transform: uppercase;
     font-family: var(--font-tech);
+}
+
+/* Blinking Cursor for Typewriter */
+.greeting::after {
+    content: '█';
+    margin-left: 5px;
+    animation: blinkCursor 1s infinite;
+}
+
+@keyframes blinkCursor {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
 
 .main-title {
@@ -735,7 +765,7 @@ h2::before {
 }
 
 /* =========================================
-   10. FOOTER & CONTACT
+   10. FOOTER & CONTACT (NEW CLICK EFFECT)
    ========================================= */
 .cyber-btn {
     display: inline-flex;
@@ -747,7 +777,7 @@ h2::before {
     font-weight: 700;
     text-transform: uppercase;
     text-decoration: none;
-    transition: 0.3s;
+    transition: 0.2s;
     border: 1px solid var(--primary-red);
     font-family: var(--font-head);
     letter-spacing: 2px;
@@ -759,6 +789,12 @@ h2::before {
     background: var(--primary-red);
     color: #000;
     box-shadow: 0 0 20px var(--primary-red);
+}
+
+/* NEW: Press Effect */
+.cyber-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 5px var(--primary-red);
 }
 
 .contact-buttons {
