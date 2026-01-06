@@ -18,26 +18,18 @@ let mouse = { x: null, y: null, radius: 150 };
    2. CURSOR & INTERACTION LOGIC
    ========================================= */
 window.addEventListener('mousemove', (e) => {
-    // 1. Update Global Mouse Object (For Particles)
     mouse.x = e.x;
     mouse.y = e.y;
-
-    // 2. Update CSS Variables (For Background Mask)
     document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
     document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
-
-    // 3. Move Custom Cursor Elements (Visuals)
     if (cursorDot && cursorOutline) {
         cursorDot.style.left = `${e.clientX}px`;
         cursorDot.style.top = `${e.clientY}px`;
-
-        // Add a tiny delay to the outline for a "drag" feel
         cursorOutline.style.left = `${e.clientX}px`;
         cursorOutline.style.top = `${e.clientY}px`;
     }
 });
 
-// Hover "Lock-on" Effects
 const interactiveElements = document.querySelectorAll('a, button, .project-card, .hud-card, .cyber-btn, .scramble-link');
 interactiveElements.forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
@@ -45,36 +37,41 @@ interactiveElements.forEach(el => {
 });
 
 /* =========================================
-   3. SIDE HUD & SCROLL TRACKING
+   3. SIDE HUD & SCROLL REVEAL (NEW!)
    ========================================= */
+// A. Side HUD Tracker
 window.addEventListener('scroll', () => {
     let currentSection = '';
-
-    // Determine which section is currently in view
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        // Trigger when 1/3rd of the section is visible
         if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
             currentSection = section.getAttribute('id');
         }
     });
-
-    // Update Side HUD Classes
     hudLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href').includes(currentSection)) {
             link.classList.add('active');
         }
     });
-
-    // Update Top Scroll Progress Bar
     const scrollTotal = document.documentElement.scrollTop;
     const heightTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrollPercent = (scrollTotal / heightTotal) * 100;
     const progressBar = document.getElementById('scroll-progress');
     if (progressBar) progressBar.style.width = scrollPercent + "%";
 });
+
+// B. Scroll Reveal Animation (Intersection Observer)
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.1 }); // Trigger when 10% visible
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* =========================================
    4. ECO MODE TOGGLE
@@ -92,7 +89,6 @@ if (ecoBtn) {
             ecoBtn.innerText = "[ TOGGLE ECO MODE ]";
             if (perfText) perfText.innerText = "ONLINE";
             if (perfText) perfText.style.color = "var(--primary-red)";
-            // Restart animation loop if it was paused
             animateParticles();
         }
     });
@@ -140,7 +136,6 @@ if (preloader && bootText) {
             line.className = 'log-line';
             line.innerText = `> ${logs[i]}`;
             bootText.appendChild(line);
-            // Auto scroll to bottom
             bootText.scrollTop = bootText.scrollHeight;
             setTimeout(typeLine, 400);
             i++;
@@ -184,7 +179,6 @@ const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 let particlesArray;
 
-// Resize canvas correctly
 if (canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -207,14 +201,12 @@ class Particle {
         if (this.x > canvas.width || this.x < 0) this.dx = -this.dx;
         if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
 
-        // Mouse Interaction
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < mouse.radius) {
             const f = (mouse.radius - dist) / mouse.radius;
-            // Push particles away from cursor
             this.x -= (dx / dist) * f * 5;
             this.y -= (dy / dist) * f * 5;
         }
@@ -228,7 +220,7 @@ class Particle {
 function initParticles() {
     if (!canvas || window.innerWidth < 768) return;
     particlesArray = [];
-    let n = (canvas.height * canvas.width) / 9000; // Density
+    let n = (canvas.height * canvas.width) / 9000;
     for (let i = 0; i < n; i++) {
         let size = Math.random() * 2 + 1;
         let x = Math.random() * (innerWidth - size * 2) + size;
@@ -241,21 +233,11 @@ function initParticles() {
 
 function animateParticles() {
     if (!canvas) return;
-
-    // STOP animation if Eco Mode is ON to save battery
-    if (isEcoMode) {
-        ctx.clearRect(0, 0, innerWidth, innerHeight);
-        return;
-    }
-
+    if (isEcoMode) { ctx.clearRect(0, 0, innerWidth, innerHeight); return; }
     requestAnimationFrame(animateParticles);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
 
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-    }
-
-    // Draw connecting lines
+    for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
     connectParticles();
 }
 
@@ -275,17 +257,11 @@ function connectParticles() {
     }
 }
 
-// Init everything
 document.addEventListener("DOMContentLoaded", () => {
-    // Project Cards Image Loading
     document.querySelectorAll('.project-card').forEach(c => {
         if (c.getAttribute('data-img')) c.style.backgroundImage = `url('${c.getAttribute('data-img')}')`;
     });
-
-    // Tilt Effect
     initTiltCards();
-
-    // Initialize Particles
     if (canvas) {
         initParticles();
         animateParticles();
@@ -298,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   8. MISC EFFECTS (TILT)
+   8. MISC EFFECTS
    ========================================= */
 function initTiltCards() {
     document.querySelectorAll('.project-card').forEach(c => {
@@ -306,18 +282,13 @@ function initTiltCards() {
             const r = c.getBoundingClientRect();
             c.style.setProperty('--card-x', `${e.clientX - r.left}px`);
             c.style.setProperty('--card-y', `${e.clientY - r.top}px`);
-
-            // 3D Tilt Math
             const xVal = ((e.clientX - r.left - r.width / 2) / r.width / 2) * 10;
             const yVal = ((e.clientY - r.top - r.height / 2) / r.height / 2) * -10;
-
             c.style.transform = `perspective(1000px) rotateX(${yVal}deg) rotateY(${xVal}deg) scale3d(1.05, 1.05, 1.05)`;
         });
         c.addEventListener('mouseleave', () => c.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)');
     });
 }
-
-// WhatsApp Button
 document.getElementById('whatsappBtn')?.addEventListener('click', (e) => {
     e.preventDefault();
     window.open('https://wa.me/916203899720', '_blank');
