@@ -72,7 +72,7 @@ body.no-scroll {
     overflow: hidden;
 }
 
-/* NEW: Cinematic Vignette (Dark Corners) */
+/* Cinematic Vignette */
 body::after {
     content: '';
     position: fixed;
@@ -174,7 +174,7 @@ body.hovering .cursor-dot {
 }
 
 /* =========================================
-   3. NAVIGATION (SLIDING ANIMATION)
+   3. NAVIGATION
    ========================================= */
 .navbar {
     position: fixed;
@@ -305,7 +305,6 @@ nav a:hover::after {
     z-index: 10;
 }
 
-/* Numbered Headers with Neon Glow */
 h2 {
     font-family: var(--font-head);
     font-size: 3.5rem;
@@ -333,6 +332,22 @@ h2::before {
     vertical-align: middle;
     margin-right: 15px;
     opacity: 0.8;
+}
+
+/* Split Layout */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    position: relative;
+}
+
+.three-container {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    z-index: 5;
 }
 
 /* Angled Backgrounds */
@@ -493,7 +508,6 @@ h2::before {
     }
 }
 
-/* NEW: Shimmering Title Effect */
 .main-title {
     font-family: var(--font-head);
     font-size: 7vw;
@@ -504,10 +518,10 @@ h2::before {
     cursor: default;
     letter-spacing: 5px;
     position: relative;
-
-    /* Gradient Properties */
+    /* Subtle Metallic Shimmer */
     background: linear-gradient(to right, #fff 0%, #fff 40%, var(--primary-red) 50%, #fff 60%, #fff 100%);
     background-size: 200% auto;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shimmer 5s linear infinite;
@@ -768,7 +782,7 @@ h2::before {
     /* Zoom Effect */
 }
 
-/* NEW: Reveal "ACCESSING..." text on hover */
+/* Reveal "ACCESSING..." text on hover */
 .project-card::before {
     content: '[ ACCESS_DATA ]';
     position: absolute;
@@ -1029,6 +1043,14 @@ body.green-mode .angled-section::before {
     .side-hud {
         display: none;
     }
+
+    .split-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .three-container {
+        display: none;
+    }
 }
 
 /* =========================================
@@ -1043,4 +1065,99 @@ body.green-mode .angled-section::before {
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* =========================================
+   14. MOBILE OPTIMIZATIONS (CRITICAL FIXES)
+   ========================================= */
+@media (max-width: 768px) {
+
+    /* 1. Reset Cursor for Touch */
+    .cursor-dot,
+    .cursor-outline {
+        display: none !important;
+    }
+
+    body,
+    a,
+    button,
+    .cyber-btn {
+        cursor: auto !important;
+    }
+
+    /* 2. Resize Fonts */
+    h2 {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+
+    .main-title {
+        font-size: 15vw;
+        margin-left: 0;
+    }
+
+    .greeting {
+        font-size: 1rem;
+    }
+
+    /* 3. Adjust Padding */
+    .section {
+        padding: 60px 5%;
+    }
+
+    .hero {
+        padding: 0 5%;
+    }
+
+    /* 4. Layout Stacking */
+    .split-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .three-container {
+        display: none;
+        /* Hide heavy 3D on mobile */
+    }
+
+    /* 5. Navbar Adjustments */
+    .navbar {
+        justify-content: flex-start;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 15px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    nav a {
+        font-size: 12px;
+        padding: 5px 8px;
+        margin-left: 5px;
+    }
+
+    /* 6. Hide Complex Elements */
+    .side-hud {
+        display: none;
+    }
+
+    .bg-grid {
+        opacity: 0.05;
+    }
+
+    /* 7. Card Adjustments */
+    .project-card {
+        height: 300px;
+        margin-bottom: 20px;
+        pointer-events: auto;
+    }
+
+    .project-card:active {
+        transform: scale(0.98);
+    }
+
+    /* 8. Fix Background Attachment Bug on iOS */
+    body {
+        background-attachment: scroll;
+    }
 }
