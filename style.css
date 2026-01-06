@@ -823,42 +823,8 @@ body.green-mode .angled-section::before {
 }
 
 /* =========================================
-   13. NEW POLISH: GLITCH, REVEAL, COLORS
+   13. SCROLL REVEAL ANIMATION
    ========================================= */
-
-/* A. GLITCH EFFECT ON TITLE HOVER */
-.main-title:hover {
-    text-shadow: 2px 2px var(--deep-red), -2px -2px #0ff;
-    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
-}
-
-@keyframes glitch {
-    0% {
-        transform: translate(0);
-    }
-
-    20% {
-        transform: translate(-2px, 2px);
-    }
-
-    40% {
-        transform: translate(-2px, -2px);
-    }
-
-    60% {
-        transform: translate(2px, 2px);
-    }
-
-    80% {
-        transform: translate(2px, -2px);
-    }
-
-    100% {
-        transform: translate(0);
-    }
-}
-
-/* B. SCROLL REVEAL ANIMATION */
 .reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -868,37 +834,4 @@ body.green-mode .angled-section::before {
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
-}
-
-/* C. BRAND COLORS FOR SOCIAL BUTTONS */
-/* LinkedIn (Blue) */
-.contact-buttons a[href*="linkedin"]:hover {
-    border-color: #0077b5;
-    box-shadow: 0 0 15px #0077b5;
-    color: #0077b5;
-    background: transparent;
-}
-
-/* Instagram (Pink/Orange) */
-.contact-buttons a[href*="instagram"]:hover {
-    border-color: #e4405f;
-    box-shadow: 0 0 15px #e4405f;
-    color: #e4405f;
-    background: transparent;
-}
-
-/* Behance (Blue) */
-.contact-buttons a[href*="behance"]:hover {
-    border-color: #1769ff;
-    box-shadow: 0 0 15px #1769ff;
-    color: #1769ff;
-    background: transparent;
-}
-
-/* WhatsApp (Green) */
-.contact-buttons a[id="whatsappBtn"]:hover {
-    border-color: #25d366;
-    box-shadow: 0 0 15px #25d366;
-    color: #25d366;
-    background: transparent;
 }
