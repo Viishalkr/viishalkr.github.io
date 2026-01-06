@@ -238,7 +238,7 @@ nav a.active {
 }
 
 /* =========================================
-   4. LAYOUT & SECTIONS (Z-INDEX FIXED)
+   4. LAYOUT & SECTIONS
    ========================================= */
 .hero {
     height: 100vh;
@@ -260,7 +260,6 @@ nav a.active {
     margin: 0 auto;
     position: relative;
     z-index: 10;
-    /* Ensure text is above background */
 }
 
 h2 {
@@ -276,29 +275,12 @@ h2 {
     letter-spacing: 3px;
 }
 
-/* SPLIT LAYOUT */
-.split-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-    position: relative;
-}
-
-.three-container {
-    width: 100%;
-    height: 400px;
-    position: relative;
-    z-index: 5;
-}
-
-/* ANGLED BACKGROUNDS - FIXED FOR DISAPPEARING LINES */
+/* ANGLED BACKGROUNDS */
 .angled-section {
     position: relative;
     padding: 120px 10%;
     z-index: 1;
     overflow: visible;
-    /* Prevents clipping */
 }
 
 .angled-section::before {
@@ -311,17 +293,15 @@ h2 {
 
     /* Background Properties */
     background-color: rgba(26, 19, 71, 0.95);
-    /* High opacity to hide particles behind */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
 
-    /* THE FIX: Scale prevents sub-pixel gaps, skew applies angle */
+    /* Transform & Stack */
     transform: skewY(-2deg) scale(1.05);
     z-index: 0;
-    /* Sits above grid (-10) but below content (10) */
 
-    /* THE FIX: Thicker borders */
+    /* Borders */
     border-top: 3px solid var(--primary-red);
     border-bottom: 3px solid var(--primary-red);
 
@@ -520,7 +500,7 @@ h2 {
 }
 
 /* =========================================
-   8. SKILLS (HUD GRID)
+   8. SKILLS (HUD GRID - CRYSTAL CLEAR)
    ========================================= */
 .hud-grid {
     display: grid;
@@ -529,7 +509,8 @@ h2 {
 }
 
 .hud-card {
-    background: rgba(255, 255, 255, 0.02);
+    /* UPDATED: Crystal Clear Background */
+    background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 25px;
     position: relative;
@@ -538,7 +519,8 @@ h2 {
 }
 
 .hud-card:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
+    /* Very subtle hover */
     border-color: var(--primary-red);
     transform: translateY(-5px);
 }
@@ -831,14 +813,6 @@ body.green-mode .angled-section::before {
 }
 
 @media (max-width: 900px) {
-    .split-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .three-container {
-        display: none;
-    }
-
     .navbar {
         justify-content: center;
         padding: 15px;
