@@ -237,6 +237,9 @@ nav a.active {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    /* Content above deco */
 }
 
 h2 {
@@ -252,25 +255,12 @@ h2 {
     letter-spacing: 3px;
 }
 
-/* SPLIT LAYOUT */
-.split-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-    position: relative;
-}
-
-.three-container {
-    width: 100%;
-    height: 400px;
-    position: relative;
-}
-
+/* ANGLED BACKGROUNDS */
 .angled-section {
     position: relative;
     padding: 120px 10%;
     z-index: 1;
+    overflow: hidden;
 }
 
 .angled-section::before {
@@ -296,7 +286,65 @@ h2 {
 }
 
 /* =========================================
-   5. TEXT & ELEMENTS
+   5. BACKGROUND DECORATIONS (NEW)
+   ========================================= */
+.bg-deco {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    /* Behind Content */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-head);
+    font-size: 15vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.radar-circle {
+    position: absolute;
+    right: -100px;
+    top: 10%;
+    width: 400px;
+    height: 400px;
+    border: 1px dashed var(--primary-red);
+    border-radius: 50%;
+    opacity: 0.15;
+    animation: spin 30s linear infinite;
+}
+
+.radar-circle::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid var(--primary-red);
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+   6. TEXT & ELEMENTS
    ========================================= */
 .greeting {
     font-size: 1.4rem;
@@ -366,7 +414,7 @@ h2 {
 }
 
 /* =========================================
-   6. EDUCATION SECTION
+   7. EDUCATION SECTION
    ========================================= */
 .education-timeline {
     border-left: 2px solid #333;
@@ -426,7 +474,7 @@ h2 {
 }
 
 /* =========================================
-   7. SKILLS (HUD GRID)
+   8. SKILLS (HUD GRID)
    ========================================= */
 .hud-grid {
     display: grid;
@@ -521,7 +569,7 @@ h2 {
 }
 
 /* =========================================
-   8. PROJECTS
+   9. PROJECTS
    ========================================= */
 .project-grid {
     display: grid;
@@ -562,7 +610,7 @@ h2 {
 }
 
 /* =========================================
-   9. FOOTER & CONTACT (DESIGN FIXED!)
+   10. FOOTER & CONTACT
    ========================================= */
 .cyber-btn {
     display: inline-flex;
@@ -579,7 +627,6 @@ h2 {
     font-family: var(--font-head);
     letter-spacing: 2px;
     cursor: pointer;
-    /* Cool Shape */
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
 }
 
@@ -589,7 +636,6 @@ h2 {
     box-shadow: 0 0 20px var(--primary-red);
 }
 
-/* Contact Links Container */
 .contact-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -615,7 +661,7 @@ h2 {
 }
 
 /* =========================================
-   10. MISC
+   11. MISC
    ========================================= */
 #preloader {
     position: fixed;
@@ -710,7 +756,7 @@ h2 {
 }
 
 /* =========================================
-   11. THEME MODES
+   12. THEME MODES
    ========================================= */
 body.red-mode {
     --bg-black: #070709;
@@ -739,14 +785,6 @@ body.green-mode .angled-section::before {
 }
 
 @media (max-width: 900px) {
-    .split-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .three-container {
-        display: none;
-    }
-
     .navbar {
         justify-content: center;
         padding: 15px;
