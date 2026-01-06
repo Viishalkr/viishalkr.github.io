@@ -74,6 +74,7 @@ button,
     opacity: 0.6;
 }
 
+/* FIXED: Grid is now permanent (No fading/masking) */
 .bg-grid {
     position: fixed;
     top: 0;
@@ -84,15 +85,8 @@ button,
     background-size: 50px 50px;
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     pointer-events: none;
-    opacity: 0.15;
-}
-
-@media (min-width: 768px) {
-    .bg-grid {
-        opacity: 1;
-        -webkit-mask-image: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), black 0%, transparent 80%);
-        mask-image: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), black 0%, transparent 80%);
-    }
+    opacity: 0.08;
+    /* Consistent visibility */
 }
 
 /* INNER TARGET (Solid Diamond) */
@@ -303,8 +297,11 @@ h2 {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
     transform: skewY(-2deg);
     z-index: -1;
-    border-top: 1px solid var(--primary-red);
-    border-bottom: 1px solid var(--primary-red);
+
+    /* FIXED: Thicker borders (2px) to prevent fading */
+    border-top: 2px solid var(--primary-red);
+    border-bottom: 2px solid var(--primary-red);
+
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
 }
 
@@ -313,7 +310,7 @@ h2 {
 }
 
 /* =========================================
-   5. BACKGROUND DECORATIONS (WATERMARKS)
+   5. BACKGROUND DECORATIONS
    ========================================= */
 .bg-deco {
     position: absolute;
