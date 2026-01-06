@@ -500,7 +500,7 @@ h2 {
 }
 
 /* =========================================
-   8. SKILLS (HUD GRID - CRYSTAL CLEAR)
+   8. SKILLS (HUD GRID - FROSTED GLASS)
    ========================================= */
 .hud-grid {
     display: grid;
@@ -509,20 +509,23 @@ h2 {
 }
 
 .hud-card {
-    /* UPDATED: Crystal Clear Background */
-    background: transparent;
+    /* UPDATED: Frosted Glass Effect */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 25px;
     position: relative;
     transition: 0.3s;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
 }
 
 .hud-card:hover {
-    background: rgba(255, 255, 255, 0.02);
-    /* Very subtle hover */
+    background: rgba(255, 255, 255, 0.06);
     border-color: var(--primary-red);
     transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .hud-card::after {
