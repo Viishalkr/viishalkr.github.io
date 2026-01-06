@@ -63,33 +63,32 @@ button,
     cursor: none !important;
 }
 
+/* FIXED: Push global backgrounds way back so they don't overlap lines */
 #neural-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -5;
     pointer-events: none;
     opacity: 0.6;
 }
 
-/* FIXED: Grid is now permanent (No fading/masking) */
 .bg-grid {
     position: fixed;
     top: 0;
     left: 0;
     width: 110%;
     height: 110%;
-    z-index: -2;
+    z-index: -10;
     background-size: 50px 50px;
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     pointer-events: none;
     opacity: 0.08;
-    /* Consistent visibility */
 }
 
-/* INNER TARGET (Solid Diamond) */
+/* INNER TARGET */
 .cursor-dot {
     width: 8px;
     height: 8px;
@@ -103,7 +102,7 @@ button,
     box-shadow: 0 0 10px var(--primary-red);
 }
 
-/* OUTER RETICLE (Rotating Frame) */
+/* OUTER RETICLE */
 .cursor-outline {
     width: 40px;
     height: 40px;
@@ -119,7 +118,7 @@ button,
     animation: cursorSpin 5s linear infinite;
 }
 
-/* HOVER STATE (Lock-on Effect) */
+/* HOVER STATE */
 body.hovering .cursor-outline {
     width: 60px;
     height: 60px;
@@ -239,7 +238,7 @@ nav a.active {
 }
 
 /* =========================================
-   4. LAYOUT & SECTIONS
+   4. LAYOUT & SECTIONS (Z-INDEX FIXED)
    ========================================= */
 .hero {
     height: 100vh;
@@ -260,7 +259,8 @@ nav a.active {
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
-    z-index: 2;
+    z-index: 10;
+    /* Ensure text is above background */
 }
 
 h2 {
@@ -276,12 +276,29 @@ h2 {
     letter-spacing: 3px;
 }
 
-/* ANGLED BACKGROUNDS */
+/* SPLIT LAYOUT */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    position: relative;
+}
+
+.three-container {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    z-index: 5;
+}
+
+/* ANGLED BACKGROUNDS - FIXED FOR DISAPPEARING LINES */
 .angled-section {
     position: relative;
     padding: 120px 10%;
     z-index: 1;
-    overflow: hidden;
+    overflow: visible;
+    /* Prevents clipping */
 }
 
 .angled-section::before {
@@ -291,16 +308,22 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(26, 19, 71, 0.85);
+
+    /* Background Properties */
+    background-color: rgba(26, 19, 71, 0.95);
+    /* High opacity to hide particles behind */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-    transform: skewY(-2deg);
-    z-index: -1;
 
-    /* FIXED: Thicker borders (2px) to prevent fading */
-    border-top: 2px solid var(--primary-red);
-    border-bottom: 2px solid var(--primary-red);
+    /* THE FIX: Scale prevents sub-pixel gaps, skew applies angle */
+    transform: skewY(-2deg) scale(1.05);
+    z-index: 0;
+    /* Sits above grid (-10) but below content (10) */
+
+    /* THE FIX: Thicker borders */
+    border-top: 3px solid var(--primary-red);
+    border-bottom: 3px solid var(--primary-red);
 
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
 }
@@ -318,7 +341,7 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
+    z-index: 2;
     pointer-events: none;
     overflow: hidden;
 }
@@ -808,6 +831,14 @@ body.green-mode .angled-section::before {
 }
 
 @media (max-width: 900px) {
+    .split-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .three-container {
+        display: none;
+    }
+
     .navbar {
         justify-content: center;
         padding: 15px;
