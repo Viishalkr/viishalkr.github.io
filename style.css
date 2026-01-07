@@ -174,7 +174,7 @@ body.hovering .cursor-dot {
 }
 
 /* =========================================
-   3. NAVIGATION (UPDATED DESIGN)
+   3. NAVIGATION (SLIDING ANIMATION)
    ========================================= */
 .navbar {
     position: fixed;
@@ -185,13 +185,9 @@ body.hovering .cursor-dot {
     justify-content: flex-end;
     align-items: center;
     z-index: 1000;
-
-    /* NEW: Carbon Fiber Texture Background */
     background-color: rgba(5, 5, 8, 0.95) !important;
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 75%, transparent);
     background-size: 10px 10px;
-    /* Size of the stripes */
-
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
@@ -765,20 +761,14 @@ h2::before {
 .project-card {
     height: 400px;
     background-color: var(--card-bg);
-
-    /* THEME BORDER */
     border: 1px solid var(--primary-red);
-
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 30px;
-
-    /* STATIC BACKGROUND */
     background-size: cover !important;
     background-position: center !important;
-
     transform-style: preserve-3d;
     transform: perspective(1000px);
     transition: transform 0.1s, box-shadow 0.3s;
@@ -790,7 +780,6 @@ h2::before {
     transform: translateY(-5px);
 }
 
-/* Gradient Overlay for Text Readability */
 .project-card::after {
     content: '';
     position: absolute;
@@ -803,7 +792,6 @@ h2::before {
     pointer-events: none;
 }
 
-/* Reveal "ACCESSING..." text on hover */
 .project-card::before {
     content: '[ ACCESS_DATA ]';
     position: absolute;
@@ -906,7 +894,6 @@ h2::before {
     padding-top: 20px;
 }
 
-/* Footer Status Dot Blink */
 .status-dot {
     width: 8px;
     height: 8px;
@@ -1098,7 +1085,6 @@ body.green-mode .angled-section::before {
    ========================================= */
 @media (max-width: 768px) {
 
-    /* RESET CURSOR FOR TOUCH */
     .cursor-dot,
     .cursor-outline {
         display: none !important;
@@ -1111,7 +1097,6 @@ body.green-mode .angled-section::before {
         cursor: auto !important;
     }
 
-    /* FONT & PADDING SIZING */
     h2 {
         font-size: 2.2rem;
         margin-bottom: 30px;
@@ -1135,7 +1120,6 @@ body.green-mode .angled-section::before {
         padding: 0 5%;
     }
 
-    /* LAYOUT STACKING */
     .split-layout {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -1143,10 +1127,8 @@ body.green-mode .angled-section::before {
 
     .three-container {
         display: none;
-        /* Hide heavy 3D on mobile */
     }
 
-    /* NAVBAR ADJUSTMENTS */
     .navbar {
         justify-content: flex-start;
         overflow-x: auto;
@@ -1161,7 +1143,6 @@ body.green-mode .angled-section::before {
         margin-left: 5px;
     }
 
-    /* ELEMENT VISIBILITY */
     .side-hud {
         display: none;
     }
@@ -1170,7 +1151,6 @@ body.green-mode .angled-section::before {
         opacity: 0.05;
     }
 
-    /* CARD SIZING */
     .project-card {
         height: 300px;
         margin-bottom: 20px;
@@ -1181,8 +1161,77 @@ body.green-mode .angled-section::before {
         transform: scale(0.98);
     }
 
-    /* iOS FIX */
     body {
         background-attachment: scroll;
+    }
+}
+
+/* =========================================
+   15. NEW CLICK INTERACTION STYLES
+   ========================================= */
+/* Left Click Ripple */
+.ripple {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: rippleAnim 0.6s linear forwards;
+    z-index: 9999;
+    box-shadow: 0 0 10px var(--primary-red);
+}
+
+@keyframes rippleAnim {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+    }
+
+    100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+/* Right Click Popup */
+.security-popup {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--primary-red);
+    color: var(--primary-red);
+    padding: 10px 20px;
+    font-family: var(--font-tech);
+    font-size: 14px;
+    letter-spacing: 2px;
+    pointer-events: none;
+    z-index: 10000;
+    white-space: nowrap;
+    box-shadow: 0 0 15px var(--primary-red);
+    animation: popupFade 1.5s ease forwards;
+}
+
+@keyframes popupFade {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
     }
 }

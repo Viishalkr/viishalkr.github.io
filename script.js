@@ -39,6 +39,28 @@ if (window.matchMedia("(pointer: fine)").matches) {
     });
 }
 
+// NEW: LEFT CLICK RIPPLE
+window.addEventListener('click', (e) => {
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple';
+    ripple.style.left = `${e.clientX}px`;
+    ripple.style.top = `${e.clientY}px`;
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+});
+
+// NEW: RIGHT CLICK SECURITY POPUP
+window.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const msg = document.createElement('div');
+    msg.className = 'security-popup';
+    msg.innerText = "⚠️ SYSTEM SECURE // ACCESS DENIED";
+    msg.style.left = `${e.clientX}px`;
+    msg.style.top = `${e.clientY}px`;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 1500);
+});
+
 /* =========================================
    3. SIDE HUD & SCROLL REVEAL
    ========================================= */
@@ -81,7 +103,6 @@ if (ecoBtn) {
     ecoBtn.addEventListener('click', () => {
         isEcoMode = !isEcoMode;
         document.body.classList.toggle('low-power');
-
         if (isEcoMode) {
             ecoBtn.innerText = "[ ECO MODE: ON ]";
             if (perfText) perfText.innerText = "SAVING PWR";
@@ -276,7 +297,6 @@ document.addEventListener('mousemove', (event) => {
 
 function load3DModel(containerId, modelUrl, scale, posY) {
     const container = document.getElementById(containerId);
-    // OPTIMIZATION: Do not load on mobile (< 900px)
     if (!container || window.innerWidth < 900) return;
 
     const width = container.clientWidth;
@@ -328,7 +348,6 @@ function load3DModel(containerId, modelUrl, scale, posY) {
 }
 
 function initAll3D() {
-    // Only load if screen is wide enough
     if (window.innerWidth >= 900) {
         load3DModel('about-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/wizard/model.gltf', 3.5, -3);
         load3DModel('skills-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/ninja/model.gltf', 4, -3.5);
@@ -341,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (c.getAttribute('data-img')) c.style.backgroundImage = `url('${c.getAttribute('data-img')}')`;
     });
     initTiltCards();
-    initAll3D(); // Load models if desktop
+    initAll3D();
     if (canvas) {
         initParticles();
         animateParticles();
