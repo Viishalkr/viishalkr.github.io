@@ -759,7 +759,7 @@ h2::before {
     height: 400px;
     background-color: var(--card-bg);
 
-    /* UPDATED: Theme Border, No Black Bezel */
+    /* THEME BORDER */
     border: 1px solid var(--primary-red);
 
     position: relative;
@@ -768,19 +768,17 @@ h2::before {
     justify-content: flex-end;
     padding: 30px;
 
-    /* UPDATED: Static Background (No Zoom) */
+    /* STATIC BACKGROUND */
     background-size: cover !important;
     background-position: center !important;
 
     transform-style: preserve-3d;
     transform: perspective(1000px);
     transition: transform 0.1s, box-shadow 0.3s;
-    /* Only transition box-shadow/movement */
     overflow: hidden;
 }
 
 .project-card:hover {
-    /* Glow effect instead of zoom */
     box-shadow: 0 0 20px var(--primary-red);
     transform: translateY(-5px);
 }
@@ -799,6 +797,7 @@ h2::before {
 }
 
 /* Reveal "ACCESSING..." text on hover */
+/* FIXED: Added white-space: nowrap to prevent 2-line break */
 .project-card::before {
     content: '[ ACCESS_DATA ]';
     position: absolute;
@@ -815,6 +814,7 @@ h2::before {
     opacity: 0;
     transition: 0.3s;
     z-index: 10;
+    white-space: nowrap;
 }
 
 .project-card:hover::before {
