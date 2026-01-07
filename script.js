@@ -10,14 +10,12 @@ const sections = document.querySelectorAll('section');
 const cursorDot = document.querySelector('.cursor-dot');
 const cursorOutline = document.querySelector('.cursor-outline');
 
-// State Variables
 let isEcoMode = false;
 let mouse = { x: null, y: null, radius: 150 };
 
 /* =========================================
-   2. CURSOR & INTERACTION LOGIC
+   2. CURSOR & CLICK LOGIC
    ========================================= */
-// Only run cursor logic on non-touch devices
 if (window.matchMedia("(pointer: fine)").matches) {
     window.addEventListener('mousemove', (e) => {
         mouse.x = e.x;
@@ -39,9 +37,8 @@ if (window.matchMedia("(pointer: fine)").matches) {
     });
 }
 
-// NEW: LEFT CLICK DOUBLE RIPPLE
+// DOUBLE RIPPLE
 window.addEventListener('click', (e) => {
-    // Helper function to create one ripple
     const createRipple = (delay) => {
         setTimeout(() => {
             const ripple = document.createElement('div');
@@ -49,16 +46,14 @@ window.addEventListener('click', (e) => {
             ripple.style.left = `${e.clientX}px`;
             ripple.style.top = `${e.clientY}px`;
             document.body.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600); // Remove after animation
+            setTimeout(() => ripple.remove(), 600);
         }, delay);
     };
-
-    // Spawn 2 circles with a slight delay (Echo Effect)
-    createRipple(0);    // First Circle
-    createRipple(150);  // Second Circle (150ms later)
+    createRipple(0);
+    createRipple(150);
 });
 
-// NEW: RIGHT CLICK SECURITY POPUP
+// RIGHT CLICK SECURITY
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     const msg = document.createElement('div');
@@ -126,10 +121,9 @@ if (ecoBtn) {
 }
 
 /* =========================================
-   5. BOOT SEQUENCE & TEXT SCRAMBLE
+   5. BOOT SEQUENCE
    ========================================= */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 function scrambleText(element) {
     if (!element) return;
     const originalText = element.dataset.value || element.innerText;
@@ -204,7 +198,7 @@ function getThemeRGBA(opacity) {
 }
 
 /* =========================================
-   7. CANVAS PARTICLES SYSTEM
+   7. PARTICLES & 3D MODELS
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
@@ -288,9 +282,6 @@ function connectParticles() {
     }
 }
 
-/* =========================================
-   8. THREE.JS GLTF MODEL LOADER (OPTIMIZED)
-   ========================================= */
 const clock = new THREE.Clock();
 const mixers = [];
 const sceneLights = [];
@@ -323,7 +314,7 @@ function load3DModel(containerId, modelUrl, scale, posY) {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xF1B7EA, 2.5); // Default Purple
+    const dirLight = new THREE.DirectionalLight(0xF1B7EA, 2.5);
     dirLight.position.set(5, 10, 7.5);
     dirLight.castShadow = true;
     scene.add(dirLight);
@@ -381,9 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-/* =========================================
-   9. MISC EFFECTS
-   ========================================= */
 function initTiltCards() {
     document.querySelectorAll('.project-card').forEach(c => {
         c.addEventListener('mousemove', (e) => {
