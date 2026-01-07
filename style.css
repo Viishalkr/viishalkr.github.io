@@ -174,7 +174,7 @@ body.hovering .cursor-dot {
 }
 
 /* =========================================
-   3. NAVIGATION
+   3. NAVIGATION (SLIDING ANIMATION)
    ========================================= */
 .navbar {
     position: fixed;
@@ -747,7 +747,7 @@ h2::before {
 }
 
 /* =========================================
-   9. PROJECTS (IMPROVED READABILITY)
+   9. PROJECTS (FRAMED)
    ========================================= */
 .project-grid {
     display: grid;
@@ -758,7 +758,13 @@ h2::before {
 .project-card {
     height: 400px;
     background-color: var(--card-bg);
-    border: 1px solid #222;
+
+    /* UPDATED: BORDER FRAME LOGIC */
+    border: 6px solid #000;
+    /* Thick inner bezel */
+    outline: 1px solid #333;
+    /* Thin outer line */
+
     position: relative;
     display: flex;
     flex-direction: column;
@@ -768,17 +774,17 @@ h2::before {
     background-position: center !important;
     transform-style: preserve-3d;
     transform: perspective(1000px);
-    transition: transform 0.1s, background-size 0.8s ease;
+    transition: transform 0.1s, background-size 0.8s ease, outline-color 0.3s;
     overflow: hidden;
 }
 
 .project-card:hover {
-    border-color: var(--primary-red);
+    outline-color: var(--primary-red);
+    /* Glowing frame */
     background-size: 110% !important;
-    /* Zoom Effect */
 }
 
-/* NEW: Dark Gradient Overlay (Fixes readability) */
+/* Gradient Overlay for Text Readability */
 .project-card::after {
     content: '';
     position: absolute;
@@ -824,7 +830,6 @@ h2::before {
     z-index: 5;
     transform: translateZ(20px);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-    /* Added shadow for pop */
 }
 
 .card-sub {
