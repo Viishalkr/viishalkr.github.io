@@ -39,14 +39,23 @@ if (window.matchMedia("(pointer: fine)").matches) {
     });
 }
 
-// NEW: LEFT CLICK RIPPLE
+// NEW: LEFT CLICK DOUBLE RIPPLE
 window.addEventListener('click', (e) => {
-    const ripple = document.createElement('div');
-    ripple.className = 'ripple';
-    ripple.style.left = `${e.clientX}px`;
-    ripple.style.top = `${e.clientY}px`;
-    document.body.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
+    // Helper function to create one ripple
+    const createRipple = (delay) => {
+        setTimeout(() => {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = `${e.clientX}px`;
+            ripple.style.top = `${e.clientY}px`;
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600); // Remove after animation
+        }, delay);
+    };
+
+    // Spawn 2 circles with a slight delay (Echo Effect)
+    createRipple(0);    // First Circle
+    createRipple(150);  // Second Circle (150ms later)
 });
 
 // NEW: RIGHT CLICK SECURITY POPUP
