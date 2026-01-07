@@ -747,7 +747,7 @@ h2::before {
 }
 
 /* =========================================
-   9. PROJECTS (FRAMED)
+   9. PROJECTS (STATIC & THEME BORDER)
    ========================================= */
 .project-grid {
     display: grid;
@@ -759,29 +759,30 @@ h2::before {
     height: 400px;
     background-color: var(--card-bg);
 
-    /* UPDATED: BORDER FRAME LOGIC */
-    border: 6px solid #000;
-    /* Thick inner bezel */
-    outline: 1px solid #333;
-    /* Thin outer line */
+    /* UPDATED: Theme Border, No Black Bezel */
+    border: 1px solid var(--primary-red);
 
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 30px;
-    background-size: 100% !important;
+
+    /* UPDATED: Static Background (No Zoom) */
+    background-size: cover !important;
     background-position: center !important;
+
     transform-style: preserve-3d;
     transform: perspective(1000px);
-    transition: transform 0.1s, background-size 0.8s ease, outline-color 0.3s;
+    transition: transform 0.1s, box-shadow 0.3s;
+    /* Only transition box-shadow/movement */
     overflow: hidden;
 }
 
 .project-card:hover {
-    outline-color: var(--primary-red);
-    /* Glowing frame */
-    background-size: 110% !important;
+    /* Glow effect instead of zoom */
+    box-shadow: 0 0 20px var(--primary-red);
+    transform: translateY(-5px);
 }
 
 /* Gradient Overlay for Text Readability */
