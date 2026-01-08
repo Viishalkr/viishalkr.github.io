@@ -97,11 +97,10 @@ const revealObserver = new IntersectionObserver((entries) => {
         }
     });
 }, { threshold: 0.1 });
-
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* =========================================
-   4. ECO MODE TOGGLE
+   4. ECO MODE & BOOT
    ========================================= */
 if (ecoBtn) {
     ecoBtn.addEventListener('click', () => {
@@ -120,9 +119,6 @@ if (ecoBtn) {
     });
 }
 
-/* =========================================
-   5. BOOT SEQUENCE
-   ========================================= */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 function scrambleText(element) {
     if (!element) return;
@@ -157,28 +153,15 @@ if (preloader && bootText) {
     let i = 0;
     const typeLine = () => {
         if (i < logs.length) {
-            const line = document.createElement('div');
-            line.className = 'log-line';
-            line.innerText = `> ${logs[i]}`;
-            bootText.appendChild(line);
-            bootText.scrollTop = bootText.scrollHeight;
-            setTimeout(typeLine, 400);
-            i++;
+            const line = document.createElement('div'); line.className = 'log-line'; line.innerText = `> ${logs[i]}`;
+            bootText.appendChild(line); bootText.scrollTop = bootText.scrollHeight; setTimeout(typeLine, 400); i++;
         } else {
-            setTimeout(() => {
-                preloader.classList.add('loaded');
-                document.body.classList.remove('no-scroll');
-                startTypewriter();
-                setTimeout(() => preloader.style.display = 'none', 800);
-            }, 600);
+            setTimeout(() => { preloader.classList.add('loaded'); document.body.classList.remove('no-scroll'); startTypewriter(); setTimeout(() => preloader.style.display = 'none', 800); }, 600);
         }
     };
     setTimeout(typeLine, 200);
 }
 
-/* =========================================
-   6. THEME SWITCHER
-   ========================================= */
 document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
     if (key === 'r') { document.body.classList.remove('green-mode'); document.body.classList.toggle('red-mode'); initParticles(); }
@@ -198,50 +181,24 @@ function getThemeRGBA(opacity) {
 }
 
 /* =========================================
-   7. PARTICLES & 3D MODELS
+   5. PARTICLES & 3D MODELS
    ========================================= */
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 let particlesArray;
 
-if (canvas) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
+if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 
 class Particle {
-    constructor(x, y, dx, dy, size) {
-        this.x = x; this.y = y;
-        this.dx = dx; this.dy = dy;
-        this.size = size;
-    }
-    draw() {
-        if (!ctx) return;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = getThemeColor();
-        ctx.fill();
-    }
+    constructor(x, y, dx, dy, size) { this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.size = size; }
+    draw() { if (!ctx) return; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = getThemeColor(); ctx.fill(); }
     update() {
-        if (this.x > canvas.width || this.x < 0) this.dx = -this.dx;
-        if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
-
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < mouse.radius) {
-            const f = (mouse.radius - dist) / mouse.radius;
-            this.x -= (dx / dist) * f * 5;
-            this.y -= (dy / dist) * f * 5;
-        }
-
-        this.x += this.dx;
-        this.y += this.dy;
-        this.draw();
+        if (this.x > canvas.width || this.x < 0) this.dx = -this.dx; if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
+        let dx = mouse.x - this.x; let dy = mouse.y - this.y; let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.radius) { const f = (mouse.radius - dist) / mouse.radius; this.x -= (dx / dist) * f * 5; this.y -= (dy / dist) * f * 5; }
+        this.x += this.dx; this.y += this.dy; this.draw();
     }
 }
-
 function initParticles() {
     if (!canvas || window.innerWidth < 768) return;
     particlesArray = [];
@@ -255,28 +212,19 @@ function initParticles() {
         particlesArray.push(new Particle(x, y, dx, dy, size));
     }
 }
-
 function animateParticles() {
     if (!canvas) return;
     if (isEcoMode) { ctx.clearRect(0, 0, innerWidth, innerHeight); return; }
-    requestAnimationFrame(animateParticles);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-
+    requestAnimationFrame(animateParticles); ctx.clearRect(0, 0, innerWidth, innerHeight);
     for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
     connectParticles();
 }
-
 function connectParticles() {
     for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
             let distSq = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
             if (distSq < (canvas.width / 7) * (canvas.height / 7)) {
-                ctx.strokeStyle = getThemeRGBA(1 - (distSq / 20000));
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                ctx.stroke();
+                ctx.strokeStyle = getThemeRGBA(1 - (distSq / 20000)); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
             }
         }
     }
@@ -284,42 +232,28 @@ function connectParticles() {
 
 const clock = new THREE.Clock();
 const mixers = [];
-const sceneLights = [];
 
 let mouseX = 0, mouseY = 0;
 const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
-document.addEventListener('mousemove', (event) => {
-    mouseX = (event.clientX - windowHalfX);
-    mouseY = (event.clientY - windowHalfY);
-});
+document.addEventListener('mousemove', (event) => { mouseX = (event.clientX - windowHalfX); mouseY = (event.clientY - windowHalfY); });
 
 function load3DModel(containerId, modelUrl, scale, posY) {
     const container = document.getElementById(containerId);
     if (!container || window.innerWidth < 900) return;
-
     const width = container.clientWidth;
     const height = container.clientHeight;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.z = 20;
-
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.shadowMap.enabled = true;
     renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(renderer.domElement);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-
-    const dirLight = new THREE.DirectionalLight(0xF1B7EA, 2.5);
-    dirLight.position.set(5, 10, 7.5);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
-    sceneLights.push(dirLight);
-
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xF1B7EA, 2.5); dirLight.position.set(5, 10, 7.5); dirLight.castShadow = true; scene.add(dirLight);
     const loader = new THREE.GLTFLoader();
     let model;
     loader.load(modelUrl, (gltf) => {
@@ -333,15 +267,11 @@ function load3DModel(containerId, modelUrl, scale, posY) {
             mixers.push(mixer);
         }
     }, undefined, (error) => { console.error('Error loading model:', error); });
-
     function animate() {
         requestAnimationFrame(animate);
         const delta = clock.getDelta();
         mixers.forEach(mixer => mixer.update(delta));
-        if (model) {
-            model.rotation.y = mouseX * 0.0005;
-            model.rotation.x = mouseY * 0.0005;
-        }
+        if (model) { model.rotation.y = mouseX * 0.0005; model.rotation.x = mouseY * 0.0005; }
         renderer.render(scene, camera);
     }
     animate();
@@ -361,23 +291,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     initTiltCards();
     initAll3D();
-    if (canvas) {
-        initParticles();
-        animateParticles();
-        window.addEventListener('resize', () => {
-            canvas.width = innerWidth;
-            canvas.height = innerHeight;
-            initParticles();
-        });
-    }
+    if (canvas) { initParticles(); animateParticles(); window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; initParticles(); }); }
 });
 
 function initTiltCards() {
     document.querySelectorAll('.project-card').forEach(c => {
         c.addEventListener('mousemove', (e) => {
             const r = c.getBoundingClientRect();
-            c.style.setProperty('--card-x', `${e.clientX - r.left}px`);
-            c.style.setProperty('--card-y', `${e.clientY - r.top}px`);
+            c.style.setProperty('--card-x', `${e.clientX - r.left}px`); c.style.setProperty('--card-y', `${e.clientY - r.top}px`);
             const xVal = ((e.clientX - r.left - r.width / 2) / r.width / 2) * 10;
             const yVal = ((e.clientY - r.top - r.height / 2) / r.height / 2) * -10;
             c.style.transform = `perspective(1000px) rotateX(${yVal}deg) rotateY(${xVal}deg) scale3d(1.05, 1.05, 1.05)`;
@@ -385,7 +306,68 @@ function initTiltCards() {
         c.addEventListener('mouseleave', () => c.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)');
     });
 }
-document.getElementById('whatsappBtn')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.open('https://wa.me/916203899720', '_blank');
+document.getElementById('whatsappBtn')?.addEventListener('click', (e) => { e.preventDefault(); window.open('https://wa.me/916203899720', '_blank'); });
+
+/* =========================================
+   6. PROJECT GALLERY DATA (10 IMAGES PER CATEGORY)
+   ========================================= */
+const projectData = {
+    'PHOTOGRAPHY': {
+        desc: "A collection of cinematic shots capturing raw reality.",
+        images: [
+            "https://images.unsplash.com/photo-1550684848-fac1c5b4e853", "https://images.unsplash.com/photo-1517816318133-d82052818c63",
+            "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d", "https://images.unsplash.com/photo-1534531173927-aeb928d54385",
+            "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4", "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+            "https://images.unsplash.com/photo-1501612780327-45045538702b", "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d",
+            "https://images.unsplash.com/photo-1527219525722-f9767a7f2884", "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb"
+        ]
+    },
+    'DESIGNS': {
+        desc: "Digital architecture and visual hierarchy explorations.",
+        images: [
+            "https://images.unsplash.com/photo-1626785774573-4b799314346d", "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
+            "https://images.unsplash.com/photo-1561070791-2526d30994b5", "https://images.unsplash.com/photo-1634152962476-4b8a00e1915c",
+            "https://images.unsplash.com/photo-1558655146-d09347e92766", "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
+            "https://images.unsplash.com/photo-1572044162444-ad60f128bdea", "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e",
+            "https://images.unsplash.com/photo-1620641788427-b11e6962b2a1", "https://images.unsplash.com/photo-1550751827-4bd374c3f58b"
+        ]
+    },
+    'VIDEO EDITING': {
+        desc: "Temporal manipulation and motion graphics.",
+        images: [
+            "https://images.unsplash.com/photo-1536240478700-b869070f9279", "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44c",
+            "https://images.unsplash.com/photo-1535016120720-40c6874c3b13", "https://images.unsplash.com/photo-1524178232363-1fb2b075b655",
+            "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4", "https://images.unsplash.com/photo-1478720568477-152d9b164e63",
+            "https://images.unsplash.com/photo-1505373877841-8d25f7d46678", "https://images.unsplash.com/photo-1533750516457-a7f992034fec",
+            "https://images.unsplash.com/photo-1585251318482-78db85055ca3", "https://images.unsplash.com/photo-1518932945647-7a1c969f8be2"
+        ]
+    }
+};
+
+const modal = document.getElementById("projectModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalGallery = document.getElementById("modalGallery");
+const closeBtn = document.querySelector(".close");
+
+document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const category = card.querySelector('.card-content').innerText.trim();
+        const data = projectData[category];
+        if (data) {
+            modalTitle.innerText = category;
+            modalDesc.innerText = data.desc;
+            modalGallery.innerHTML = '';
+            data.images.forEach(imgUrl => {
+                const img = document.createElement('img');
+                img.src = imgUrl; img.className = 'gallery-item';
+                modalGallery.appendChild(img);
+            });
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+    });
 });
+
+closeBtn.onclick = function () { modal.style.display = "none"; document.body.style.overflow = "auto"; }
+window.onclick = function (event) { if (event.target == modal) { modal.style.display = "none"; document.body.style.overflow = "auto"; } }
