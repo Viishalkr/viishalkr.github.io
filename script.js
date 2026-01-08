@@ -309,41 +309,61 @@ function initTiltCards() {
 document.getElementById('whatsappBtn')?.addEventListener('click', (e) => { e.preventDefault(); window.open('https://wa.me/916203899720', '_blank'); });
 
 /* =========================================
-   6. PROJECT GALLERY DATA (10 IMAGES PER CATEGORY)
+   6. PROJECT GALLERY DATA (UPDATED)
    ========================================= */
 const projectData = {
     'PHOTOGRAPHY': {
         desc: "A collection of cinematic shots capturing raw reality.",
+        // Matches your Windows Renaming Pattern: "1 (1).jpg"
         images: [
-            "https://images.unsplash.com/photo-1550684848-fac1c5b4e853", "https://images.unsplash.com/photo-1517816318133-d82052818c63",
-            "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d", "https://images.unsplash.com/photo-1534531173927-aeb928d54385",
-            "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4", "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-            "https://images.unsplash.com/photo-1501612780327-45045538702b", "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d",
-            "https://images.unsplash.com/photo-1527219525722-f9767a7f2884", "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb"
+            "assets/work/photography/1 (1).jpg",
+            "assets/work/photography/1 (2).jpg",
+            "assets/work/photography/1 (3).jpg",
+            "assets/work/photography/1 (4).jpg",
+            "assets/work/photography/1 (5).jpg",
+            "assets/work/photography/1 (6).jpg",
+            "assets/work/photography/1 (7).jpg",
+            "assets/work/photography/1 (8).jpg",
+            "assets/work/photography/1 (9).jpg",
+            "assets/work/photography/1 (10).jpg"
         ]
     },
     'DESIGNS': {
         desc: "Digital architecture and visual hierarchy explorations.",
         images: [
-            "https://images.unsplash.com/photo-1626785774573-4b799314346d", "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
-            "https://images.unsplash.com/photo-1561070791-2526d30994b5", "https://images.unsplash.com/photo-1634152962476-4b8a00e1915c",
-            "https://images.unsplash.com/photo-1558655146-d09347e92766", "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-            "https://images.unsplash.com/photo-1572044162444-ad60f128bdea", "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e",
-            "https://images.unsplash.com/photo-1620641788427-b11e6962b2a1", "https://images.unsplash.com/photo-1550751827-4bd374c3f58b"
+            "assets/work/designs/1 (1).jpg",
+            "assets/work/designs/1 (2).jpg",
+            "assets/work/designs/1 (3).jpg",
+            "assets/work/designs/1 (4).jpg",
+            "assets/work/designs/1 (5).jpg",
+            "assets/work/designs/1 (6).jpg",
+            "assets/work/designs/1 (7).jpg",
+            "assets/work/designs/1 (8).jpg",
+            "assets/work/designs/1 (9).jpg",
+            "assets/work/designs/1 (10).jpg"
         ]
     },
     'VIDEO EDITING': {
-        desc: "Temporal manipulation and motion graphics.",
+        desc: "Temporal manipulation and motion graphics. (YouTube/Links)",
+        // PASTE YOUR YOUTUBE/VIDEO LINKS HERE
         images: [
-            "https://images.unsplash.com/photo-1536240478700-b869070f9279", "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44c",
-            "https://images.unsplash.com/photo-1535016120720-40c6874c3b13", "https://images.unsplash.com/photo-1524178232363-1fb2b075b655",
-            "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4", "https://images.unsplash.com/photo-1478720568477-152d9b164e63",
-            "https://images.unsplash.com/photo-1505373877841-8d25f7d46678", "https://images.unsplash.com/photo-1533750516457-a7f992034fec",
-            "https://images.unsplash.com/photo-1585251318482-78db85055ca3", "https://images.unsplash.com/photo-1518932945647-7a1c969f8be2"
+            "https://www.youtube.com/embed/dQw4w9WgXcQ", // Example 1
+            "https://www.youtube.com/embed/tgbNymZ7vqY", // Example 2
+            "https://www.youtube.com/embed/M7fi_POt348",
+            "https://www.youtube.com/embed/L_jWHffIx5E",
+            "https://www.youtube.com/embed/9bZkp7q19f0",
+            "https://www.youtube.com/embed/J---aiyznGQ",
+            "https://www.youtube.com/embed/lJIrF4YjHfQ",
+            "https://www.youtube.com/embed/ScMzIvxBSi4",
+            "https://www.youtube.com/embed/5qap5aO4i9A",
+            "https://www.youtube.com/embed/34Na4j8AVgA"
         ]
     }
 };
 
+/* =========================================
+   7. MODAL LOGIC (AUTO DETECT VIDEO vs IMG)
+   ========================================= */
 const modal = document.getElementById("projectModal");
 const modalTitle = document.getElementById("modalTitle");
 const modalDesc = document.getElementById("modalDesc");
@@ -358,10 +378,23 @@ document.querySelectorAll('.project-card').forEach(card => {
             modalTitle.innerText = category;
             modalDesc.innerText = data.desc;
             modalGallery.innerHTML = '';
-            data.images.forEach(imgUrl => {
-                const img = document.createElement('img');
-                img.src = imgUrl; img.className = 'gallery-item';
-                modalGallery.appendChild(img);
+
+            data.images.forEach(itemUrl => {
+                let element;
+                // CHECK IF IT IS A VIDEO LINK (YouTube, Vimeo, etc)
+                if (itemUrl.includes('youtube') || itemUrl.includes('vimeo') || itemUrl.includes('embed')) {
+                    element = document.createElement('iframe');
+                    element.src = itemUrl;
+                    element.className = 'gallery-item';
+                    element.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                    element.allowFullscreen = true;
+                } else {
+                    // OTHERWISE IT IS AN IMAGE
+                    element = document.createElement('img');
+                    element.src = itemUrl;
+                    element.className = 'gallery-item';
+                }
+                modalGallery.appendChild(element);
             });
             modal.style.display = "block";
             document.body.style.overflow = "hidden";

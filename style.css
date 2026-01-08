@@ -719,15 +719,15 @@ h2::before {
     cursor: default;
 }
 
-.hud-card:hover .skill-pill {
-    border-color: var(--primary-red);
-    color: #fff;
-}
-
 .skill-pill:hover {
     background: var(--primary-red);
     color: #000;
     box-shadow: 0 0 10px var(--primary-red);
+}
+
+.hud-card:hover .skill-pill {
+    border-color: var(--primary-red);
+    color: #fff;
 }
 
 .hud-footer {
@@ -741,7 +741,7 @@ h2::before {
 }
 
 /* =========================================
-   9. PROJECTS
+   9. PROJECTS (STATIC & THEME BORDER)
    ========================================= */
 .project-grid {
     display: grid;
