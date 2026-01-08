@@ -842,7 +842,8 @@ h2::before {
     font-weight: 700;
     text-transform: uppercase;
     text-decoration: none;
-    transition: 0.2s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Bouncy transition */
     border: 1px solid var(--primary-red);
     font-family: var(--font-head);
     letter-spacing: 2px;
@@ -854,10 +855,14 @@ h2::before {
     background: var(--primary-red);
     color: #000;
     box-shadow: 0 0 20px var(--primary-red);
+
+    /* NEW: Levitate Effect */
+    transform: translateY(-5px);
 }
 
 .cyber-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.95) translateY(0);
+    /* Press down effect */
     box-shadow: 0 0 5px var(--primary-red);
 }
 
@@ -866,93 +871,6 @@ h2::before {
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
-}
-
-/* UPDATED FOOTER STYLING */
-.cyber-footer {
-    padding: 60px 10% 40px;
-    /* More spacing */
-    background: #050505;
-    font-size: 0.9rem;
-    color: #888;
-    font-family: var(--font-tech);
-    position: relative;
-    z-index: 10;
-}
-
-.footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 30px;
-    margin-top: 40px;
-    flex-wrap: wrap;
-    /* Allows stacking on mobile */
-    gap: 20px;
-    /* Consistent gap between items */
-}
-
-/* Base Style for Footer Text */
-.sys-status,
-.perf-toggle-btn,
-.footer-copyright,
-.back-to-top {
-    font-family: var(--font-tech);
-    letter-spacing: 1px;
-    transition: 0.3s;
-    /* Subtle Default Glow */
-    text-shadow: 0 0 5px rgba(241, 183, 234, 0.4);
-}
-
-/* Interactive Elements (Hover Glow) */
-.perf-toggle-btn,
-.back-to-top {
-    cursor: pointer;
-    color: var(--text-muted);
-}
-
-.perf-toggle-btn:hover,
-.back-to-top:hover {
-    color: var(--primary-red);
-    text-shadow: 0 0 15px var(--primary-red);
-    /* Stronger Glow on Hover */
-}
-
-/* Footer Status Dot Blink */
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--primary-red);
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 10px;
-    animation: blink 2s infinite;
-    box-shadow: 0 0 10px var(--primary-red);
-}
-
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.3;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-/* Mobile Adjustment for Footer */
-@media (max-width: 768px) {
-    .footer-bottom {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
 }
 
 /* =========================================
