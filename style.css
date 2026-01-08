@@ -868,12 +868,16 @@ h2::before {
     margin-top: 20px;
 }
 
+/* UPDATED FOOTER STYLING */
 .cyber-footer {
-    padding: 40px 10%;
+    padding: 60px 10% 40px;
+    /* More spacing */
     background: #050505;
     font-size: 0.9rem;
-    color: #666;
+    color: #888;
     font-family: var(--font-tech);
+    position: relative;
+    z-index: 10;
 }
 
 .footer-bottom {
@@ -881,10 +885,42 @@ h2::before {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    border-top: 1px solid #222;
-    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    /* Allows stacking on mobile */
+    gap: 20px;
+    /* Consistent gap between items */
 }
 
+/* Base Style for Footer Text */
+.sys-status,
+.perf-toggle-btn,
+.footer-copyright,
+.back-to-top {
+    font-family: var(--font-tech);
+    letter-spacing: 1px;
+    transition: 0.3s;
+    /* Subtle Default Glow */
+    text-shadow: 0 0 5px rgba(241, 183, 234, 0.4);
+}
+
+/* Interactive Elements (Hover Glow) */
+.perf-toggle-btn,
+.back-to-top {
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.perf-toggle-btn:hover,
+.back-to-top:hover {
+    color: var(--primary-red);
+    text-shadow: 0 0 15px var(--primary-red);
+    /* Stronger Glow on Hover */
+}
+
+/* Footer Status Dot Blink */
 .status-dot {
     width: 8px;
     height: 8px;
@@ -893,6 +929,7 @@ h2::before {
     display: inline-block;
     margin-right: 10px;
     animation: blink 2s infinite;
+    box-shadow: 0 0 10px var(--primary-red);
 }
 
 @keyframes blink {
@@ -906,6 +943,15 @@ h2::before {
 
     100% {
         opacity: 1;
+    }
+}
+
+/* Mobile Adjustment for Footer */
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
     }
 }
 
