@@ -935,7 +935,7 @@ h2::before {
 }
 
 /* =========================================
-   11. MISC
+   11. MISC (UPDATED LOADER)
    ========================================= */
 #preloader {
     position: fixed;
@@ -948,7 +948,7 @@ h2::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.8s ease-out;
+    transition: opacity 0.5s ease-out;
 }
 
 #preloader.loaded {
@@ -956,32 +956,37 @@ h2::before {
     pointer-events: none;
 }
 
-.terminal-container {
-    width: 400px;
-    height: 250px;
-    background: rgba(0, 0, 0, 0.9);
-    border: 1px solid #333;
-    display: flex;
-    flex-direction: column;
+.loader-content {
+    width: 300px;
+    text-align: center;
 }
 
-.terminal-header {
-    background: #1a1a1a;
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #333;
-}
-
-.terminal-body {
-    flex: 1;
-    padding: 15px;
+#loader-text {
     font-family: var(--font-tech);
-    font-size: 14px;
     color: var(--primary-red);
-    overflow-y: auto;
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--primary-red);
 }
 
+.loader-line {
+    width: 100%;
+    height: 2px;
+    background: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+#loader-progress {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-red);
+    box-shadow: 0 0 10px var(--primary-red);
+    transition: width 0.1s linear;
+}
+
+/* Modal and other misc styles remain the same below... */
 .modal {
     display: none;
     position: fixed;
