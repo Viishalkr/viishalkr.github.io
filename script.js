@@ -374,8 +374,42 @@ const closeBtn = document.querySelector(".close");
 // Lightbox Elements
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
+const lightboxContainer = document.getElementById("lightbox-container");
 const lightboxCaption = document.getElementById("lightbox-caption");
 const lightboxClose = document.querySelector(".lightbox-close");
+const prevBtn = document.querySelector(".prev");
+const nextBtn = document.querySelector(".next");
+
+// Navigation State
+let currentGallery = [];
+let currentIndex = 0;
+let currentTechSpecs = "";
+
+function openLightbox(index) {
+    currentIndex = index;
+    updateLightboxContent();
+    lightbox.classList.add('active');
+}
+
+function updateLightboxContent() {
+    const itemUrl = currentGallery[currentIndex];
+    lightboxImg.style.display = "none";
+    lightboxContainer.style.display = "none";
+    lightboxContainer.innerHTML = "";
+
+    if (itemUrl.includes('youtube') || itemUrl.includes('vimeo') || itemUrl.includes('embed')) {
+        lightboxContainer.style.display = "flex";
+        const iframe = document.createElement('iframe');
+        iframe.src = itemUrl;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        lightboxContainer.appendChild(iframe);
+    } else {
+        lightboxImg.style.display = "block";
+        lightboxImg.src = itemUrl;
+    }
+    lightboxCaption.innerText = `${currentIndex + 1} / ${currentGallery.length} | [ ${currentTechSpecs} ]`;
+}
 
 document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -386,28 +420,27 @@ document.querySelectorAll('.project-card').forEach(card => {
             modalDesc.innerText = data.desc;
             modalGallery.innerHTML = '';
 
-            data.images.forEach(itemUrl => {
+            currentGallery = data.images;
+            currentTechSpecs = data.tech;
+
+            data.images.forEach((itemUrl, index) => {
                 let element;
-                // IF VIDEO
                 if (itemUrl.includes('youtube') || itemUrl.includes('vimeo') || itemUrl.includes('embed')) {
-                    element = document.createElement('iframe');
-                    element.src = itemUrl;
+                    element = document.createElement('div');
                     element.className = 'gallery-item';
-                    element.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                    element.allowFullscreen = true;
+                    element.style.background = '#111';
+                    element.style.display = 'flex';
+                    element.style.alignItems = 'center';
+                    element.style.justifyContent = 'center';
+                    element.innerText = "▶ PLAY VIDEO";
+                    element.style.color = "var(--primary-red)";
+                    element.style.fontFamily = "var(--font-tech)";
                 } else {
-                    // IF IMAGE -> Add Click Event for Lightbox
                     element = document.createElement('img');
                     element.src = itemUrl;
                     element.className = 'gallery-item';
-
-                    // CLICK TO OPEN LIGHTBOX
-                    element.onclick = () => {
-                        lightboxImg.src = itemUrl;
-                        lightboxCaption.innerText = `[ ${data.tech} ]`; // Displays Specs
-                        lightbox.classList.add('active');
-                    };
                 }
+                element.onclick = () => openLightbox(index);
                 modalGallery.appendChild(element);
             });
             modal.style.display = "block";
@@ -416,10 +449,20 @@ document.querySelectorAll('.project-card').forEach(card => {
     });
 });
 
-// Close Modal
+function showNext() { currentIndex = (currentIndex + 1) % currentGallery.length; updateLightboxContent(); }
+function showPrev() { currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length; updateLightboxContent(); }
+
+nextBtn.onclick = (e) => { e.stopPropagation(); showNext(); };
+prevBtn.onclick = (e) => { e.stopPropagation(); showPrev(); };
+
+document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === "ArrowRight") showNext();
+    if (e.key === "ArrowLeft") showPrev();
+    if (e.key === "Escape") lightbox.classList.remove('active');
+});
+
 closeBtn.onclick = function () { modal.style.display = "none"; document.body.style.overflow = "auto"; }
 window.onclick = function (event) { if (event.target == modal) { modal.style.display = "none"; document.body.style.overflow = "auto"; } }
-
-// Close Lightbox
 lightboxClose.onclick = () => lightbox.classList.remove('active');
 lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); };
