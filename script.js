@@ -391,13 +391,14 @@ function openLightbox(index) {
 function updateLightboxContent() {
     let itemUrl = currentGallery[currentIndex];
 
+    // Reset Display
     lightboxImg.style.display = "none";
     lightboxContainer.style.display = "none";
     lightboxContainer.innerHTML = "";
 
     // DETECT MEDIA TYPE
     if (itemUrl.includes('youtube') || itemUrl.includes('vimeo')) {
-        // YouTube/Vimeo
+        // 1. YouTube/Vimeo (These allow embedding)
         lightboxContainer.style.display = "flex";
         const iframe = document.createElement('iframe');
         iframe.src = itemUrl;
@@ -405,18 +406,22 @@ function updateLightboxContent() {
         lightboxContainer.appendChild(iframe);
 
     } else if (itemUrl.includes('instagram.com')) {
-        // Instagram Reel
+        // 2. INSTAGRAM (Blocks embedding -> Show "Watch" Button)
         lightboxContainer.style.display = "flex";
-        const iframe = document.createElement('iframe');
-        if (!itemUrl.endsWith('/embed') && !itemUrl.endsWith('/embed/')) {
-            itemUrl = itemUrl.replace(/\/$/, "") + "/embed";
-        }
-        iframe.src = itemUrl;
-        iframe.style.background = "white";
-        lightboxContainer.appendChild(iframe);
+        lightboxContainer.innerHTML = `
+            <div style="text-align:center; color:white; font-family:var(--font-head);">
+                <h3 style="margin-bottom:20px; color:var(--primary-red);">INSTAGRAM REEL</h3>
+                <p style="margin-bottom:30px; color:#ccc; font-family:var(--font-tech);">
+                    Instagram does not allow direct playback on external portfolios.
+                </p>
+                <a href="${itemUrl}" target="_blank" class="cyber-btn">
+                    <span class="btn-text">WATCH ON INSTAGRAM &nearr;</span>
+                </a>
+            </div>
+        `;
 
     } else if (itemUrl.endsWith('.mp4') || itemUrl.endsWith('.webm')) {
-        // Local Video
+        // 3. Local Video File (Best Quality)
         lightboxContainer.style.display = "flex";
         const video = document.createElement('video');
         video.src = itemUrl;
@@ -427,11 +432,12 @@ function updateLightboxContent() {
         lightboxContainer.appendChild(video);
 
     } else {
-        // Image
+        // 4. Standard Image
         lightboxImg.style.display = "block";
         lightboxImg.src = itemUrl;
     }
 
+    // Update Caption
     lightboxCaption.innerText = `${currentIndex + 1} / ${currentGallery.length} | [ ${currentTechSpecs} ]`;
 }
 
