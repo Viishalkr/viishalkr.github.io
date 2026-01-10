@@ -168,7 +168,7 @@ body.hovering .cursor-dot {
 }
 
 /* =========================================
-   3. NAVIGATION (CARBON FIBER)
+   3. NAVIGATION (CYBER GLASS)
    ========================================= */
 .navbar {
     position: fixed;
@@ -179,12 +179,17 @@ body.hovering .cursor-dot {
     justify-content: flex-end;
     align-items: center;
     z-index: 1000;
-    background-color: rgba(5, 5, 8, 0.95) !important;
-    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 75%, transparent);
-    background-size: 10px 10px;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+
+    /* GLASS EFFECT */
+    background-color: rgba(5, 5, 8, 0.6) !important;
+    /* High Transparency */
+    backdrop-filter: blur(20px);
+    /* Heavy Blur */
+    -webkit-backdrop-filter: blur(20px);
+
+    /* BORDER & GLOW */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
 }
 
 nav a {
@@ -201,6 +206,7 @@ nav a {
     position: relative;
 }
 
+/* Hover Effect: Glow Line */
 nav a::after {
     content: '';
     position: absolute;
@@ -215,66 +221,20 @@ nav a::after {
 
 nav a:hover {
     color: #fff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 nav a:hover::after {
     width: 100%;
 }
 
-.side-hud {
-    position: fixed;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 20px;
-    z-index: 1000;
-}
-
-.hud-point {
-    font-family: var(--font-tech);
-    font-size: 16px;
-    color: #555;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.hud-point::before {
-    content: attr(data-label);
-    opacity: 0;
-    margin-right: 15px;
-    font-weight: bold;
-    color: var(--primary-red);
-    font-size: 14px;
-    transform: translateX(10px);
-    transition: 0.3s;
-    font-family: var(--font-head);
-}
-
-.hud-point:hover::before,
-.hud-point.active::before {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.hud-point:hover,
-.hud-point.active {
-    color: var(--primary-red);
-    transform: scale(1.1);
-}
-
-#scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 4px;
-    background: var(--primary-red);
-    z-index: 10000;
-    box-shadow: 0 0 10px var(--primary-red);
+/* Mobile Adjustment */
+@media (max-width: 768px) {
+    .navbar {
+        justify-content: center;
+        background-color: rgba(5, 5, 8, 0.9) !important;
+        /* Darker on mobile */
+    }
 }
 
 /* =========================================
