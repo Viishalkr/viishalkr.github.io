@@ -309,7 +309,7 @@ function initTiltCards() {
 document.getElementById('whatsappBtn')?.addEventListener('click', (e) => { e.preventDefault(); window.open('https://wa.me/916203899720', '_blank'); });
 
 /* =========================================
-   6. PROJECT GALLERY DATA (WITH TECH SPECS)
+   6. PROJECT GALLERY DATA (UPDATED)
    ========================================= */
 const projectData = {
     'PHOTOGRAPHY': {
@@ -347,17 +347,11 @@ const projectData = {
     'VIDEO EDITING': {
         desc: "Temporal manipulation and motion graphics.",
         tech: "SOFTWARE: PREMIERE PRO & AFTER EFFECTS",
+        // PASTE YOUR INSTAGRAM REEL LINKS HERE
         images: [
-            "https://www.youtube.com/embed/dQw4w9WgXcQ",
-            "https://www.youtube.com/embed/tgbNymZ7vqY",
-            "https://www.youtube.com/embed/M7fi_POt348",
-            "https://www.youtube.com/embed/L_jWHffIx5E",
-            "https://www.youtube.com/embed/9bZkp7q19f0",
-            "https://www.youtube.com/embed/J---aiyznGQ",
-            "https://www.youtube.com/embed/lJIrF4YjHfQ",
-            "https://www.youtube.com/embed/ScMzIvxBSi4",
-            "https://www.youtube.com/embed/5qap5aO4i9A",
-            "https://www.youtube.com/embed/34Na4j8AVgA"
+            "https://www.instagram.com/reel/DCq-qGzB7_W/",
+            "https://www.instagram.com/reel/DAX3C8Khw-L/",
+            // Add more links separated by commas...
         ]
     }
 };
@@ -371,7 +365,6 @@ const modalDesc = document.getElementById("modalDesc");
 const modalGallery = document.getElementById("modalGallery");
 const closeBtn = document.querySelector(".close");
 
-// Lightbox Elements
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 const lightboxContainer = document.getElementById("lightbox-container");
@@ -380,7 +373,6 @@ const lightboxClose = document.querySelector(".lightbox-close");
 const prevBtn = document.querySelector(".prev");
 const nextBtn = document.querySelector(".next");
 
-// Navigation State
 let currentGallery = [];
 let currentIndex = 0;
 let currentTechSpecs = "";
@@ -392,22 +384,49 @@ function openLightbox(index) {
 }
 
 function updateLightboxContent() {
-    const itemUrl = currentGallery[currentIndex];
+    let itemUrl = currentGallery[currentIndex];
+
     lightboxImg.style.display = "none";
     lightboxContainer.style.display = "none";
     lightboxContainer.innerHTML = "";
 
-    if (itemUrl.includes('youtube') || itemUrl.includes('vimeo') || itemUrl.includes('embed')) {
+    // DETECT MEDIA TYPE
+    if (itemUrl.includes('youtube') || itemUrl.includes('vimeo')) {
+        // YouTube/Vimeo
         lightboxContainer.style.display = "flex";
         const iframe = document.createElement('iframe');
         iframe.src = itemUrl;
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        iframe.allowFullscreen = true;
+        iframe.allow = "autoplay; encrypted-media; fullscreen";
         lightboxContainer.appendChild(iframe);
+
+    } else if (itemUrl.includes('instagram.com')) {
+        // Instagram Reel
+        lightboxContainer.style.display = "flex";
+        const iframe = document.createElement('iframe');
+        if (!itemUrl.endsWith('/embed') && !itemUrl.endsWith('/embed/')) {
+            itemUrl = itemUrl.replace(/\/$/, "") + "/embed";
+        }
+        iframe.src = itemUrl;
+        iframe.style.background = "white";
+        lightboxContainer.appendChild(iframe);
+
+    } else if (itemUrl.endsWith('.mp4') || itemUrl.endsWith('.webm')) {
+        // Local Video
+        lightboxContainer.style.display = "flex";
+        const video = document.createElement('video');
+        video.src = itemUrl;
+        video.controls = true;
+        video.autoplay = true;
+        video.style.maxWidth = "100%";
+        video.style.maxHeight = "100%";
+        lightboxContainer.appendChild(video);
+
     } else {
+        // Image
         lightboxImg.style.display = "block";
         lightboxImg.src = itemUrl;
     }
+
     lightboxCaption.innerText = `${currentIndex + 1} / ${currentGallery.length} | [ ${currentTechSpecs} ]`;
 }
 
@@ -425,21 +444,26 @@ document.querySelectorAll('.project-card').forEach(card => {
 
             data.images.forEach((itemUrl, index) => {
                 let element;
-                if (itemUrl.includes('youtube') || itemUrl.includes('vimeo') || itemUrl.includes('embed')) {
+                // Create Thumbnail based on type
+                if (itemUrl.includes('instagram') || itemUrl.includes('youtube') || itemUrl.endsWith('.mp4')) {
                     element = document.createElement('div');
                     element.className = 'gallery-item';
                     element.style.background = '#111';
                     element.style.display = 'flex';
                     element.style.alignItems = 'center';
                     element.style.justifyContent = 'center';
-                    element.innerText = "▶ PLAY VIDEO";
-                    element.style.color = "var(--primary-red)";
-                    element.style.fontFamily = "var(--font-tech)";
+                    element.style.border = "1px solid #333";
+
+                    let label = "▶ PLAY VIDEO";
+                    if (itemUrl.includes('instagram')) label = "📸 INSTAGRAM";
+
+                    element.innerHTML = `<span style="color:var(--primary-red); font-family:var(--font-tech); letter-spacing:2px;">${label}</span>`;
                 } else {
                     element = document.createElement('img');
                     element.src = itemUrl;
                     element.className = 'gallery-item';
                 }
+
                 element.onclick = () => openLightbox(index);
                 modalGallery.appendChild(element);
             });
