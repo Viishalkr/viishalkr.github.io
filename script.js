@@ -309,12 +309,12 @@ function initTiltCards() {
 document.getElementById('whatsappBtn')?.addEventListener('click', (e) => { e.preventDefault(); window.open('https://wa.me/916203899720', '_blank'); });
 
 /* =========================================
-   6. PROJECT GALLERY DATA (UPDATED)
+   6. PROJECT GALLERY DATA (WITH TECH SPECS)
    ========================================= */
 const projectData = {
     'PHOTOGRAPHY': {
         desc: "A collection of cinematic shots capturing raw reality.",
-        // Matches your Windows Renaming Pattern: "1 (1).jpg"
+        tech: "SHOT ON: SONY ZV-E10 // LENS: 35MM",
         images: [
             "assets/work/photography/1 (1).jpg",
             "assets/work/photography/1 (2).jpg",
@@ -330,6 +330,7 @@ const projectData = {
     },
     'DESIGNS': {
         desc: "Digital architecture and visual hierarchy explorations.",
+        tech: "TOOLS: ADOBE PHOTOSHOP & ILLUSTRATOR",
         images: [
             "assets/work/designs/1 (1).jpg",
             "assets/work/designs/1 (2).jpg",
@@ -344,11 +345,11 @@ const projectData = {
         ]
     },
     'VIDEO EDITING': {
-        desc: "Temporal manipulation and motion graphics. (YouTube/Links)",
-        // PASTE YOUR YOUTUBE/VIDEO LINKS HERE
+        desc: "Temporal manipulation and motion graphics.",
+        tech: "SOFTWARE: PREMIERE PRO & AFTER EFFECTS",
         images: [
-            "https://www.youtube.com/embed/dQw4w9WgXcQ", // Example 1
-            "https://www.youtube.com/embed/tgbNymZ7vqY", // Example 2
+            "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            "https://www.youtube.com/embed/tgbNymZ7vqY",
             "https://www.youtube.com/embed/M7fi_POt348",
             "https://www.youtube.com/embed/L_jWHffIx5E",
             "https://www.youtube.com/embed/9bZkp7q19f0",
@@ -362,13 +363,19 @@ const projectData = {
 };
 
 /* =========================================
-   7. MODAL LOGIC (AUTO DETECT VIDEO vs IMG)
+   7. MODAL & LIGHTBOX LOGIC
    ========================================= */
 const modal = document.getElementById("projectModal");
 const modalTitle = document.getElementById("modalTitle");
 const modalDesc = document.getElementById("modalDesc");
 const modalGallery = document.getElementById("modalGallery");
 const closeBtn = document.querySelector(".close");
+
+// Lightbox Elements
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxCaption = document.getElementById("lightbox-caption");
+const lightboxClose = document.querySelector(".lightbox-close");
 
 document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -381,7 +388,7 @@ document.querySelectorAll('.project-card').forEach(card => {
 
             data.images.forEach(itemUrl => {
                 let element;
-                // CHECK IF IT IS A VIDEO LINK (YouTube, Vimeo, etc)
+                // IF VIDEO
                 if (itemUrl.includes('youtube') || itemUrl.includes('vimeo') || itemUrl.includes('embed')) {
                     element = document.createElement('iframe');
                     element.src = itemUrl;
@@ -389,10 +396,17 @@ document.querySelectorAll('.project-card').forEach(card => {
                     element.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
                     element.allowFullscreen = true;
                 } else {
-                    // OTHERWISE IT IS AN IMAGE
+                    // IF IMAGE -> Add Click Event for Lightbox
                     element = document.createElement('img');
                     element.src = itemUrl;
                     element.className = 'gallery-item';
+
+                    // CLICK TO OPEN LIGHTBOX
+                    element.onclick = () => {
+                        lightboxImg.src = itemUrl;
+                        lightboxCaption.innerText = `[ ${data.tech} ]`; // Displays Specs
+                        lightbox.classList.add('active');
+                    };
                 }
                 modalGallery.appendChild(element);
             });
@@ -402,5 +416,10 @@ document.querySelectorAll('.project-card').forEach(card => {
     });
 });
 
+// Close Modal
 closeBtn.onclick = function () { modal.style.display = "none"; document.body.style.overflow = "auto"; }
 window.onclick = function (event) { if (event.target == modal) { modal.style.display = "none"; document.body.style.overflow = "auto"; } }
+
+// Close Lightbox
+lightboxClose.onclick = () => lightbox.classList.remove('active');
+lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); };
