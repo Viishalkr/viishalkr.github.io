@@ -519,3 +519,4 @@ if (preloader && bootText) {
     window.onclick = function (event) { if (event.target == modal) { modal.style.display = "none"; document.body.style.overflow = "auto"; } }
     lightboxClose.onclick = () => lightbox.classList.remove('active');
     lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); };
+}
