@@ -349,8 +349,13 @@ const projectData = {
         tech: "SOFTWARE: PREMIERE PRO & AFTER EFFECTS",
         // PASTE YOUR INSTAGRAM REEL LINKS HERE
         images: [
-            "https://www.instagram.com/reel/DCq-qGzB7_W/",
-            "https://www.instagram.com/reel/DAX3C8Khw-L/",
+            "https://www.instagram.com/reel/DJjMygkvyjO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DLPp77CNrtT/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DP9c6YPEaQL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/C_-jg_LJDxe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DPergVdAebH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DPk9ubfgToZ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+
             // Add more links separated by commas...
         ]
     }
