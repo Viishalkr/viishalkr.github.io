@@ -148,285 +148,281 @@ function startTypewriter() {
     scrambleText(document.querySelector('.main-title'));
 }
 
-if (preloader && bootText) {
-    /* =========================================
-   REPLACE THE OLD "BOOT TEXT" LOGIC WITH THIS:
+const loaderBar = document.getElementById('loader-progress');
+const loaderText = document.getElementById('loader-text');
+
+if (preloader && loaderBar && loaderText) {
+    let width = 0;
+    const interval = setInterval(() => {
+        // Randomly increment speed to make it look "computational"
+        width += Math.floor(Math.random() * 5) + 1;
+
+        if (width > 100) width = 100;
+
+        // Update DOM
+        loaderBar.style.width = width + '%';
+        loaderText.innerText = `SYSTEM_BOOT // ${width}%`;
+
+        // Finish Loading
+        if (width === 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.classList.add('loaded');
+                document.body.classList.remove('no-scroll');
+                startTypewriter(); // Start the hero text animation
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }, 500);
+        }
+    }, 40); // 40ms speed
+}
+
+document.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+    if (key === 'r') { document.body.classList.remove('green-mode'); document.body.classList.toggle('red-mode'); initParticles(); }
+    else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); initParticles(); }
+    else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); initParticles(); }
+});
+
+function getThemeColor() {
+    if (document.body.classList.contains('red-mode')) return '#F42C1D';
+    if (document.body.classList.contains('green-mode')) return '#32CD32';
+    return '#F1B7EA';
+}
+function getThemeRGBA(opacity) {
+    if (document.body.classList.contains('red-mode')) return `rgba(244, 44, 29, ${opacity})`;
+    if (document.body.classList.contains('green-mode')) return `rgba(50, 205, 50, ${opacity})`;
+    return `rgba(241, 183, 234, ${opacity})`;
+}
+
+/* =========================================
+   5. PARTICLES & 3D MODELS
    ========================================= */
-    const loaderBar = document.getElementById('loader-progress');
-    const loaderText = document.getElementById('loader-text');
+const canvas = document.getElementById('neural-canvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+let particlesArray;
 
-    if (preloader && loaderBar && loaderText) {
-        let width = 0;
-        const interval = setInterval(() => {
-            // Randomly increment speed to make it look "computational"
-            width += Math.floor(Math.random() * 5) + 1;
+if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 
-            if (width > 100) width = 100;
-
-            // Update DOM
-            loaderBar.style.width = width + '%';
-            loaderText.innerText = `SYSTEM_BOOT // ${width}%`;
-
-            // Finish Loading
-            if (width === 100) {
-                clearInterval(interval);
-                setTimeout(() => {
-                    preloader.classList.add('loaded');
-                    document.body.classList.remove('no-scroll');
-                    startTypewriter(); // Start the hero text animation
-                    setTimeout(() => preloader.style.display = 'none', 500);
-                }, 500);
-            }
-        }, 40); // 40ms speed
+class Particle {
+    constructor(x, y, dx, dy, size) { this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.size = size; }
+    draw() { if (!ctx) return; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = getThemeColor(); ctx.fill(); }
+    update() {
+        if (this.x > canvas.width || this.x < 0) this.dx = -this.dx; if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
+        let dx = mouse.x - this.x; let dy = mouse.y - this.y; let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.radius) { const f = (mouse.radius - dist) / mouse.radius; this.x -= (dx / dist) * f * 5; this.y -= (dy / dist) * f * 5; }
+        this.x += this.dx; this.y += this.dy; this.draw();
     }
+}
+function initParticles() {
+    if (!canvas || window.innerWidth < 768) return;
+    particlesArray = [];
+    let n = (canvas.height * canvas.width) / 9000;
+    for (let i = 0; i < n; i++) {
+        let size = Math.random() * 2 + 1;
+        let x = Math.random() * (innerWidth - size * 2) + size;
+        let y = Math.random() * (innerHeight - size * 2) + size;
+        let dx = (Math.random() * 1.5) - 0.75;
+        let dy = (Math.random() * 1.5) - 0.75;
+        particlesArray.push(new Particle(x, y, dx, dy, size));
+    }
+}
+function animateParticles() {
+    if (!canvas) return;
+    if (isEcoMode) { ctx.clearRect(0, 0, innerWidth, innerHeight); return; }
+    requestAnimationFrame(animateParticles); ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
+    connectParticles();
+}
+function connectParticles() {
+    for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+            let distSq = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
+            if (distSq < (canvas.width / 7) * (canvas.height / 7)) {
+                ctx.strokeStyle = getThemeRGBA(1 - (distSq / 20000)); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
+            }
+        }
+    }
+}
 
-    document.addEventListener('keydown', (e) => {
-        const key = e.key.toLowerCase();
-        if (key === 'r') { document.body.classList.remove('green-mode'); document.body.classList.toggle('red-mode'); initParticles(); }
-        else if (key === 'g') { document.body.classList.remove('red-mode'); document.body.classList.toggle('green-mode'); initParticles(); }
-        else if (key === 'n') { document.body.classList.remove('red-mode'); document.body.classList.remove('green-mode'); initParticles(); }
+const clock = new THREE.Clock();
+const mixers = [];
+
+let mouseX = 0, mouseY = 0;
+const windowHalfX = window.innerWidth / 2;
+const windowHalfY = window.innerHeight / 2;
+
+document.addEventListener('mousemove', (event) => { mouseX = (event.clientX - windowHalfX); mouseY = (event.clientY - windowHalfY); });
+
+function load3DModel(containerId, modelUrl, scale, posY) {
+    const container = document.getElementById(containerId);
+    if (!container || window.innerWidth < 900) return;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 20;
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.shadowMap.enabled = true;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    container.appendChild(renderer.domElement);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xF1B7EA, 2.5); dirLight.position.set(5, 10, 7.5); dirLight.castShadow = true; scene.add(dirLight);
+    const loader = new THREE.GLTFLoader();
+    let model;
+    loader.load(modelUrl, (gltf) => {
+        model = gltf.scene;
+        model.scale.set(scale, scale, scale);
+        model.position.y = posY;
+        scene.add(model);
+        if (gltf.animations && gltf.animations.length) {
+            const mixer = new THREE.AnimationMixer(model);
+            mixer.clipAction(gltf.animations[0]).play();
+            mixers.push(mixer);
+        }
+    }, undefined, (error) => { console.error('Error loading model:', error); });
+    function animate() {
+        requestAnimationFrame(animate);
+        const delta = clock.getDelta();
+        mixers.forEach(mixer => mixer.update(delta));
+        if (model) { model.rotation.y = mouseX * 0.0005; model.rotation.x = mouseY * 0.0005; }
+        renderer.render(scene, camera);
+    }
+    animate();
+}
+
+function initAll3D() {
+    if (window.innerWidth >= 900) {
+        load3DModel('about-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/wizard/model.gltf', 3.5, -3);
+        load3DModel('skills-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/ninja/model.gltf', 4, -3.5);
+        load3DModel('contact-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/demon/model.gltf', 3.5, -3);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.project-card').forEach(c => {
+        if (c.getAttribute('data-img')) c.style.backgroundImage = `url('${c.getAttribute('data-img')}')`;
     });
+    initTiltCards();
+    initAll3D();
+    if (canvas) { initParticles(); animateParticles(); window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; initParticles(); }); }
+});
 
-    function getThemeColor() {
-        if (document.body.classList.contains('red-mode')) return '#F42C1D';
-        if (document.body.classList.contains('green-mode')) return '#32CD32';
-        return '#F1B7EA';
-    }
-    function getThemeRGBA(opacity) {
-        if (document.body.classList.contains('red-mode')) return `rgba(244, 44, 29, ${opacity})`;
-        if (document.body.classList.contains('green-mode')) return `rgba(50, 205, 50, ${opacity})`;
-        return `rgba(241, 183, 234, ${opacity})`;
-    }
-
-    /* =========================================
-       5. PARTICLES & 3D MODELS
-       ========================================= */
-    const canvas = document.getElementById('neural-canvas');
-    const ctx = canvas ? canvas.getContext('2d') : null;
-    let particlesArray;
-
-    if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-
-    class Particle {
-        constructor(x, y, dx, dy, size) { this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.size = size; }
-        draw() { if (!ctx) return; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = getThemeColor(); ctx.fill(); }
-        update() {
-            if (this.x > canvas.width || this.x < 0) this.dx = -this.dx; if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
-            let dx = mouse.x - this.x; let dy = mouse.y - this.y; let dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < mouse.radius) { const f = (mouse.radius - dist) / mouse.radius; this.x -= (dx / dist) * f * 5; this.y -= (dy / dist) * f * 5; }
-            this.x += this.dx; this.y += this.dy; this.draw();
-        }
-    }
-    function initParticles() {
-        if (!canvas || window.innerWidth < 768) return;
-        particlesArray = [];
-        let n = (canvas.height * canvas.width) / 9000;
-        for (let i = 0; i < n; i++) {
-            let size = Math.random() * 2 + 1;
-            let x = Math.random() * (innerWidth - size * 2) + size;
-            let y = Math.random() * (innerHeight - size * 2) + size;
-            let dx = (Math.random() * 1.5) - 0.75;
-            let dy = (Math.random() * 1.5) - 0.75;
-            particlesArray.push(new Particle(x, y, dx, dy, size));
-        }
-    }
-    function animateParticles() {
-        if (!canvas) return;
-        if (isEcoMode) { ctx.clearRect(0, 0, innerWidth, innerHeight); return; }
-        requestAnimationFrame(animateParticles); ctx.clearRect(0, 0, innerWidth, innerHeight);
-        for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
-        connectParticles();
-    }
-    function connectParticles() {
-        for (let a = 0; a < particlesArray.length; a++) {
-            for (let b = a; b < particlesArray.length; b++) {
-                let distSq = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
-                if (distSq < (canvas.width / 7) * (canvas.height / 7)) {
-                    ctx.strokeStyle = getThemeRGBA(1 - (distSq / 20000)); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
-                }
-            }
-        }
-    }
-
-    const clock = new THREE.Clock();
-    const mixers = [];
-
-    let mouseX = 0, mouseY = 0;
-    const windowHalfX = window.innerWidth / 2;
-    const windowHalfY = window.innerHeight / 2;
-
-    document.addEventListener('mousemove', (event) => { mouseX = (event.clientX - windowHalfX); mouseY = (event.clientY - windowHalfY); });
-
-    function load3DModel(containerId, modelUrl, scale, posY) {
-        const container = document.getElementById(containerId);
-        if (!container || window.innerWidth < 900) return;
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-        camera.position.z = 20;
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(width, height);
-        renderer.shadowMap.enabled = true;
-        renderer.outputEncoding = THREE.sRGBEncoding;
-        container.appendChild(renderer.domElement);
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambientLight);
-        const dirLight = new THREE.DirectionalLight(0xF1B7EA, 2.5); dirLight.position.set(5, 10, 7.5); dirLight.castShadow = true; scene.add(dirLight);
-        const loader = new THREE.GLTFLoader();
-        let model;
-        loader.load(modelUrl, (gltf) => {
-            model = gltf.scene;
-            model.scale.set(scale, scale, scale);
-            model.position.y = posY;
-            scene.add(model);
-            if (gltf.animations && gltf.animations.length) {
-                const mixer = new THREE.AnimationMixer(model);
-                mixer.clipAction(gltf.animations[0]).play();
-                mixers.push(mixer);
-            }
-        }, undefined, (error) => { console.error('Error loading model:', error); });
-        function animate() {
-            requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-            mixers.forEach(mixer => mixer.update(delta));
-            if (model) { model.rotation.y = mouseX * 0.0005; model.rotation.x = mouseY * 0.0005; }
-            renderer.render(scene, camera);
-        }
-        animate();
-    }
-
-    function initAll3D() {
-        if (window.innerWidth >= 900) {
-            load3DModel('about-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/wizard/model.gltf', 3.5, -3);
-            load3DModel('skills-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/ninja/model.gltf', 4, -3.5);
-            load3DModel('contact-3d', 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/demon/model.gltf', 3.5, -3);
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll('.project-card').forEach(c => {
-            if (c.getAttribute('data-img')) c.style.backgroundImage = `url('${c.getAttribute('data-img')}')`;
+function initTiltCards() {
+    document.querySelectorAll('.project-card').forEach(c => {
+        c.addEventListener('mousemove', (e) => {
+            const r = c.getBoundingClientRect();
+            c.style.setProperty('--card-x', `${e.clientX - r.left}px`); c.style.setProperty('--card-y', `${e.clientY - r.top}px`);
+            const xVal = ((e.clientX - r.left - r.width / 2) / r.width / 2) * 10;
+            const yVal = ((e.clientY - r.top - r.height / 2) / r.height / 2) * -10;
+            c.style.transform = `perspective(1000px) rotateX(${yVal}deg) rotateY(${xVal}deg) scale3d(1.05, 1.05, 1.05)`;
         });
-        initTiltCards();
-        initAll3D();
-        if (canvas) { initParticles(); animateParticles(); window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; initParticles(); }); }
+        c.addEventListener('mouseleave', () => c.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)');
     });
+}
+document.getElementById('whatsappBtn')?.addEventListener('click', (e) => { e.preventDefault(); window.open('https://wa.me/916203899720', '_blank'); });
 
-    function initTiltCards() {
-        document.querySelectorAll('.project-card').forEach(c => {
-            c.addEventListener('mousemove', (e) => {
-                const r = c.getBoundingClientRect();
-                c.style.setProperty('--card-x', `${e.clientX - r.left}px`); c.style.setProperty('--card-y', `${e.clientY - r.top}px`);
-                const xVal = ((e.clientX - r.left - r.width / 2) / r.width / 2) * 10;
-                const yVal = ((e.clientY - r.top - r.height / 2) / r.height / 2) * -10;
-                c.style.transform = `perspective(1000px) rotateX(${yVal}deg) rotateY(${xVal}deg) scale3d(1.05, 1.05, 1.05)`;
-            });
-            c.addEventListener('mouseleave', () => c.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)');
-        });
+/* =========================================
+   6. PROJECT GALLERY DATA (UPDATED)
+   ========================================= */
+const projectData = {
+    'PHOTOGRAPHY': {
+        desc: "A collection of cinematic shots capturing raw reality.",
+        tech: "SHOT ON: SONY ZV-E10 // LENS: 35MM",
+        images: [
+            "assets/work/photography/1 (1).jpg",
+            "assets/work/photography/1 (2).jpg",
+            "assets/work/photography/1 (3).jpg",
+            "assets/work/photography/1 (4).jpg",
+            "assets/work/photography/1 (5).jpg",
+            "assets/work/photography/1 (6).jpg",
+            "assets/work/photography/1 (7).jpg",
+            "assets/work/photography/1 (8).jpg",
+            "assets/work/photography/1 (9).jpg",
+            "assets/work/photography/1 (10).jpg"
+        ]
+    },
+    'DESIGNS': {
+        desc: "Digital architecture and visual hierarchy explorations.",
+        tech: "TOOLS: ADOBE PHOTOSHOP & ILLUSTRATOR",
+        images: [
+            "assets/work/designs/1 (1).jpg",
+            "assets/work/designs/1 (2).jpg",
+            "assets/work/designs/1 (3).jpg",
+            "assets/work/designs/1 (4).jpg",
+            "assets/work/designs/1 (5).jpg",
+            "assets/work/designs/1 (6).jpg",
+            "assets/work/designs/1 (7).jpg",
+            "assets/work/designs/1 (8).jpg",
+            "assets/work/designs/1 (9).jpg",
+            "assets/work/designs/1 (10).jpg"
+        ]
+    },
+    'VIDEO EDITING': {
+        desc: "Temporal manipulation and motion graphics.",
+        tech: "SOFTWARE: PREMIERE PRO & AFTER EFFECTS",
+        // PASTE YOUR INSTAGRAM REEL LINKS HERE
+        images: [
+            "https://www.instagram.com/reel/DJjMygkvyjO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DLPp77CNrtT/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DP9c6YPEaQL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/C_-jg_LJDxe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DPergVdAebH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+            "https://www.instagram.com/reel/DPk9ubfgToZ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+
+            // Add more links separated by commas...
+        ]
     }
-    document.getElementById('whatsappBtn')?.addEventListener('click', (e) => { e.preventDefault(); window.open('https://wa.me/916203899720', '_blank'); });
+};
 
-    /* =========================================
-       6. PROJECT GALLERY DATA (UPDATED)
-       ========================================= */
-    const projectData = {
-        'PHOTOGRAPHY': {
-            desc: "A collection of cinematic shots capturing raw reality.",
-            tech: "SHOT ON: SONY ZV-E10 // LENS: 35MM",
-            images: [
-                "assets/work/photography/1 (1).jpg",
-                "assets/work/photography/1 (2).jpg",
-                "assets/work/photography/1 (3).jpg",
-                "assets/work/photography/1 (4).jpg",
-                "assets/work/photography/1 (5).jpg",
-                "assets/work/photography/1 (6).jpg",
-                "assets/work/photography/1 (7).jpg",
-                "assets/work/photography/1 (8).jpg",
-                "assets/work/photography/1 (9).jpg",
-                "assets/work/photography/1 (10).jpg"
-            ]
-        },
-        'DESIGNS': {
-            desc: "Digital architecture and visual hierarchy explorations.",
-            tech: "TOOLS: ADOBE PHOTOSHOP & ILLUSTRATOR",
-            images: [
-                "assets/work/designs/1 (1).jpg",
-                "assets/work/designs/1 (2).jpg",
-                "assets/work/designs/1 (3).jpg",
-                "assets/work/designs/1 (4).jpg",
-                "assets/work/designs/1 (5).jpg",
-                "assets/work/designs/1 (6).jpg",
-                "assets/work/designs/1 (7).jpg",
-                "assets/work/designs/1 (8).jpg",
-                "assets/work/designs/1 (9).jpg",
-                "assets/work/designs/1 (10).jpg"
-            ]
-        },
-        'VIDEO EDITING': {
-            desc: "Temporal manipulation and motion graphics.",
-            tech: "SOFTWARE: PREMIERE PRO & AFTER EFFECTS",
-            // PASTE YOUR INSTAGRAM REEL LINKS HERE
-            images: [
-                "https://www.instagram.com/reel/DJjMygkvyjO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
-                "https://www.instagram.com/reel/DLPp77CNrtT/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
-                "https://www.instagram.com/reel/DP9c6YPEaQL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
-                "https://www.instagram.com/reel/C_-jg_LJDxe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
-                "https://www.instagram.com/reel/DPergVdAebH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
-                "https://www.instagram.com/reel/DPk9ubfgToZ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+/* =========================================
+   7. MODAL & LIGHTBOX LOGIC
+   ========================================= */
+const modal = document.getElementById("projectModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalGallery = document.getElementById("modalGallery");
+const closeBtn = document.querySelector(".close");
 
-                // Add more links separated by commas...
-            ]
-        }
-    };
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxContainer = document.getElementById("lightbox-container");
+const lightboxCaption = document.getElementById("lightbox-caption");
+const lightboxClose = document.querySelector(".lightbox-close");
+const prevBtn = document.querySelector(".prev");
+const nextBtn = document.querySelector(".next");
 
-    /* =========================================
-       7. MODAL & LIGHTBOX LOGIC
-       ========================================= */
-    const modal = document.getElementById("projectModal");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalDesc = document.getElementById("modalDesc");
-    const modalGallery = document.getElementById("modalGallery");
-    const closeBtn = document.querySelector(".close");
+let currentGallery = [];
+let currentIndex = 0;
+let currentTechSpecs = "";
 
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightbox-img");
-    const lightboxContainer = document.getElementById("lightbox-container");
-    const lightboxCaption = document.getElementById("lightbox-caption");
-    const lightboxClose = document.querySelector(".lightbox-close");
-    const prevBtn = document.querySelector(".prev");
-    const nextBtn = document.querySelector(".next");
+function openLightbox(index) {
+    currentIndex = index;
+    updateLightboxContent();
+    lightbox.classList.add('active');
+}
 
-    let currentGallery = [];
-    let currentIndex = 0;
-    let currentTechSpecs = "";
+function updateLightboxContent() {
+    let itemUrl = currentGallery[currentIndex];
 
-    function openLightbox(index) {
-        currentIndex = index;
-        updateLightboxContent();
-        lightbox.classList.add('active');
-    }
+    // Reset Display
+    lightboxImg.style.display = "none";
+    lightboxContainer.style.display = "none";
+    lightboxContainer.innerHTML = "";
 
-    function updateLightboxContent() {
-        let itemUrl = currentGallery[currentIndex];
+    // DETECT MEDIA TYPE
+    if (itemUrl.includes('youtube') || itemUrl.includes('vimeo')) {
+        // 1. YouTube/Vimeo (These allow embedding)
+        lightboxContainer.style.display = "flex";
+        const iframe = document.createElement('iframe');
+        iframe.src = itemUrl;
+        iframe.allow = "autoplay; encrypted-media; fullscreen";
+        lightboxContainer.appendChild(iframe);
 
-        // Reset Display
-        lightboxImg.style.display = "none";
-        lightboxContainer.style.display = "none";
-        lightboxContainer.innerHTML = "";
-
-        // DETECT MEDIA TYPE
-        if (itemUrl.includes('youtube') || itemUrl.includes('vimeo')) {
-            // 1. YouTube/Vimeo (These allow embedding)
-            lightboxContainer.style.display = "flex";
-            const iframe = document.createElement('iframe');
-            iframe.src = itemUrl;
-            iframe.allow = "autoplay; encrypted-media; fullscreen";
-            lightboxContainer.appendChild(iframe);
-
-        } else if (itemUrl.includes('instagram.com')) {
-            // 2. INSTAGRAM (Blocks embedding -> Show "Watch" Button)
-            lightboxContainer.style.display = "flex";
-            lightboxContainer.innerHTML = `
+    } else if (itemUrl.includes('instagram.com')) {
+        // 2. INSTAGRAM (Blocks embedding -> Show "Watch" Button)
+        lightboxContainer.style.display = "flex";
+        lightboxContainer.innerHTML = `
             <div style="text-align:center; color:white; font-family:var(--font-head);">
                 <h3 style="margin-bottom:20px; color:var(--primary-red);">INSTAGRAM REEL</h3>
                 <p style="margin-bottom:30px; color:#ccc; font-family:var(--font-tech);">
@@ -438,84 +434,84 @@ if (preloader && bootText) {
             </div>
         `;
 
-        } else if (itemUrl.endsWith('.mp4') || itemUrl.endsWith('.webm')) {
-            // 3. Local Video File (Best Quality)
-            lightboxContainer.style.display = "flex";
-            const video = document.createElement('video');
-            video.src = itemUrl;
-            video.controls = true;
-            video.autoplay = true;
-            video.style.maxWidth = "100%";
-            video.style.maxHeight = "100%";
-            lightboxContainer.appendChild(video);
+    } else if (itemUrl.endsWith('.mp4') || itemUrl.endsWith('.webm')) {
+        // 3. Local Video File (Best Quality)
+        lightboxContainer.style.display = "flex";
+        const video = document.createElement('video');
+        video.src = itemUrl;
+        video.controls = true;
+        video.autoplay = true;
+        video.style.maxWidth = "100%";
+        video.style.maxHeight = "100%";
+        lightboxContainer.appendChild(video);
 
-        } else {
-            // 4. Standard Image
-            lightboxImg.style.display = "block";
-            lightboxImg.src = itemUrl;
-        }
-
-        // Update Caption
-        lightboxCaption.innerText = `${currentIndex + 1} / ${currentGallery.length} | [ ${currentTechSpecs} ]`;
+    } else {
+        // 4. Standard Image
+        lightboxImg.style.display = "block";
+        lightboxImg.src = itemUrl;
     }
 
-    document.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const category = card.querySelector('.card-content').innerText.trim();
-            const data = projectData[category];
-            if (data) {
-                modalTitle.innerText = category;
-                modalDesc.innerText = data.desc;
-                modalGallery.innerHTML = '';
+    // Update Caption
+    lightboxCaption.innerText = `${currentIndex + 1} / ${currentGallery.length} | [ ${currentTechSpecs} ]`;
+}
 
-                currentGallery = data.images;
-                currentTechSpecs = data.tech;
+document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const category = card.querySelector('.card-content').innerText.trim();
+        const data = projectData[category];
+        if (data) {
+            modalTitle.innerText = category;
+            modalDesc.innerText = data.desc;
+            modalGallery.innerHTML = '';
 
-                data.images.forEach((itemUrl, index) => {
-                    let element;
-                    // Create Thumbnail based on type
-                    if (itemUrl.includes('instagram') || itemUrl.includes('youtube') || itemUrl.endsWith('.mp4')) {
-                        element = document.createElement('div');
-                        element.className = 'gallery-item';
-                        element.style.background = '#111';
-                        element.style.display = 'flex';
-                        element.style.alignItems = 'center';
-                        element.style.justifyContent = 'center';
-                        element.style.border = "1px solid #333";
+            currentGallery = data.images;
+            currentTechSpecs = data.tech;
 
-                        let label = "▶ PLAY VIDEO";
-                        if (itemUrl.includes('instagram')) label = "📸 INSTAGRAM";
+            data.images.forEach((itemUrl, index) => {
+                let element;
+                // Create Thumbnail based on type
+                if (itemUrl.includes('instagram') || itemUrl.includes('youtube') || itemUrl.endsWith('.mp4')) {
+                    element = document.createElement('div');
+                    element.className = 'gallery-item';
+                    element.style.background = '#111';
+                    element.style.display = 'flex';
+                    element.style.alignItems = 'center';
+                    element.style.justifyContent = 'center';
+                    element.style.border = "1px solid #333";
 
-                        element.innerHTML = `<span style="color:var(--primary-red); font-family:var(--font-tech); letter-spacing:2px;">${label}</span>`;
-                    } else {
-                        element = document.createElement('img');
-                        element.src = itemUrl;
-                        element.className = 'gallery-item';
-                    }
+                    let label = "▶ PLAY VIDEO";
+                    if (itemUrl.includes('instagram')) label = "📸 INSTAGRAM";
 
-                    element.onclick = () => openLightbox(index);
-                    modalGallery.appendChild(element);
-                });
-                modal.style.display = "block";
-                document.body.style.overflow = "hidden";
-            }
-        });
+                    element.innerHTML = `<span style="color:var(--primary-red); font-family:var(--font-tech); letter-spacing:2px;">${label}</span>`;
+                } else {
+                    element = document.createElement('img');
+                    element.src = itemUrl;
+                    element.className = 'gallery-item';
+                }
+
+                element.onclick = () => openLightbox(index);
+                modalGallery.appendChild(element);
+            });
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
     });
+});
 
-    function showNext() { currentIndex = (currentIndex + 1) % currentGallery.length; updateLightboxContent(); }
-    function showPrev() { currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length; updateLightboxContent(); }
+function showNext() { currentIndex = (currentIndex + 1) % currentGallery.length; updateLightboxContent(); }
+function showPrev() { currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length; updateLightboxContent(); }
 
-    nextBtn.onclick = (e) => { e.stopPropagation(); showNext(); };
-    prevBtn.onclick = (e) => { e.stopPropagation(); showPrev(); };
+nextBtn.onclick = (e) => { e.stopPropagation(); showNext(); };
+prevBtn.onclick = (e) => { e.stopPropagation(); showPrev(); };
 
-    document.addEventListener('keydown', (e) => {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === "ArrowRight") showNext();
-        if (e.key === "ArrowLeft") showPrev();
-        if (e.key === "Escape") lightbox.classList.remove('active');
-    });
+document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === "ArrowRight") showNext();
+    if (e.key === "ArrowLeft") showPrev();
+    if (e.key === "Escape") lightbox.classList.remove('active');
+});
 
-    closeBtn.onclick = function () { modal.style.display = "none"; document.body.style.overflow = "auto"; }
-    window.onclick = function (event) { if (event.target == modal) { modal.style.display = "none"; document.body.style.overflow = "auto"; } }
-    lightboxClose.onclick = () => lightbox.classList.remove('active');
-    lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); };
+closeBtn.onclick = function () { modal.style.display = "none"; document.body.style.overflow = "auto"; }
+window.onclick = function (event) { if (event.target == modal) { modal.style.display = "none"; document.body.style.overflow = "auto"; } }
+lightboxClose.onclick = () => lightbox.classList.remove('active');
+lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); };
