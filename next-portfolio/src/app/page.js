@@ -92,7 +92,7 @@ export default function Home() {
           <div className="lg:col-span-5 flex justify-center lg:justify-end mt-12 lg:mt-0">
             <div ref={mediaRef} className="w-full max-w-[400px] aspect-[4/5] bg-zinc-100 rounded-2xl overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.15)] relative group cursor-pointer will-change-transform">
               <img 
-                src="/assets/work/photography/1 (4).jpg" 
+                src="/assets/work/photography/hero.jpg"
                 alt="Featured Work"
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
               />
