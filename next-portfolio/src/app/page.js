@@ -74,10 +74,25 @@ export default function Home() {
             </div>
 
             <div className="overflow-hidden mt-8 max-w-lg">
-              <p className="reveal-text text-base md:text-lg text-zinc-600 font-medium leading-relaxed tracking-wide">
-                Visual director working across photography, film, and design. I take projects from concept to final frame.
-              </p>
-            </div>
+  <p className="reveal-text text-base md:text-lg text-zinc-600 font-medium leading-relaxed tracking-wide">
+    Visual director working across photography, film, and design. I take projects from concept to final frame.
+  </p>
+</div>
+
+<div className="reveal-text mt-8 flex gap-4">
+  <a
+    href="#work"
+    className="inline-flex items-center gap-2 bg-black text-white text-xs font-bold tracking-widest uppercase px-6 py-3 rounded-sm hover:bg-zinc-800 transition-colors duration-300"
+  >
+    View Work ↓
+  </a>
+  <a
+    href="mailto:kumarvishal1627@gmail.com?subject=Project Inquiry - Vishal Kumar"
+    className="inline-flex items-center gap-2 border border-zinc-300 text-black text-xs font-bold tracking-widest uppercase px-6 py-3 rounded-sm hover:border-black transition-colors duration-300"
+  >
+    Get in Touch
+  </a>
+</div>
           </div>
 
           {/* Hero Image */}
