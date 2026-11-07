@@ -54,12 +54,12 @@ export default function Navbar() {
           >
             CV
           </a>
-          <a
-            href="mailto:kumarvishal1627@gmail.com?subject=Project Inquiry - Vishal Kumar"
+          <Link
+            href="/#contact"
             className="text-[11px] sm:text-xs font-bold tracking-wider sm:tracking-widest uppercase bg-black text-white px-3 sm:px-5 py-2 sm:py-2.5 whitespace-nowrap hover:bg-zinc-800 transition-colors"
           >
             CONTACT
-          </a>
+          </Link>
         </div>
 
       </div>

@@ -22,6 +22,14 @@ const project = {
       validation: (Rule) => Rule.integer().min(0),
     },
     {
+      name: 'featured',
+      title: 'Featured',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'Featured projects show on the home page first; the rest sit behind a "View all" button. If nothing is featured, everything shows.',
+    },
+    {
       name: 'title',
       title: 'Project Title',
       type: 'string',
@@ -106,13 +114,55 @@ const project = {
     },
     {
       name: 'objective',
-      title: 'The Objective (Problem)',
+      title: 'The Brief (What the client needed)',
       type: 'text', 
     },
     {
       name: 'engineering',
-      title: 'The Engineering (Execution)',
+      title: 'The Process (How it was made)',
       type: 'text',
+    },
+    {
+      name: 'result',
+      title: 'The Result (What happened after)',
+      type: 'text',
+      description:
+        'Outcome for the client: reach, sales, sign-ups, feedback. This is what convinces new clients.',
+    },
+    {
+      name: 'stats',
+      title: 'Result Numbers',
+      type: 'array',
+      description: 'Optional headline numbers, e.g. "2M" + "views on Instagram".',
+      of: [
+        {
+          type: 'object',
+          name: 'stat',
+          fields: [
+            { name: 'value', title: 'Number', type: 'string', validation: (Rule) => Rule.required() },
+            { name: 'label', title: 'Label', type: 'string', validation: (Rule) => Rule.required() },
+          ],
+          preview: { select: { title: 'value', subtitle: 'label' } },
+        },
+      ],
+      validation: (Rule) => Rule.max(4),
+    },
+    {
+      name: 'gallery',
+      title: 'Gallery',
+      type: 'array',
+      description: 'More images or stills from the project, shown on its case-study page (6–15 works well).',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            { name: 'alt', title: 'Description (for accessibility)', type: 'string' },
+            { name: 'caption', title: 'Caption (optional)', type: 'string' },
+          ],
+        },
+      ],
+      options: { layout: 'grid' },
     },
     {
       name: 'software',

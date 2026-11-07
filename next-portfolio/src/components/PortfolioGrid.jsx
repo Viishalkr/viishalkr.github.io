@@ -20,11 +20,18 @@ const TABS = [
 
 export default function PortfolioGrid({ projects = [] }) {
   const [activeTab, setActiveTab] = useState("ALL");
+  const [showAll, setShowAll] = useState(false);
   const containerRef = useRef(null);
 
-  const filteredProjects = projects.filter(
-    (item) => activeTab === "ALL" || item.category === activeTab
-  );
+  // With featured projects marked in Studio, "All" opens on just those and
+  // the rest sit behind "View all". Category tabs always show everything.
+  const featuredCount = projects.filter((p) => p.featured).length;
+  const curating = activeTab === "ALL" && featuredCount > 0 && !showAll;
+
+  const filteredProjects = projects.filter((item) => {
+    if (activeTab !== "ALL") return item.category === activeTab;
+    return curating ? item.featured : true;
+  });
 
   useGSAP(() => {
     if (filteredProjects.length > 0 && !prefersReducedMotion()) {
@@ -37,7 +44,7 @@ export default function PortfolioGrid({ projects = [] }) {
         scrollTrigger: { trigger: containerRef.current, start: "top 80%" },
       });
     }
-  }, { dependencies: [activeTab], scope: containerRef });
+  }, { dependencies: [activeTab, showAll], scope: containerRef });
 
   return (
     <section ref={containerRef} id="work" className="bg-white text-black py-32 px-6 md:px-12 relative z-20 border-t border-zinc-200 scroll-mt-16">
@@ -114,6 +121,19 @@ export default function PortfolioGrid({ projects = [] }) {
                 </div>
               </Link>
             ))}
+          </div>
+        )}
+
+        {activeTab === "ALL" && featuredCount > 0 && featuredCount < projects.length && (
+          <div className="mt-16 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              aria-expanded={showAll}
+              className="border border-black text-black text-xs font-bold tracking-widest uppercase px-8 py-4 hover:bg-black hover:text-white transition-colors"
+            >
+              {showAll ? "Show featured only" : `View all ${projects.length} projects`}
+            </button>
           </div>
         )}
 

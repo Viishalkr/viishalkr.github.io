@@ -44,7 +44,7 @@ export default function About() {
           {/* Left — Text */}
           <div className="lg:col-span-7">
             <p className="about-reveal text-xs font-bold tracking-[0.3em] text-zinc-400 uppercase mb-8">
-              02 // ABOUT
+              {"// ABOUT"}
             </p>
 
             <h2 className="about-reveal text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] mb-12 text-black">

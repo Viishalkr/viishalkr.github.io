@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { prefersReducedMotion } from "../lib/motion";
 
-export default function Hero() {
+export default function Hero({ tagline }) {
   const containerRef = useRef(null);
   const mediaRef = useRef(null);
 
@@ -61,7 +61,7 @@ export default function Hero() {
         <div className="lg:col-span-7">
           <div className="overflow-hidden mb-6">
             <p className="reveal-text text-xs font-bold tracking-[0.3em] uppercase text-zinc-400">
-              01 // PHOTOGRAPHY · FILM · DESIGN
+              PHOTOGRAPHY · FILM · DESIGN
             </p>
           </div>
 
@@ -73,7 +73,7 @@ export default function Hero() {
 
           <div className="overflow-hidden mt-8 max-w-lg">
             <p className="reveal-text text-base md:text-lg text-zinc-600 font-medium leading-relaxed tracking-wide">
-              Visual director working across photography, film, and design. I take projects from concept to final frame.
+              {tagline}
             </p>
           </div>
 
@@ -85,10 +85,10 @@ export default function Hero() {
               View Work ↓
             </a>
             <a
-              href="mailto:kumarvishal1627@gmail.com?subject=Project Inquiry - Vishal Kumar"
+              href="#contact"
               className="inline-flex items-center gap-2 border border-zinc-300 text-black text-xs font-bold tracking-widest uppercase px-6 py-3 rounded-sm hover:border-black transition-colors duration-300"
             >
-              Get in Touch
+              Start a Project
             </a>
           </div>
         </div>

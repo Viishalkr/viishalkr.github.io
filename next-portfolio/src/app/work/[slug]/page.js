@@ -6,13 +6,17 @@ import { PROJECT_QUERY, PROJECT_SLUGS_QUERY } from "../../../sanity/lib/queries"
 
 export const revalidate = 60;
 
-export async function generateStaticParams() {
+async function getAllSlugs() {
   try {
-    const slugs = await sanityFetch(PROJECT_SLUGS_QUERY);
-    return (slugs ?? []).map(({ slug }) => ({ slug }));
+    return (await sanityFetch(PROJECT_SLUGS_QUERY)) ?? [];
   } catch {
     return [];
   }
+}
+
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs();
+  return slugs.map(({ slug }) => ({ slug }));
 }
 
 async function getProject(slug) {
@@ -36,9 +40,21 @@ export async function generateMetadata({ params }) {
   };
 }
 
+function Section({ number, kicker, heading, children }) {
+  return (
+    <div>
+      <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 mb-6">
+        {`${String(number).padStart(2, "0")} // ${kicker}`}
+      </h2>
+      <h3 className="text-3xl font-black tracking-tighter uppercase mb-6">{heading}</h3>
+      <p className="text-zinc-600 leading-relaxed font-medium whitespace-pre-line">{children}</p>
+    </div>
+  );
+}
+
 export default async function CaseStudy({ params }) {
   const { slug } = await params;
-  const project = await getProject(slug);
+  const [project, allProjects] = await Promise.all([getProject(slug), getAllSlugs()]);
   if (!project) notFound();
 
   const details = [
@@ -48,8 +64,23 @@ export default async function CaseStudy({ params }) {
     project.year && { label: "Year", value: project.year },
   ].filter(Boolean);
 
+  const story = [
+    project.objective && { kicker: "The Brief", heading: "What it needed.", text: project.objective },
+    project.engineering && { kicker: "The Process", heading: "How it was made.", text: project.engineering },
+    project.result && { kicker: "The Result", heading: "What it achieved.", text: project.result },
+  ].filter(Boolean);
+
+  const gallery = project.gallery ?? [];
+  const stats = project.stats ?? [];
+
+  // Next/previous follow the home page order and wrap around.
+  const index = allProjects.findIndex((p) => p.slug === slug);
+  const hasNeighbours = index !== -1 && allProjects.length > 1;
+  const prev = hasNeighbours ? allProjects[(index - 1 + allProjects.length) % allProjects.length] : null;
+  const next = hasNeighbours ? allProjects[(index + 1) % allProjects.length] : null;
+
   return (
-    <article className="bg-[#F9F9F9] text-black min-h-screen pt-32 pb-24 selection:bg-black selection:text-white overflow-hidden">
+    <article className="bg-[#F9F9F9] text-black min-h-screen pt-32 selection:bg-black selection:text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12 animate-fade-in-up">
 
         <div className="mb-16 md:mb-24">
@@ -105,6 +136,7 @@ export default async function CaseStudy({ params }) {
 
       </div>
 
+      {/* Main media */}
       <div className="w-full bg-zinc-100 relative mb-24 md:mb-32 animate-fade-in-up flex items-center justify-center py-8 md:py-16 px-4 md:px-12" style={{ animationDelay: "0.2s" }}>
         {project.category === "VIDEO" && project.videoUrl ? (
           <video
@@ -134,44 +166,93 @@ export default async function CaseStudy({ params }) {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
 
-        {(project.objective || project.engineering) && (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-32">
-            {project.objective && (
-              <div className="md:col-span-5">
-                <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 mb-6">01 // The Brief</h2>
-                <h3 className="text-3xl font-black tracking-tighter uppercase mb-6">What it needed.</h3>
-                <p className="text-zinc-600 leading-relaxed font-medium whitespace-pre-line">{project.objective}</p>
-              </div>
-            )}
-
-            <div className="hidden md:block md:col-span-2"></div>
-
-            {project.engineering && (
-              <div className="md:col-span-5 mt-12 md:mt-0">
-                <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 mb-6">
-                  {`${project.objective ? "02" : "01"} // The Process`}
-                </h2>
-                <h3 className="text-3xl font-black tracking-tighter uppercase mb-6">How it was made.</h3>
-                <p className="text-zinc-600 leading-relaxed font-medium whitespace-pre-line">{project.engineering}</p>
-              </div>
-            )}
+        {/* Brief / Process / Result */}
+        {story.length > 0 && (
+          <div className={`grid grid-cols-1 gap-12 md:gap-16 mb-24 md:mb-32 ${story.length === 3 ? "md:grid-cols-3" : story.length === 2 ? "md:grid-cols-2" : ""}`}>
+            {story.map((s, i) => (
+              <Section key={s.kicker} number={i + 1} kicker={s.kicker} heading={s.heading}>
+                {s.text}
+              </Section>
+            ))}
           </div>
         )}
 
+        {/* Headline numbers */}
+        {stats.length > 0 && (
+          <dl className={`grid grid-cols-2 ${stats.length >= 3 ? "md:grid-cols-4" : ""} gap-8 border-y border-zinc-200 py-12 mb-24 md:mb-32`}>
+            {stats.map((s) => (
+              <div key={s._key}>
+                <dt className="sr-only">{s.label}</dt>
+                <dd>
+                  <span className="block text-5xl md:text-6xl font-black tracking-tighter">{s.value}</span>
+                  <span className="block mt-2 text-xs font-bold tracking-[0.2em] uppercase text-zinc-500">{s.label}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+
+      {/* Gallery */}
+      {gallery.length > 0 && (
+        <section aria-label="Project gallery" className="max-w-7xl mx-auto px-4 md:px-12 mb-24 md:mb-32">
+          <div className="columns-1 sm:columns-2 gap-4 md:gap-6 space-y-4 md:space-y-6">
+            {gallery.map((img) => (
+              <figure key={img._key} className="break-inside-avoid">
+                <SanityImage
+                  src={img.src}
+                  alt={img.alt || img.caption || `${project.title} — gallery image`}
+                  width={img.width || 1600}
+                  height={img.height || 1200}
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  placeholder={img.lqip ? "blur" : "empty"}
+                  blurDataURL={img.lqip || undefined}
+                  className="w-full h-auto rounded-xl bg-zinc-100"
+                />
+                {img.caption && (
+                  <figcaption className="mt-2 text-xs font-medium text-zinc-500">{img.caption}</figcaption>
+                )}
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Call to action */}
         <div className="border-t border-black pt-16 pb-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div>
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">Have a project in mind?</h2>
             <p className="text-zinc-500 mt-2 font-medium">Let&apos;s make something together.</p>
           </div>
-          <a
-            href="mailto:kumarvishal1627@gmail.com?subject=Project Inquiry via Case Study"
+          <Link
+            href="/#contact"
             className="bg-black text-white px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-zinc-800 transition-colors"
           >
-            Get in Touch →
-          </a>
+            Start a Project →
+          </Link>
         </div>
-
       </div>
+
+      {/* Previous / next */}
+      {hasNeighbours && (
+        <nav aria-label="More projects" className="grid grid-cols-2 border-t border-zinc-200 bg-white">
+          <Link
+            href={`/work/${prev.slug}`}
+            className="group px-6 md:px-12 py-10 md:py-14 border-r border-zinc-200 hover:bg-black hover:text-white transition-colors"
+          >
+            <span className="block text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase text-zinc-400 mb-3">← Previous</span>
+            <span className="block text-lg md:text-3xl font-black tracking-tighter uppercase leading-tight break-words">{prev.title}</span>
+          </Link>
+          <Link
+            href={`/work/${next.slug}`}
+            className="group px-6 md:px-12 py-10 md:py-14 text-right hover:bg-black hover:text-white transition-colors"
+          >
+            <span className="block text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase text-zinc-400 mb-3">Next →</span>
+            <span className="block text-lg md:text-3xl font-black tracking-tighter uppercase leading-tight break-words">{next.title}</span>
+          </Link>
+        </nav>
+      )}
     </article>
   );
 }

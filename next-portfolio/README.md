@@ -33,7 +33,24 @@ Open `/studio`, create a **Project**, fill in the title, click **Generate** for 
 
 - **Display Order:** lower numbers show first on the home page. Unnumbered projects follow, newest first.
 - **Grid Preview Clip (video projects):** a short 5–10 second, 720p, silent loop under ~3 MB, shown in the grid. The full video plays on the case-study page. Without a preview clip, the grid streams the full video, but only while it is on screen.
+- **Featured:** tick it on your best projects. The home page then opens on those, with a "View all" button for the rest.
+- **The Result / Result Numbers / Gallery:** extra case-study content shown on the project page when filled in.
 - **Testimonials:** create **Testimonial** documents in Studio. The "Kind Words" section appears on the home page once at least one exists.
+
+## Site Settings
+
+**Site Settings** (top of Studio) holds site-wide content. Each home page section stays hidden until its fields are filled in:
+
+| Field | Shows |
+| --- | --- |
+| Hero Tagline | The sentence under your name (a default is used if empty) |
+| Showreel + Poster | A video section under the hero |
+| Clients & Collaborators | A "Trusted by" logo strip |
+| Services | Service cards with starting prices and "Enquire" links |
+| How I Work | Numbered process steps |
+| Email / WhatsApp / Booking Link | Contact details and buttons |
+
+The contact form needs no backend: it writes the visitor's message and opens WhatsApp or their email app with it filled in.
 
 Set `NEXT_PUBLIC_SITE_URL` if the site moves to a custom domain; it defaults to `https://vishalkr.vercel.app` and is used for share previews and the sitemap.
 

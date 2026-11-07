@@ -9,7 +9,7 @@ export default function Testimonials({ testimonials = [] }) {
     >
       <div className="max-w-7xl mx-auto">
         <p className="text-xs font-bold tracking-[0.3em] text-zinc-400 uppercase mb-12">
-          {"03 // KIND WORDS"}
+          {"// KIND WORDS"}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
