@@ -4,6 +4,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { prefersReducedMotion } from "../lib/motion";
 import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,6 +13,8 @@ export default function Footer() {
   const footerRef = useRef(null);
 
   useGSAP(() => {
+    if (prefersReducedMotion()) return;
+
     gsap.from(".footer-reveal", {
       y: 100,
       opacity: 0,

@@ -2,7 +2,25 @@ const project = {
   name: 'project',
   title: 'Project',
   type: 'document',
+  orderings: [
+    {
+      title: 'Display order',
+      name: 'displayOrder',
+      by: [
+        { field: 'order', direction: 'asc' },
+        { field: '_createdAt', direction: 'desc' },
+      ],
+    },
+  ],
   fields: [
+    {
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description:
+        'Lower numbers appear first on the home page (1 = top). Projects without a number appear after numbered ones, newest first.',
+      validation: (Rule) => Rule.integer().min(0),
+    },
     {
       name: 'title',
       title: 'Project Title',
@@ -75,6 +93,16 @@ const project = {
       type: 'file',
       options: { accept: 'video/mp4,video/webm,video/quicktime' },
       hidden: ({ document }) => document?.category !== 'VIDEO',
+      description: 'Full-quality video, played on the project page.',
+    },
+    {
+      name: 'previewVideo',
+      title: 'Grid Preview Clip (MP4, recommended)',
+      type: 'file',
+      options: { accept: 'video/mp4,video/webm' },
+      hidden: ({ document }) => document?.category !== 'VIDEO',
+      description:
+        'Short loop shown in the home page grid: 5–10 seconds, 720p, no audio, ideally under 3 MB. Without it, the grid streams the full video above.',
     },
     {
       name: 'objective',

@@ -4,12 +4,15 @@ import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { prefersReducedMotion } from "../lib/motion";
 
 export default function Hero() {
   const containerRef = useRef(null);
   const mediaRef = useRef(null);
 
   useGSAP(() => {
+    if (prefersReducedMotion()) return;
+
     gsap.from(".reveal-text", {
       y: 100,
       opacity: 0,

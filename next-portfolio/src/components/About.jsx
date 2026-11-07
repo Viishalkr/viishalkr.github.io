@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { prefersReducedMotion } from "../lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +12,8 @@ export default function About() {
   const sectionRef = useRef(null);
 
   useGSAP(() => {
+    if (prefersReducedMotion()) return;
+
     gsap.from(".about-reveal", {
       y: 40,
       opacity: 0,

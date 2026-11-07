@@ -1,9 +1,21 @@
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION } from "../lib/site";
 
 export const metadata = {
-  title: "Vishal Kumar — Visual Director",
-  description: "Visual director working across photography, film, and design. Open for global commissions.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({ children }) {

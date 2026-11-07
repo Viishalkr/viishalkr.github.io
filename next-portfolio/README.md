@@ -31,6 +31,12 @@ The site runs at http://localhost:3000 and Sanity Studio at http://localhost:300
 
 Open `/studio`, create a **Project**, fill in the title, click **Generate** for the slug, choose a category, add a cover image (and an MP4 for video projects), then publish. The home page grid and the project's case-study page at `/work/<slug>` pick it up within about 60 seconds.
 
+- **Display Order:** lower numbers show first on the home page. Unnumbered projects follow, newest first.
+- **Grid Preview Clip (video projects):** a short 5–10 second, 720p, silent loop under ~3 MB, shown in the grid. The full video plays on the case-study page. Without a preview clip, the grid streams the full video, but only while it is on screen.
+- **Testimonials:** create **Testimonial** documents in Studio. The "Kind Words" section appears on the home page once at least one exists.
+
+Set `NEXT_PUBLIC_SITE_URL` if the site moves to a custom domain; it defaults to `https://vishalkr.vercel.app` and is used for share previews and the sitemap.
+
 ## Structure
 
 ```text
