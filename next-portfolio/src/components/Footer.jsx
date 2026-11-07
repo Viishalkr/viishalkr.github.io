@@ -41,7 +41,7 @@ export default function Footer() {
               href="mailto:kumarvishal1627@gmail.com?subject=Project Inquiry - Vishal Kumar"
               className="footer-reveal block text-5xl md:text-[8vw] font-black tracking-tighter uppercase leading-[0.85] hover:text-zinc-400 transition-colors duration-500"
             >
-              LET'S TALK<br />BUSINESS.
+              LET&apos;S TALK<br />BUSINESS.
             </a>
           </div>
         </div>

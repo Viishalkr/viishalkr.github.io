@@ -1,78 +1,57 @@
-"use client";
-
-import { useEffect, useState, useRef } from "react";
-import { createClient } from "next-sanity";
-import { useParams } from "next/navigation";
 import Link from "next/link";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import SanityImage from "../../../components/SanityImage";
+import { notFound } from "next/navigation";
+import { sanityFetch } from "../../../sanity/lib/fetch";
+import { PROJECT_QUERY, PROJECT_SLUGS_QUERY } from "../../../sanity/lib/queries";
 
-gsap.registerPlugin(ScrollTrigger);
+export const revalidate = 60;
 
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: "production",
-  apiVersion: "2024-01-01",
-  useCdn: false,
-});
-
-export default function CaseStudy() {
-  const params = useParams();
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        const data = await client.fetch(`*[_type == "project" && slug.current == $slug][0]{
-          _id,
-          title,
-          tagline,
-          category,
-          "src": image.asset->url,
-          "videoUrl": videoFile.asset->url,
-          client,
-          role,
-          year,
-          objective,
-          engineering,
-          software
-        }`, { slug: params.slug });
-        
-        setProject(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching project:", error);
-        setLoading(false);
-      }
-    };
-
-    if (params.slug) fetchProject();
-  }, [params.slug]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#F9F9F9] flex items-center justify-center text-xs font-bold tracking-[0.2em] uppercase text-zinc-400">
-        Loading Asset Data...
-      </div>
-    );
+export async function generateStaticParams() {
+  try {
+    const slugs = await sanityFetch(PROJECT_SLUGS_QUERY);
+    return (slugs ?? []).map(({ slug }) => ({ slug }));
+  } catch {
+    return [];
   }
+}
 
-  if (!project) {
-    return (
-      <div className="min-h-screen bg-[#F9F9F9] flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-black uppercase mb-4 text-black">Project Not Found</h1>
-        <Link href="/" className="text-xs font-bold tracking-widest uppercase text-zinc-500 hover:text-black">Return Home</Link>
-      </div>
-    );
-  }
+async function getProject(slug) {
+  return sanityFetch(PROJECT_QUERY, { slug });
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const project = await getProject(slug);
+  if (!project) return { title: "Project Not Found — Vishal Kumar" };
+
+  const description = project.tagline || `${project.category} project by Vishal Kumar.`;
+  return {
+    title: `${project.title} — Vishal Kumar`,
+    description,
+    openGraph: {
+      title: project.title,
+      description,
+      images: project.src ? [{ url: project.src }] : undefined,
+    },
+  };
+}
+
+export default async function CaseStudy({ params }) {
+  const { slug } = await params;
+  const project = await getProject(slug);
+  if (!project) notFound();
+
+  const details = [
+    { label: "Category", value: project.category },
+    project.client && { label: "Client", value: project.client },
+    project.role && { label: "Role", value: project.role },
+    project.year && { label: "Year", value: project.year },
+  ].filter(Boolean);
 
   return (
-    <article ref={containerRef} className="bg-[#F9F9F9] text-black min-h-screen pt-32 pb-24 selection:bg-black selection:text-white overflow-hidden">
+    <article className="bg-[#F9F9F9] text-black min-h-screen pt-32 pb-24 selection:bg-black selection:text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12 animate-fade-in-up">
-        
+
         <div className="mb-16 md:mb-24">
           <Link href="/#work" className="text-xs font-bold tracking-widest uppercase text-zinc-400 hover:text-black transition-colors flex items-center gap-2 w-fit">
             <span>←</span> Back to Index
@@ -89,28 +68,32 @@ export default function CaseStudy() {
                 {project.tagline}
               </p>
             )}
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex mt-8 border border-black text-black px-6 py-3 text-xs font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-colors"
+              >
+                {project.linkText || "View Project"} ↗
+              </a>
+            )}
           </div>
-          
+
           <div className="lg:col-span-4 flex flex-wrap lg:flex-col gap-6 lg:gap-8 border-t border-zinc-200 lg:border-t-0 lg:border-l pt-8 lg:pt-0 lg:pl-8">
-            <div>
-              <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-400 mb-1">Category</p>
-              <p className="font-bold uppercase tracking-wide">{project.category}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-400 mb-1">Role</p>
-              <p className="font-bold uppercase tracking-wide">{project.role || "Digital Director & Designer"}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-400 mb-1">Timeline</p>
-              <p className="font-bold uppercase tracking-wide">{project.year || "2026"}</p>
-            </div>
-            
-            {project.software && project.software.length > 0 && (
+            {details.map((d) => (
+              <div key={d.label}>
+                <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-400 mb-1">{d.label}</p>
+                <p className="font-bold uppercase tracking-wide">{d.value}</p>
+              </div>
+            ))}
+
+            {project.software?.length > 0 && (
               <div>
                 <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-400 mb-2">Toolkit</p>
                 <div className="flex flex-wrap gap-2">
-                  {project.software.map((tool, index) => (
-                    <span key={index} className="text-[10px] font-bold tracking-widest uppercase border border-zinc-300 px-3 py-1 rounded-full text-zinc-600">
+                  {project.software.map((tool) => (
+                    <span key={tool} className="text-[10px] font-bold tracking-widest uppercase border border-zinc-300 px-3 py-1 rounded-full text-zinc-600">
                       {tool}
                     </span>
                   ))}
@@ -122,77 +105,73 @@ export default function CaseStudy() {
 
       </div>
 
-      {/* 👇 PERFECT MEDIA FIT CONTAINER */}
-      <div className="w-full bg-zinc-100 relative mb-24 md:mb-32 animate-fade-in-up flex items-center justify-center py-8 md:py-16 px-4 md:px-12" style={{ animationDelay: '0.2s' }}>
+      <div className="w-full bg-zinc-100 relative mb-24 md:mb-32 animate-fade-in-up flex items-center justify-center py-8 md:py-16 px-4 md:px-12" style={{ animationDelay: "0.2s" }}>
         {project.category === "VIDEO" && project.videoUrl ? (
-          <video 
-            src={project.videoUrl} 
-            controls // 👈 Added standard video controls (play, pause, timeline, volume)
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            // object-contain ensures the entire video is always visible, max-h-[85vh] stops vertical videos from getting too tall
-            className="w-full h-auto max-h-[85vh] object-contain rounded-md shadow-2xl bg-black" 
+          <video
+            src={project.videoUrl}
+            poster={project.src || undefined}
+            controls
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-auto max-h-[85vh] object-contain rounded-md shadow-2xl bg-black"
           />
-        ) : (
-          <img 
-            src={project.src} 
-            alt={project.title} 
-            // Ensures photography is never cropped
-            className="w-full h-auto max-h-[85vh] object-contain rounded-md shadow-2xl" 
+        ) : project.src ? (
+          <SanityImage
+            src={project.src}
+            alt={project.title}
+            width={project.width || 1600}
+            height={project.height || 1200}
+            sizes="100vw"
+            preload
+            placeholder={project.lqip ? "blur" : "empty"}
+            blurDataURL={project.lqip || undefined}
+            className="w-auto h-auto max-w-full max-h-[85vh] object-contain rounded-md shadow-2xl"
           />
-        )}
+        ) : null}
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-        
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-32">
-          
-          <div className="md:col-span-5">
-            <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 mb-6">01 // The Objective</h2>
-            <h3 className="text-3xl font-black tracking-tighter uppercase mb-6">Defining the Problem.</h3>
-            <p className="text-zinc-600 leading-relaxed font-medium whitespace-pre-line">
-              {project.objective || "Objective data not yet populated. Add this inside Sanity Studio."}
-            </p>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
 
-          <div className="hidden md:block md:col-span-2"></div>
+        {(project.objective || project.engineering) && (
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-32">
+            {project.objective && (
+              <div className="md:col-span-5">
+                <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 mb-6">01 // The Brief</h2>
+                <h3 className="text-3xl font-black tracking-tighter uppercase mb-6">What it needed.</h3>
+                <p className="text-zinc-600 leading-relaxed font-medium whitespace-pre-line">{project.objective}</p>
+              </div>
+            )}
 
-          <div className="md:col-span-5 mt-12 md:mt-0">
-            <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 mb-6">02 // The Engineering</h2>
-            <h3 className="text-3xl font-black tracking-tighter uppercase mb-6">Executing the Vision.</h3>
-            <p className="text-zinc-600 leading-relaxed font-medium whitespace-pre-line">
-              {project.engineering || "Engineering data not yet populated. Add this inside Sanity Studio."}
-            </p>
+            <div className="hidden md:block md:col-span-2"></div>
+
+            {project.engineering && (
+              <div className="md:col-span-5 mt-12 md:mt-0">
+                <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 mb-6">
+                  {`${project.objective ? "02" : "01"} // The Process`}
+                </h2>
+                <h3 className="text-3xl font-black tracking-tighter uppercase mb-6">How it was made.</h3>
+                <p className="text-zinc-600 leading-relaxed font-medium whitespace-pre-line">{project.engineering}</p>
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         <div className="border-t border-black pt-16 pb-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">Ready to scale?</h2>
-            <p className="text-zinc-500 mt-2 font-medium">Let's build your next visual system.</p>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">Have a project in mind?</h2>
+            <p className="text-zinc-500 mt-2 font-medium">Let&apos;s make something together.</p>
           </div>
-          <a 
-            href="mailto:kumarvishal1627@gmail.com?subject=Project Inquiry via Case Study" 
+          <a
+            href="mailto:kumarvishal1627@gmail.com?subject=Project Inquiry via Case Study"
             className="bg-black text-white px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-zinc-800 transition-colors"
           >
-            Initiate Project →
+            Get in Touch →
           </a>
         </div>
 
       </div>
-
-      <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-        }
-      `}</style>
     </article>
   );
 }

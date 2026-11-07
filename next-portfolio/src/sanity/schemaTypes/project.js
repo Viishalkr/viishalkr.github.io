@@ -1,4 +1,4 @@
-export default {
+const project = {
   name: 'project',
   title: 'Project',
   type: 'document',
@@ -35,7 +35,22 @@ export default {
       },
       validation: (Rule) => Rule.required(),
     },
-    // 👇 NEW: External Link Fields
+    {
+      name: 'client',
+      title: 'Client (Optional)',
+      type: 'string',
+    },
+    {
+      name: 'role',
+      title: 'Your Role (e.g., "Director & Editor")',
+      type: 'string',
+    },
+    {
+      name: 'year',
+      title: 'Year',
+      type: 'string',
+      description: 'e.g., 2025 or 2024–2025',
+    },
     {
       name: 'link',
       title: 'External Link (Optional - e.g., GitHub, Shopify, Live Site)',
@@ -83,3 +98,5 @@ export default {
     }
   ],
 };
+
+export default project;

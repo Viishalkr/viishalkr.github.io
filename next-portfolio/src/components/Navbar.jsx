@@ -2,15 +2,21 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Sanity Studio has its own chrome.
+  if (pathname?.startsWith("/studio")) return null;
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -29,13 +35,13 @@ export default function Navbar() {
         {/* Nav Links */}
         <div className="flex items-center gap-6 md:gap-8">
           <Link
-            href="#work"
+            href="/#work"
             className="text-xs font-bold tracking-widest uppercase text-zinc-500 hover:text-black transition-colors"
           >
             WORK
           </Link>
           <Link
-            href="#about"
+            href="/#about"
             className="text-xs font-bold tracking-widest uppercase text-zinc-500 hover:text-black transition-colors"
           >
             ABOUT

@@ -28,7 +28,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="bg-white text-black py-32 px-6 md:px-12 relative z-20 border-t border-zinc-200 selection:bg-black selection:text-white"
+      className="bg-white text-black py-32 px-6 md:px-12 relative z-20 border-t border-zinc-200 scroll-mt-16 selection:bg-black selection:text-white"
     >
       <div className="absolute inset-0 pointer-events-none flex justify-between px-6 md:px-12">
         <div className="w-[1px] h-full bg-zinc-200/60" />
@@ -50,13 +50,13 @@ export default function About() {
 
             <div className="about-reveal space-y-6 text-base md:text-lg text-zinc-600 font-medium leading-relaxed max-w-2xl">
               <p>
-                I'm a visual director working across photography, film, and brand design. My work spans editorial shoots, short film production, motion graphics, and identity systems — whatever the brief demands.
+                I&apos;m a visual director working across photography, film, and brand design. My work spans editorial shoots, short film production, motion graphics, and identity systems — whatever the brief demands.
               </p>
               <p>
-                I got into this through genuine obsession — running the photography club, coordinating short films, leading creative for a 10,000-person college festival. That's where I learned that the best creative work isn't accidental. It's directed.
+                I got into this through genuine obsession — running the photography club, coordinating short films, leading creative for a 10,000-person college festival. That&apos;s where I learned that the best creative work isn&apos;t accidental. It&apos;s directed.
               </p>
               <p>
-                Right now I'm open to commissions globally — brand campaigns, visual identities, video production, and creative direction.
+                Right now I&apos;m open to commissions globally — brand campaigns, visual identities, video production, and creative direction.
               </p>
             </div>
           </div>
@@ -68,7 +68,7 @@ export default function About() {
 
               <div className="grid grid-cols-2 gap-x-8 gap-y-6 text-xs font-bold tracking-widest uppercase">
                 <div>
-                  <p className="text-black mb-2">// VISUAL</p>
+                  <p className="text-black mb-2">{"// VISUAL"}</p>
                   <ul className="space-y-2 text-zinc-500 font-medium tracking-wide normal-case text-sm">
                     <li>Photography</li>
                     <li>Short Film & Video</li>
@@ -78,7 +78,7 @@ export default function About() {
                 </div>
 
                 <div>
-                  <p className="text-black mb-2">// DESIGN</p>
+                  <p className="text-black mb-2">{"// DESIGN"}</p>
                   <ul className="space-y-2 text-zinc-500 font-medium tracking-wide normal-case text-sm">
                     <li>Brand Identity</li>
                     <li>Graphic Design</li>

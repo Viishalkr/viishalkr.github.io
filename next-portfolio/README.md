@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Vishal Kumar — Portfolio
 
-## Getting Started
+Personal portfolio for photography, film and design work. Projects are managed in Sanity and rendered by Next.js.
 
-First, run the development server:
+**Stack:** Next.js 16 (App Router) · React 19 · Tailwind CSS 4 · GSAP · Sanity
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Running locally
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Create `.env.local` with your Sanity project details:
+
+   ```bash
+   NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
+   NEXT_PUBLIC_SANITY_DATASET=production
+   ```
+
+3. Start the dev server:
+
+   ```bash
+   npm run dev
+   ```
+
+The site runs at http://localhost:3000 and Sanity Studio at http://localhost:3000/studio.
+
+## Adding work
+
+Open `/studio`, create a **Project**, fill in the title, click **Generate** for the slug, choose a category, add a cover image (and an MP4 for video projects), then publish. The home page grid and the project's case-study page at `/work/<slug>` pick it up within about 60 seconds.
+
+## Structure
+
+```text
+src/
+├── app/
+│   ├── page.js                 # Home: hero, work grid, about, footer
+│   ├── work/[slug]/page.js     # Case-study page per project
+│   ├── studio/[[...tool]]/     # Embedded Sanity Studio
+│   └── not-found.js            # 404 page
+├── components/                 # Navbar, Hero, PortfolioGrid, About, Footer
+└── sanity/
+    ├── lib/                    # Client, queries, fetch helper
+    └── schemaTypes/project.js  # Project content model
+public/                         # CV, hero photo and other static files
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` starts the dev server
+- `npm run build` builds for production
+- `npm run start` serves the production build
+- `npm run lint` runs ESLint
